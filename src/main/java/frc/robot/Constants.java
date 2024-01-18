@@ -16,4 +16,13 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
+
+  public static class IntakeConstants {
+    //TODO: Assign a real CAN ID
+    public static final int kIntakeMotorID = 0;
+  }
+
+  public static class DriveConstants {
+    public static final int kSmartCurrentLimit = 40;
+  }
 }
