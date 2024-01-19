@@ -91,7 +91,7 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    m_rightPIDController.setReference(m_currentRightSpeed, ControlType.kDutyCycle);
-    m_leftPIDController.setReference(m_currentLeftSpeed, ControlType.kDutyCycle);
+    m_rightPIDController.setReference(m_currentRightSpeed, ControlType.kVelocity);
+    m_leftPIDController.setReference(m_currentLeftSpeed, ControlType.kVelocity);
   }
 }
