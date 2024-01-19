@@ -32,7 +32,7 @@ public class Shooter extends SubsystemBase {
   double m_kRightI;
   double m_kRightD;
 
-  double m_kShootingTolerance = 0.05;
+  double m_kShootingTolerance = 10.0;
 
   /** Creates a new Shooter. */
   public Shooter(int leftMotorID, int rightMotorID, boolean leftMotorReversed, boolean rightMotorReversed) {
