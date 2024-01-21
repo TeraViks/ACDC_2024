@@ -31,7 +31,7 @@ public final class Constants {
     public static final int kLeftFlywheelID = 0;
     public static final int kRigthFlywheelID = 0;
 
-    public static final double kFlywheelEncoderCPR = 2048.0;
+    public static final double kFlywheelEncoderCPR = 42.0;
     public static final double kAbsoluteEncoderCPR = 4096.0;
     //TODO: Find the flywheel diameter
     public static final double kFlywheelDiameterMeters = 0.09525;
