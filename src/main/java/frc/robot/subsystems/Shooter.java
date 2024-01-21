@@ -62,7 +62,7 @@ public class Shooter extends SubsystemBase {
     m_rightEncoder.setPositionConversionFactor(ShooterConstants.kDriveEncoderDistancePerPulse);
 
     m_rightPIDController = m_leftMotor.getPIDController();
-    m_rightPIDController.setFeedbackDevice(m_leftEncoder);
+    m_rightPIDController.setFeedbackDevice(m_rightEncoder);
     m_rightPIDController.setP(m_kRightD, 0);
     m_rightPIDController.setI(m_kRightI, 0);
     m_rightPIDController.setD(m_kRightD, 0);
