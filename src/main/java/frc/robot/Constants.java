@@ -31,14 +31,14 @@ public final class Constants {
     public static final int kLeftFlywheelID = 0;
     public static final int kRigthFlywheelID = 0;
 
-    public static final double kDriveEncoderCPR = 2048.0;
+    public static final double kFlywheelEncoderCPR = 2048.0;
     public static final double kAbsoluteEncoderCPR = 4096.0;
     //TODO: Find the flywheel diameter
-    public static final double kWheelDiameterMeters = 0.09525;
+    public static final double kFlywheelDiameterMeters = 0.09525;
     //TODO: Find gear ratio
-    public static final double kDriveGearRatio = 6.75;
+    public static final double kFlywheelGearRatio = 6.75;
 
-    public static final double kDriveEncoderDistancePerPulse =
-        (kWheelDiameterMeters * Math.PI) / (kDriveEncoderCPR * kDriveGearRatio);
+    public static final double kFlywheelEncoderDistancePerPulse =
+        (kFlywheelDiameterMeters * Math.PI) / (kFlywheelEncoderCPR * kFlywheelGearRatio);
   }
 }
