@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.util.Arrays;
 
 public class ShooterInterp extends SubsystemBase {
-  static class PosEntry{double distance; double power; public PosEntry(double dist, double pow) {distance = dist; power = pow;}}
+  static class PosEntry{double distance; double speed; public PosEntry(double dist, double pow) {distance = dist; speed = pow;}}
   static final PosEntry[] posTable = {};
   /** Creates a new ShooterInterp. */
   public ShooterInterp() {}
@@ -29,24 +29,24 @@ public class ShooterInterp extends SubsystemBase {
     return index;
   }
 
-  public static double distanceToPower(double distance) {
+  public static double distanceToSpeed(double distance) {
     int index = distanceIndex(distance);
     if (index == 0) {
-      return posTable[index].power;
+      return posTable[index].speed;
     } else if (index == posTable.length) {
-      return posTable[posTable.length-1].power;
+      return posTable[posTable.length-1].speed;
     } else if (posTable[index].distance == distance) {
-      return posTable[index].power;
+      return posTable[index].speed;
     }
     // Linear Interpolation
     else {
     double d0 = posTable[index-1].distance;
     double d1 = posTable[index].distance;
-    double p0 = posTable[index-1].power;
-    double p1 = posTable[index].power;
+    double s0 = posTable[index-1].speed;
+    double s1 = posTable[index].speed;
     double scaler = (distance-d0) / (d1 - d0);
-    double powerRange = p1 - p0;
-    return p0 + scaler*powerRange;
+    double speedRange = s1 - s0;
+    return s0 + scaler*speedRange;
     }
   }
 
