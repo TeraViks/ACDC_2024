@@ -83,8 +83,8 @@ public class Shooter extends SubsystemBase {
     return (
       m_rightMotor.get() <= m_currentRightSpeed + m_kShootingTolerance || 
       m_rightMotor.get() >= m_currentRightSpeed - m_kShootingTolerance &&
-      m_rightMotor.get() <= m_currentLeftSpeed + m_kShootingTolerance || 
-      m_rightMotor.get() >= m_currentLeftSpeed - m_kShootingTolerance
+      m_leftMotor.get() <= m_currentLeftSpeed + m_kShootingTolerance || 
+      m_leftMotor.get() >= m_currentLeftSpeed - m_kShootingTolerance
     );
   }
 
