@@ -40,13 +40,13 @@ public class ShooterInterp extends SubsystemBase {
     }
     // Linear Interpolation
     else {
-    double d0 = posTable[index-1].distance;
-    double d1 = posTable[index].distance;
-    double s0 = posTable[index-1].speed;
-    double s1 = posTable[index].speed;
-    double scaler = (distance-d0) / (d1 - d0);
-    double speedRange = s1 - s0;
-    return s0 + scaler*speedRange;
+      double d0 = posTable[index-1].distance;
+      double d1 = posTable[index].distance;
+      double s0 = posTable[index-1].speed;
+      double s1 = posTable[index].speed;
+      double scaler = (distance-d0) / (d1 - d0);
+      double speedRange = s1 - s0;
+      return s0 + scaler*speedRange;
     }
   }
 
