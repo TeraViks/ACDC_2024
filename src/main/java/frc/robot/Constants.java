@@ -27,6 +27,10 @@ public final class Constants {
   }
 
   public static class ShooterConstants {
+    //TODO: Assign real CAN ID's for the 2 flywheels
+    public static final int kLeftFlywheelID = 0;
+    public static final int kRigthFlywheelID = 0;
+
     public static final double kDriveEncoderCPR = 2048.0;
     public static final double kAbsoluteEncoderCPR = 4096.0;
     //TODO: Find the flywheel diameter
