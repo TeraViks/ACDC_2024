@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 public class Intake extends SubsystemBase {
   CANSparkMax m_intakeMotor;
   Ultrasonic m_ultrasonicSensor;
-  /** Creates a new Intake. */
+
   public Intake(int motorID, boolean motorReversed, int pingPort, int echoPort) {
     m_intakeMotor = new CANSparkMax(motorID, MotorType.kBrushless);
     m_intakeMotor.restoreFactoryDefaults();
@@ -41,7 +41,5 @@ public class Intake extends SubsystemBase {
   }
 
   @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-  }
+  public void periodic() {}
 }

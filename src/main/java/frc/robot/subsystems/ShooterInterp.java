@@ -11,7 +11,7 @@ import java.util.Arrays;
 public class ShooterInterp extends SubsystemBase {
   static class PosEntry{double distance; double speed; public PosEntry(double dist, double pow) {distance = dist; speed = pow;}}
   static final PosEntry[] posTable = {};
-  /** Creates a new ShooterInterp. */
+
   public ShooterInterp() {}
 
   public static double getMaxDistance() {
@@ -52,7 +52,5 @@ public class ShooterInterp extends SubsystemBase {
 
 
   @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-  }
+  public void periodic() {}
 }

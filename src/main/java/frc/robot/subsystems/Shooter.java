@@ -34,7 +34,6 @@ public class Shooter extends SubsystemBase {
 
   double m_kShootingTolerance = 10.0;
 
-  /** Creates a new Shooter. */
   public Shooter(int leftMotorID, int rightMotorID, boolean leftMotorReversed, boolean rightMotorReversed) {
     m_leftMotor = new CANSparkMax(leftMotorID, MotorType.kBrushless);
     m_leftMotor.restoreFactoryDefaults();
@@ -90,7 +89,6 @@ public class Shooter extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
     m_rightPIDController.setReference(m_currentRightSpeed, ControlType.kVelocity);
     m_leftPIDController.setReference(m_currentLeftSpeed, ControlType.kVelocity);
   }
