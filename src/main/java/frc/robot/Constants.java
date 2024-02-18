@@ -232,5 +232,8 @@ public final class Constants {
     public static final double kShooterVelocityConversionFactor =
       kShooterPositionConversionFactor
       / 60.0 /* s */;
+    
+    public static final PID kLeftPID = new PID(0, 0, 0);
+    public static final PID kRightPID = new PID(0, 0, 0);
   }
 }

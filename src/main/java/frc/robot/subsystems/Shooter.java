@@ -11,6 +11,7 @@ import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.PID;
 import frc.robot.Constants.ShooterConstants;
 
 public class Shooter extends SubsystemBase {
@@ -21,15 +22,11 @@ public class Shooter extends SubsystemBase {
   SparkPIDController m_leftPIDController;
   SparkPIDController m_rightPIDController;
 
-  double m_currentLeftSpeed;
-  double m_currentRightSpeed;
+  double m_idealLeftSpeed;
+  double m_idealRightSpeed;
 
-  double m_kLeftP;
-  double m_kLeftI;
-  double m_kLeftD;
-  double m_kRightP;
-  double m_kRightI;
-  double m_kRightD;
+  PID m_leftMotorPID = ShooterConstants.kLeftPID;
+  PID m_rightMotorPID = ShooterConstants.kLeftPID;
 
   double m_kShootingTolerance = 10.0;
 
@@ -45,9 +42,9 @@ public class Shooter extends SubsystemBase {
 
     m_leftPIDController = m_leftMotor.getPIDController();
     m_leftPIDController.setFeedbackDevice(m_leftEncoder);
-    m_leftPIDController.setP(m_kLeftP, 0);
-    m_leftPIDController.setI(m_kLeftI, 0);
-    m_leftPIDController.setD(m_kLeftD, 0);
+    m_leftPIDController.setP(m_leftMotorPID.p(), 0);
+    m_leftPIDController.setI(m_leftMotorPID.i(), 0);
+    m_leftPIDController.setD(m_leftMotorPID.d(), 0);
     m_leftPIDController.setFF(0);
 
     m_rightMotor = new CANSparkMax(rightMotorID, MotorType.kBrushless);
@@ -59,36 +56,36 @@ public class Shooter extends SubsystemBase {
      m_rightEncoder.setVelocityConversionFactor(ShooterConstants.kShooterVelocityConversionFactor);
     m_rightEncoder.setPositionConversionFactor(ShooterConstants.kShooterPositionConversionFactor);
 
-    m_rightPIDController = m_leftMotor.getPIDController();
+    m_rightPIDController = m_rightMotor.getPIDController();
     m_rightPIDController.setFeedbackDevice(m_rightEncoder);
-    m_rightPIDController.setP(m_kRightD, 0);
-    m_rightPIDController.setI(m_kRightI, 0);
-    m_rightPIDController.setD(m_kRightD, 0);
+    m_rightPIDController.setP(m_rightMotorPID.p(), 0);
+    m_rightPIDController.setI(m_rightMotorPID.i(), 0);
+    m_rightPIDController.setD(m_rightMotorPID.d(), 0);
     m_rightPIDController.setFF(0);
   }
 
   public void shoot(double rightMotorSpeed, double leftMotorSpeed) {
-    m_currentLeftSpeed = leftMotorSpeed;
-    m_currentRightSpeed = rightMotorSpeed;
+    m_idealLeftSpeed = leftMotorSpeed;
+    m_idealRightSpeed = rightMotorSpeed;
   }
 
   public void stopShooter() {
-    m_currentLeftSpeed = 0.0;
-    m_currentRightSpeed = 0.0;
+    m_idealLeftSpeed = 0.0;
+    m_idealRightSpeed = 0.0;
   }
 
   public boolean isReadyToShoot() {
     return (
-      m_rightMotor.get() <= m_currentRightSpeed + m_kShootingTolerance || 
-      m_rightMotor.get() >= m_currentRightSpeed - m_kShootingTolerance &&
-      m_leftMotor.get() <= m_currentLeftSpeed + m_kShootingTolerance || 
-      m_leftMotor.get() >= m_currentLeftSpeed - m_kShootingTolerance
+      m_rightEncoder.getVelocity() <= m_idealRightSpeed + m_kShootingTolerance || 
+      m_rightEncoder.getVelocity() >= m_idealRightSpeed - m_kShootingTolerance &&
+      m_leftEncoder.getVelocity() <= m_idealLeftSpeed + m_kShootingTolerance || 
+      m_leftEncoder.getVelocity() >= m_idealLeftSpeed - m_kShootingTolerance
     );
   }
 
   @Override
   public void periodic() {
-    m_rightPIDController.setReference(m_currentRightSpeed, ControlType.kVelocity);
-    m_leftPIDController.setReference(m_currentLeftSpeed, ControlType.kVelocity);
+    m_rightPIDController.setReference(m_idealRightSpeed, ControlType.kVelocity);
+    m_leftPIDController.setReference(m_idealLeftSpeed, ControlType.kVelocity);
   }
 }
