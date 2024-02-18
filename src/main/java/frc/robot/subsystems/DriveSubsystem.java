@@ -25,8 +25,8 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
@@ -86,6 +86,7 @@ public class DriveSubsystem extends SubsystemBase {
   private final AHRS m_gyro = new AHRS(SPI.Port.kMXP);
   private Pose2d m_initialPose = new Pose2d();
   private CameraSubsystem m_cameraSystem;
+  private ArrayList<Optional<EstimatedRobotPose>> m_photonRobotPoseList = new ArrayList<>();
 
   private SwerveModulePosition[] getPositions() {
     SwerveModulePosition[] positions = Arrays.stream(m_modules)
@@ -146,14 +147,18 @@ public class DriveSubsystem extends SubsystemBase {
       }
     }
 
+    // Integrate swerve state into odometry.
     m_odometry.update(getUncorrectedRotation2d(), getPositions());
-    
-    ArrayList<Optional<EstimatedRobotPose>> photonRobotPoseList = m_cameraSystem.getFieldRelativePoseEstimators();
-    photonRobotPoseList.forEach(robotPoseEstimator -> {
-      if (!robotPoseEstimator.isEmpty()) {
-        m_odometry.addVisionMeasurement(robotPoseEstimator.get().estimatedPose.toPose2d(), robotPoseEstimator.get().timestampSeconds);
-      } 
-    });
+
+    // Integrate fresh PhotonVision pose estimates into odometry.
+    ArrayList<Optional<EstimatedRobotPose>> photonRobotPoseList =
+      m_cameraSystem.getFieldRelativePoseEstimators();
+    ArrayList<EstimatedRobotPose> freshEstimates =
+      m_cameraSystem.selectFreshEstimates(m_photonRobotPoseList, photonRobotPoseList);
+    for (EstimatedRobotPose estimate : freshEstimates) {
+      m_odometry.addVisionMeasurement(estimate.estimatedPose.toPose2d(), estimate.timestampSeconds);
+    }
+    m_photonRobotPoseList = photonRobotPoseList;
   }
 
   private Pose2d getPose() {
