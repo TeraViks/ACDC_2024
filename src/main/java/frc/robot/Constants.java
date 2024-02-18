@@ -47,13 +47,14 @@ public final class Constants {
     public static final boolean kRearRightEncoderReversed = false; //Q3
     public static final boolean kFrontRightEncoderReversed = false; //Q4
 
-    public static final Rotation2d kFrontLeftEncoderOffset = new Rotation2d(Math.toRadians(277.559)); //Q1
-    public static final Rotation2d kRearLeftEncoderOffset = new Rotation2d(Math.toRadians(126.826)); //Q2
-    public static final Rotation2d kRearRightEncoderOffset = new Rotation2d(Math.toRadians(250.137)); //Q3
-    public static final Rotation2d kFrontRightEncoderOffset = new Rotation2d(Math.toRadians(45.703)); //Q4
+    //TODO: Find the absolute encoder offsets
+    public static final Rotation2d kFrontLeftEncoderOffset = new Rotation2d(Math.toRadians(0)); //Q1
+    public static final Rotation2d kRearLeftEncoderOffset = new Rotation2d(Math.toRadians(0)); //Q2
+    public static final Rotation2d kRearRightEncoderOffset = new Rotation2d(Math.toRadians(0)); //Q3
+    public static final Rotation2d kFrontRightEncoderOffset = new Rotation2d(Math.toRadians(0)); //Q4
 
-    public static final double kTrackWidth = 0.431; // Distance between centers of right and left wheels on robot
-    public static final double kWheelBase = 0.681; // Distance between front and back wheels on robot
+    public static final double kTrackWidth = 0.629; // Distance between centers of right and left wheels on robot
+    public static final double kWheelBase = 0.629; // Distance between front and back wheels on robot
 
     public static final Vector<N3> stateStdDeviations = VecBuilder.fill(0.005, 0.005, Math.toRadians(1));
     public static final Vector<N3> visionStdDeviations = VecBuilder.fill(0.050, 0.050, Math.toRadians(5));
@@ -95,42 +96,42 @@ public final class Constants {
   }
 
   public static final class SwerveModuleConstants {
-      public static final double kMaxSpeedMetersPerSecond = DriveConstants.kMaxSpeedMetersPerSecond * 2.0;
+    public static final double kMaxSpeedMetersPerSecond = DriveConstants.kMaxSpeedMetersPerSecond * 2.0;
 
-      public static final double kAbsoluteEncoderCPR = 4096.0;
-      public static final double kWheelDiameterMeters = 0.09525;
+    //TODO: Find actual wheel diameter
+    public static final double kWheelDiameterMeters = 0.09924;
 
-      public static final double kDriveGearRatio = 6.75;
-      public static final double kTurningGearRatio = 150.0 / 7.0;
+    public static final double kDriveGearRatio = 6.75;
+    public static final double kTurningGearRatio = 150.0 / 7.0;
 
-      // The native position units are motor rotations, but we want meters.
-      public static final double kDrivePositionConversionFactor =
-        (SwerveModuleConstants.kWheelDiameterMeters * Math.PI)
-        / SwerveModuleConstants.kDriveGearRatio;
-      // The native velocity units are motor rotations [aka revolutions] per minute (RPM),
-      // but we want meters per second.
-      public static final double kDriveVelocityConversionFactor =
-        kDrivePositionConversionFactor
-        / 60.0 /* s */;
+    // The native position units are motor rotations, but we want meters.
+    public static final double kDrivePositionConversionFactor =
+      (SwerveModuleConstants.kWheelDiameterMeters * Math.PI)
+      / SwerveModuleConstants.kDriveGearRatio;
+    // The native velocity units are motor rotations [aka revolutions] per minute (RPM),
+    // but we want meters per second.
+    public static final double kDriveVelocityConversionFactor =
+      kDrivePositionConversionFactor
+      / 60.0 /* s */;
 
-      // The native position units are motor rotations, but we want radians.
-      public static final double kTurningPositionConversionFactor =
-        Units.rotationsToRadians(1.0 / SwerveModuleConstants.kTurningGearRatio);
-      // The native velocity units are motor rotations [aka revolutions] per minute (RPM), but we want radians per second.
-      public static final double kTurningVelocityConversionFactor =
-        kTurningPositionConversionFactor
-        / 60.0 /* s */;
+    // The native position units are motor rotations, but we want radians.
+    public static final double kTurningPositionConversionFactor =
+      Units.rotationsToRadians(1.0 / SwerveModuleConstants.kTurningGearRatio);
+    // The native velocity units are motor rotations [aka revolutions] per minute (RPM), but we want radians per second.
+    public static final double kTurningVelocityConversionFactor =
+      kTurningPositionConversionFactor
+      / 60.0 /* s */;
 
-      public static final PID kDrivePID = new PID(0.5, 0.0, 0.0);
-      public static final PID kTurningPID = new PID(0.5, 0.0, 0.0);
+    public static final PID kDrivePID = new PID(0.5, 0.0, 0.0);
+    public static final PID kTurningPID = new PID(0.5, 0.0, 0.0);
 
-      public static final int kDriveMotorCurrentLimit = 40;
-      public static final int kTurningMotorCurrentLimit = 20;
+    public static final int kDriveMotorCurrentLimit = 40;
+    public static final int kTurningMotorCurrentLimit = 20;
 
-      public static final double kDriveMotorRampRate = 0.25;
-      public static final double kTurningMotorRampRate = 0.25;
+    public static final double kDriveMotorRampRate = 0.25;
+    public static final double kTurningMotorRampRate = 0.25;
 
-      public static final long kValueCacheTtlMicroseconds = 15;
+    public static final long kValueCacheTtlMicroseconds = 15;
     }
 
   public static final class OIConstants {
