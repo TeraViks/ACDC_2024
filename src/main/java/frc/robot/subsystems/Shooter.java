@@ -11,7 +11,6 @@ import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.ShooterConstants;
 
 public class Shooter extends SubsystemBase {
@@ -38,7 +37,7 @@ public class Shooter extends SubsystemBase {
     m_leftMotor = new CANSparkMax(leftMotorID, MotorType.kBrushless);
     m_leftMotor.restoreFactoryDefaults();
     m_leftMotor.setInverted(leftMotorReversed);
-    m_leftMotor.setSmartCurrentLimit(DriveConstants.kSmartCurrentLimit);
+    m_leftMotor.setSmartCurrentLimit(ShooterConstants.kShooterCurrentLimit);
 
     m_leftEncoder = m_leftMotor.getEncoder();
     m_leftEncoder.setVelocityConversionFactor(ShooterConstants.kFlywheelEncoderDistancePerPulse * 10.0);
@@ -54,7 +53,7 @@ public class Shooter extends SubsystemBase {
     m_rightMotor = new CANSparkMax(rightMotorID, MotorType.kBrushless);
     m_rightMotor.restoreFactoryDefaults();
     m_rightMotor.setInverted(rightMotorReversed);
-    m_rightMotor.setSmartCurrentLimit(DriveConstants.kSmartCurrentLimit);
+    m_rightMotor.setSmartCurrentLimit(ShooterConstants.kShooterCurrentLimit);
 
     m_rightEncoder = m_leftMotor.getEncoder();
     m_rightEncoder.setVelocityConversionFactor(ShooterConstants.kFlywheelEncoderDistancePerPulse * 10.0);
