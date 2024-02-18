@@ -198,8 +198,16 @@ public final class Constants {
 
   public static class IntakeConstants {
     //TODO: Assign a real CAN ID
-    public static final int kIntakeMotorID = 0;
+    public static final int kTopIntakeMotorID = 0;
+    public static final int kBottomIntakeMotorID = 1;
     public static final int kIntakeCurrentLimit = 40;
+    public static final double kShaftDiameter = 0.0127;
+    public static final double kTopGearRatio = 0.83;
+    public static final double kBottomGearRatio = 1;
+    public static final double kTopVelocityConversionFactor = (kShaftDiameter * Math.PI)/kTopGearRatio/60;
+    public static final double kBottomVelocityConversionFactor = (kShaftDiameter * Math.PI)/kBottomGearRatio/60;
+    public static final PID kIntakePIDTop = new PID(0.5, 0.0, 0.0);
+    public static final PID kIntakePIDBottom = new PID(0.5, 0.0, 0.0);
   }
 
   public static class ShooterConstants {
