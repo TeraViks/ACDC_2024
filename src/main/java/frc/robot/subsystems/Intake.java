@@ -8,7 +8,7 @@ import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkLowLevel.MotorType;
-import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.IntakeConstants;
 import edu.wpi.first.wpilibj.Ultrasonic;
 
 public class Intake extends SubsystemBase {
@@ -19,7 +19,7 @@ public class Intake extends SubsystemBase {
     m_intakeMotor = new CANSparkMax(motorID, MotorType.kBrushless);
     m_intakeMotor.restoreFactoryDefaults();
     m_intakeMotor.setInverted(motorReversed);
-    m_intakeMotor.setSmartCurrentLimit(DriveConstants.kSmartCurrentLimit);
+    m_intakeMotor.setSmartCurrentLimit(IntakeConstants.kIntakeCurrentLimit);
 
     m_ultrasonicSensor = new Ultrasonic(pingPort, echoPort);
   }
