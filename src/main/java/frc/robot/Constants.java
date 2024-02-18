@@ -215,8 +215,8 @@ public final class Constants {
 
     // The native position units are motor rotations, but we want meters.
     public static final double kShooterPositionConversionFactor =
-      (SwerveModuleConstants.kWheelDiameterMeters * Math.PI)
-      / SwerveModuleConstants.kDriveGearRatio;
+      (ShooterConstants.kFlywheelDiameterMeters * Math.PI)
+      / ShooterConstants.kFlywheelGearRatio;
     // The native velocity units are motor rotations [aka revolutions] per minute (RPM),
     // but we want meters per second.
     public static final double kShooterVelocityConversionFactor =
