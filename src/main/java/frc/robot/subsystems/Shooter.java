@@ -75,11 +75,13 @@ public class Shooter extends SubsystemBase {
   }
 
   public boolean isReadyToShoot() {
+    double rightMotorVelocity = m_rightEncoder.getVelocity();
+    double leftMotorVelocity = m_leftEncoder.getVelocity();
     return (
-      m_rightEncoder.getVelocity() <= m_idealRightSpeed + m_kShootingTolerance || 
-      m_rightEncoder.getVelocity() >= m_idealRightSpeed - m_kShootingTolerance &&
-      m_leftEncoder.getVelocity() <= m_idealLeftSpeed + m_kShootingTolerance || 
-      m_leftEncoder.getVelocity() >= m_idealLeftSpeed - m_kShootingTolerance
+      rightMotorVelocity <= m_idealRightSpeed + m_kShootingTolerance || 
+      rightMotorVelocity >= m_idealRightSpeed - m_kShootingTolerance &&
+      leftMotorVelocity <= m_idealLeftSpeed + m_kShootingTolerance || 
+      leftMotorVelocity >= m_idealLeftSpeed - m_kShootingTolerance
     );
   }
 
