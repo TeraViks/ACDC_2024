@@ -5,6 +5,9 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkPIDController;
+import com.revrobotics.CANSparkBase.ControlType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkLowLevel.MotorType;
@@ -12,33 +15,52 @@ import frc.robot.Constants.IntakeConstants;
 import edu.wpi.first.wpilibj.Ultrasonic;
 
 public class Intake extends SubsystemBase {
-  CANSparkMax m_intakeMotor1;
-  CANSparkMax m_intakeMotor2;
-  Ultrasonic m_ultrasonicSensor;
+  private final CANSparkMax m_intakeMotorTop;
+  private final CANSparkMax m_intakeMotorBottom;
+  private final RelativeEncoder m_intakeEncoderTop;
+  private final RelativeEncoder m_intakeEncoderBottom;
+  private final SparkPIDController m_intakePidControllerTop;
+    private final SparkPIDController m_intakePidControllerBottom;
+  private final Ultrasonic m_ultrasonicSensor;
 
-  public Intake(int motorID, boolean motorReversed, int pingPort, int echoPort) {
-    m_intakeMotor1 = new CANSparkMax(motorID, MotorType.kBrushless);
-    m_intakeMotor1.restoreFactoryDefaults();
-    m_intakeMotor1.setInverted(motorReversed);
-    m_intakeMotor1.setSmartCurrentLimit(IntakeConstants.kIntakeCurrentLimit);
-
-    m_intakeMotor2 = new CANSparkMax(motorID, MotorType.kBrushless);
-    m_intakeMotor2.restoreFactoryDefaults();
-    m_intakeMotor2.setInverted(motorReversed);
-    m_intakeMotor2.setSmartCurrentLimit(IntakeConstants.kIntakeCurrentLimit);
-
+  public Intake(int topMotorID, int bottomMotorID, boolean motorReversed, int pingPort, int echoPort) {
+    m_intakeMotorTop = new CANSparkMax(topMotorID, MotorType.kBrushless);
+    m_intakeMotorTop.restoreFactoryDefaults();
+    m_intakeMotorTop.setInverted(motorReversed);
+    m_intakeMotorTop.setSmartCurrentLimit(IntakeConstants.kIntakeCurrentLimit);
+    m_intakeEncoderTop = m_intakeMotorTop.getEncoder();
+    m_intakeEncoderTop.setVelocityConversionFactor(IntakeConstants.kTopVelocityConversionFactor);
+    m_intakePidControllerTop = m_intakeMotorTop.getPIDController();
+    m_intakePidControllerTop.setFeedbackDevice(m_intakeEncoderTop);
+    m_intakePidControllerTop.setP(IntakeConstants.kIntakePIDTop.p(), 0);
+    m_intakePidControllerTop.setI(IntakeConstants.kIntakePIDTop.i(), 0);
+    m_intakePidControllerTop.setD(IntakeConstants.kIntakePIDTop.d(), 0);
+    m_intakePidControllerTop.setFF(0);
+   
+    m_intakeMotorBottom = new CANSparkMax(bottomMotorID, MotorType.kBrushless);
+    m_intakeMotorBottom.restoreFactoryDefaults();
+    m_intakeMotorBottom.setInverted(!motorReversed);
+    m_intakeMotorBottom.setSmartCurrentLimit(IntakeConstants.kIntakeCurrentLimit);
+    m_intakeEncoderBottom = m_intakeMotorBottom.getEncoder();
+    m_intakeEncoderBottom.setVelocityConversionFactor(IntakeConstants.kBottomVelocityConversionFactor);
+    m_intakePidControllerBottom = m_intakeMotorBottom.getPIDController();
+    m_intakePidControllerBottom.setFeedbackDevice(m_intakeEncoderBottom);
+    m_intakePidControllerBottom.setP(IntakeConstants.kIntakePIDBottom.p(), 0);
+    m_intakePidControllerBottom.setI(IntakeConstants.kIntakePIDBottom.i(), 0);
+    m_intakePidControllerBottom.setD(IntakeConstants.kIntakePIDBottom.d(), 0);
+    m_intakePidControllerBottom.setFF(0);
 
     m_ultrasonicSensor = new Ultrasonic(pingPort, echoPort);
   }
 
   public void startIntake(double speed) {
-    m_intakeMotor1.set(speed);
-    m_intakeMotor2.set(speed);
+    m_intakePidControllerTop.setReference(speed, ControlType.kVelocity);
+    m_intakePidControllerBottom.setReference(speed, ControlType.kVelocity);
   }
 
   public void stopIntake() {
-    m_intakeMotor1.stopMotor();
-    m_intakeMotor2.stopMotor();
+    m_intakeMotorTop.stopMotor();
+    m_intakeMotorBottom.stopMotor();
   }
 
   public boolean isNoteChambered() {
@@ -46,8 +68,7 @@ public class Intake extends SubsystemBase {
   }
 
   public double intakeSpeed() {
-    return m_intakeMotor1.get();
-    return m_intakeMotor2.get();
+    return (m_intakeEncoderTop.getVelocity() + m_intakeEncoderBottom.getVelocity())/2;
   }
 
   @Override
