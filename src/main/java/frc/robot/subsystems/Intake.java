@@ -67,10 +67,12 @@ public class Intake extends SubsystemBase {
     return(m_ultrasonicSensor.getRangeInches() <= 1.0);
   }
 
-  public double intakeSpeed() {
-    return (m_intakeEncoderTop.getVelocity() + m_intakeEncoderBottom.getVelocity())/2;
+  public double TopintakeSpeed() {
+    return m_intakeEncoderTop.getVelocity();
   }
-
+  public double BottomintakeSpeed() {
+  return m_intakeEncoderBottom.getVelocity();
+  }
   @Override
   public void periodic() {}
 }
