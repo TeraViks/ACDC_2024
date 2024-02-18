@@ -12,24 +12,33 @@ import frc.robot.Constants.IntakeConstants;
 import edu.wpi.first.wpilibj.Ultrasonic;
 
 public class Intake extends SubsystemBase {
-  CANSparkMax m_intakeMotor;
+  CANSparkMax m_intakeMotor1;
+  CANSparkMax m_intakeMotor2;
   Ultrasonic m_ultrasonicSensor;
 
   public Intake(int motorID, boolean motorReversed, int pingPort, int echoPort) {
-    m_intakeMotor = new CANSparkMax(motorID, MotorType.kBrushless);
-    m_intakeMotor.restoreFactoryDefaults();
-    m_intakeMotor.setInverted(motorReversed);
-    m_intakeMotor.setSmartCurrentLimit(IntakeConstants.kIntakeCurrentLimit);
+    m_intakeMotor1 = new CANSparkMax(motorID, MotorType.kBrushless);
+    m_intakeMotor1.restoreFactoryDefaults();
+    m_intakeMotor1.setInverted(motorReversed);
+    m_intakeMotor1.setSmartCurrentLimit(IntakeConstants.kIntakeCurrentLimit);
+
+    m_intakeMotor2 = new CANSparkMax(motorID, MotorType.kBrushless);
+    m_intakeMotor2.restoreFactoryDefaults();
+    m_intakeMotor2.setInverted(motorReversed);
+    m_intakeMotor2.setSmartCurrentLimit(IntakeConstants.kIntakeCurrentLimit);
+
 
     m_ultrasonicSensor = new Ultrasonic(pingPort, echoPort);
   }
 
   public void startIntake(double speed) {
-    m_intakeMotor.set(speed);
+    m_intakeMotor1.set(speed);
+    m_intakeMotor2.set(speed);
   }
 
   public void stopIntake() {
-    m_intakeMotor.stopMotor();
+    m_intakeMotor1.stopMotor();
+    m_intakeMotor2.stopMotor();
   }
 
   public boolean isNoteChambered() {
@@ -37,7 +46,8 @@ public class Intake extends SubsystemBase {
   }
 
   public double intakeSpeed() {
-    return m_intakeMotor.get();
+    return m_intakeMotor1.get();
+    return m_intakeMotor2.get();
   }
 
   @Override
