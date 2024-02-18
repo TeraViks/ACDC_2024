@@ -220,14 +220,14 @@ public final class Constants {
 
     public static final int kShooterCurrentLimit = 40;
 
-    public static final double kFlywheelEncoderCPR = 42.0;
-    public static final double kAbsoluteEncoderCPR = 4096.0;
-    //TODO: Find the flywheel diameter
-    public static final double kFlywheelDiameterMeters = 0.09525;
-    //TODO: Find gear ratio
-    public static final double kFlywheelGearRatio = 6.75;
-
-    public static final double kFlywheelEncoderDistancePerPulse =
-        (kFlywheelDiameterMeters * Math.PI) / (kFlywheelEncoderCPR * kFlywheelGearRatio);
+    // The native position units are motor rotations, but we want meters.
+    public static final double kShooterPositionConversionFactor =
+      (SwerveModuleConstants.kWheelDiameterMeters * Math.PI)
+      / SwerveModuleConstants.kDriveGearRatio;
+    // The native velocity units are motor rotations [aka revolutions] per minute (RPM),
+    // but we want meters per second.
+    public static final double kShooterVelocityConversionFactor =
+      kShooterPositionConversionFactor
+      / 60.0 /* s */;
   }
 }
