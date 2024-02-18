@@ -40,8 +40,8 @@ public class Shooter extends SubsystemBase {
     m_leftMotor.setSmartCurrentLimit(ShooterConstants.kShooterCurrentLimit);
 
     m_leftEncoder = m_leftMotor.getEncoder();
-    m_leftEncoder.setVelocityConversionFactor(ShooterConstants.kFlywheelEncoderDistancePerPulse * 10.0);
-    m_leftEncoder.setPositionConversionFactor(ShooterConstants.kFlywheelEncoderDistancePerPulse);
+    m_leftEncoder.setVelocityConversionFactor(ShooterConstants.kShooterVelocityConversionFactor);
+    m_leftEncoder.setPositionConversionFactor(ShooterConstants.kShooterPositionConversionFactor);
 
     m_leftPIDController = m_leftMotor.getPIDController();
     m_leftPIDController.setFeedbackDevice(m_leftEncoder);
@@ -56,8 +56,8 @@ public class Shooter extends SubsystemBase {
     m_rightMotor.setSmartCurrentLimit(ShooterConstants.kShooterCurrentLimit);
 
     m_rightEncoder = m_leftMotor.getEncoder();
-    m_rightEncoder.setVelocityConversionFactor(ShooterConstants.kFlywheelEncoderDistancePerPulse * 10.0);
-    m_rightEncoder.setPositionConversionFactor(ShooterConstants.kFlywheelEncoderDistancePerPulse);
+     m_rightEncoder.setVelocityConversionFactor(ShooterConstants.kShooterVelocityConversionFactor);
+    m_rightEncoder.setPositionConversionFactor(ShooterConstants.kShooterPositionConversionFactor);
 
     m_rightPIDController = m_leftMotor.getPIDController();
     m_rightPIDController.setFeedbackDevice(m_rightEncoder);
