@@ -28,7 +28,7 @@ public class Shooter extends SubsystemBase {
   PID m_leftMotorPID = ShooterConstants.kLeftPID;
   PID m_rightMotorPID = ShooterConstants.kLeftPID;
 
-  double m_kShootingTolerance = 10.0;
+  double m_kShootingTolerance = 0.127;
 
   public Shooter(int leftMotorID, int rightMotorID, boolean leftMotorReversed, boolean rightMotorReversed) {
     m_leftMotor = new CANSparkMax(leftMotorID, MotorType.kBrushless);
