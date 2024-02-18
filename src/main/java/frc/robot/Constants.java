@@ -16,42 +16,6 @@ import edu.wpi.first.math.util.Units;
 
 public final class Constants {
   public static final double kDt = 0.02;
-  public static final class OIConstants {
-    public static final int kDriverControllerPort = 0;
-    public static final double kMaxRadPerSec = DriveConstants.kMaxAngularSpeedRadiansPerSecond;
-    public static final double kMaxMetersPerSec = DriveConstants.kMaxSpeedMetersPerSecond;
-    
-    public static final int kA = 1;
-    public static final int kB = 2;
-    public static final int kX = 3;
-    public static final int kY = 4;
-    public static final int kLeftBumper = 5;
-    public static final int kRightBumper = 6;
-    public static final int kBack = 7;
-    public static final int kStart = 8;
-    public static final int kLeftJoy = 9;
-    public static final int kRightJoy = 10;
-
-    public static int kLeftJoyXAxis = 0;
-    public static int kLeftJoyYAxis = 1;
-    public static int kLeftTriggerAxis = 2;
-    public static int kRightTriggerAxis = 3;
-    public static int kRightJoyXAxis = 4;
-    public static int kRightJoyYAxis = 5;
-
-    public static final int kJoystickTargetNoteButton = kY;
-
-    public static final double kDebounceSeconds = 0.01;
-
-    public static final double kJoystickDeadband = 0.05;
-  }
-
-  public static class IntakeConstants {
-    //TODO: Assign a real CAN ID
-    public static final int kIntakeMotorID = 0;
-    public static final int kIntakeCurrentLimit = 40;
-  }
-
   public static class DriveConstants {
     public static final int kFrontLeftDriveMotorPort = 1; //Q1
     public static final int kRearLeftDriveMotorPort = 2; //Q2
@@ -131,60 +95,72 @@ public final class Constants {
   }
 
   public static final class SwerveModuleConstants {
-    public static final double kMaxSpeedMetersPerSecond = DriveConstants.kMaxSpeedMetersPerSecond * 2.0;
+      public static final double kMaxSpeedMetersPerSecond = DriveConstants.kMaxSpeedMetersPerSecond * 2.0;
 
-    public static final double kAbsoluteEncoderCPR = 4096.0;
-    public static final double kWheelDiameterMeters = 0.09525;
+      public static final double kAbsoluteEncoderCPR = 4096.0;
+      public static final double kWheelDiameterMeters = 0.09525;
 
-    public static final double kDriveGearRatio = 6.75;
-    public static final double kTurningGearRatio = 150.0 / 7.0;
+      public static final double kDriveGearRatio = 6.75;
+      public static final double kTurningGearRatio = 150.0 / 7.0;
 
-    // The native position units are motor rotations, but we want meters.
-    public static final double kDrivePositionConversionFactor =
-      (SwerveModuleConstants.kWheelDiameterMeters * Math.PI)
-      / SwerveModuleConstants.kDriveGearRatio;
-    // The native velocity units are motor rotations [aka revolutions] per minute (RPM),
-    // but we want meters per second.
-    public static final double kDriveVelocityConversionFactor =
-      kDrivePositionConversionFactor
-      / 60.0 /* s */;
+      // The native position units are motor rotations, but we want meters.
+      public static final double kDrivePositionConversionFactor =
+        (SwerveModuleConstants.kWheelDiameterMeters * Math.PI)
+        / SwerveModuleConstants.kDriveGearRatio;
+      // The native velocity units are motor rotations [aka revolutions] per minute (RPM),
+      // but we want meters per second.
+      public static final double kDriveVelocityConversionFactor =
+        kDrivePositionConversionFactor
+        / 60.0 /* s */;
 
-    // The native position units are motor rotations, but we want radians.
-    public static final double kTurningPositionConversionFactor =
-      Units.rotationsToRadians(1.0 / SwerveModuleConstants.kTurningGearRatio);
-    // The native velocity units are motor rotations [aka revolutions] per minute (RPM), but we want radians per second.
-    public static final double kTurningVelocityConversionFactor =
-      kTurningPositionConversionFactor
-      / 60.0 /* s */;
+      // The native position units are motor rotations, but we want radians.
+      public static final double kTurningPositionConversionFactor =
+        Units.rotationsToRadians(1.0 / SwerveModuleConstants.kTurningGearRatio);
+      // The native velocity units are motor rotations [aka revolutions] per minute (RPM), but we want radians per second.
+      public static final double kTurningVelocityConversionFactor =
+        kTurningPositionConversionFactor
+        / 60.0 /* s */;
 
-    public static final PID kDrivePID = new PID(0.5, 0.0, 0.0);
-    public static final PID kTurningPID = new PID(0.5, 0.0, 0.0);
+      public static final PID kDrivePID = new PID(0.5, 0.0, 0.0);
+      public static final PID kTurningPID = new PID(0.5, 0.0, 0.0);
 
-    public static final int kDriveMotorCurrentLimit = 40;
-    public static final int kTurningMotorCurrentLimit = 20;
+      public static final int kDriveMotorCurrentLimit = 40;
+      public static final int kTurningMotorCurrentLimit = 20;
 
-    public static final double kDriveMotorRampRate = 0.25;
-    public static final double kTurningMotorRampRate = 0.25;
+      public static final double kDriveMotorRampRate = 0.25;
+      public static final double kTurningMotorRampRate = 0.25;
 
-    public static final long kValueCacheTtlMicroseconds = 15;
-  }
+      public static final long kValueCacheTtlMicroseconds = 15;
+    }
 
-  public static class ShooterConstants {
-    //TODO: Assign real CAN ID's for the 2 flywheels
-    public static final int kLeftFlywheelID = 0;
-    public static final int kRigthFlywheelID = 0;
+  public static final class OIConstants {
+    public static final int kDriverControllerPort = 0;
+    public static final double kMaxRadPerSec = DriveConstants.kMaxAngularSpeedRadiansPerSecond;
+    public static final double kMaxMetersPerSec = DriveConstants.kMaxSpeedMetersPerSecond;
+    
+    public static final int kA = 1;
+    public static final int kB = 2;
+    public static final int kX = 3;
+    public static final int kY = 4;
+    public static final int kLeftBumper = 5;
+    public static final int kRightBumper = 6;
+    public static final int kBack = 7;
+    public static final int kStart = 8;
+    public static final int kLeftJoy = 9;
+    public static final int kRightJoy = 10;
 
-    public static final int kShooterCurrentLimit = 40;
+    public static int kLeftJoyXAxis = 0;
+    public static int kLeftJoyYAxis = 1;
+    public static int kLeftTriggerAxis = 2;
+    public static int kRightTriggerAxis = 3;
+    public static int kRightJoyXAxis = 4;
+    public static int kRightJoyYAxis = 5;
 
-    public static final double kFlywheelEncoderCPR = 42.0;
-    public static final double kAbsoluteEncoderCPR = 4096.0;
-    //TODO: Find the flywheel diameter
-    public static final double kFlywheelDiameterMeters = 0.09525;
-    //TODO: Find gear ratio
-    public static final double kFlywheelGearRatio = 6.75;
+    public static final int kJoystickTargetNoteButton = kY;
 
-    public static final double kFlywheelEncoderDistancePerPulse =
-        (kFlywheelDiameterMeters * Math.PI) / (kFlywheelEncoderCPR * kFlywheelGearRatio);
+    public static final double kDebounceSeconds = 0.01;
+
+    public static final double kJoystickDeadband = 0.05;
   }
 
   public static final class AutoConstants {
@@ -218,5 +194,29 @@ public final class Constants {
     public static final Transform3d kRobotToCamera2Transform = new Transform3d(
       0.191, 0.016, 0.349,
       new Rotation3d(Units.degreesToRadians(-21.9), 0.0, Units.degreesToRadians(100.0)));
+  }
+
+  public static class IntakeConstants {
+    //TODO: Assign a real CAN ID
+    public static final int kIntakeMotorID = 0;
+    public static final int kIntakeCurrentLimit = 40;
+  }
+
+  public static class ShooterConstants {
+    //TODO: Assign real CAN ID's for the 2 flywheels
+    public static final int kLeftFlywheelID = 0;
+    public static final int kRigthFlywheelID = 0;
+
+    public static final int kShooterCurrentLimit = 40;
+
+    public static final double kFlywheelEncoderCPR = 42.0;
+    public static final double kAbsoluteEncoderCPR = 4096.0;
+    //TODO: Find the flywheel diameter
+    public static final double kFlywheelDiameterMeters = 0.09525;
+    //TODO: Find gear ratio
+    public static final double kFlywheelGearRatio = 6.75;
+
+    public static final double kFlywheelEncoderDistancePerPulse =
+        (kFlywheelDiameterMeters * Math.PI) / (kFlywheelEncoderCPR * kFlywheelGearRatio);
   }
 }
