@@ -28,7 +28,7 @@ public class Shooter extends SubsystemBase {
   PID m_leftMotorPID = ShooterConstants.kLeftPID;
   PID m_rightMotorPID = ShooterConstants.kLeftPID;
 
-  double m_kShootingTolerance = 0.127;
+  double m_kShootingTolerance = 0.05;
 
   public Shooter(int leftMotorID, int rightMotorID, boolean leftMotorReversed, boolean rightMotorReversed) {
     m_leftMotor = new CANSparkMax(leftMotorID, MotorType.kBrushless);
@@ -77,11 +77,14 @@ public class Shooter extends SubsystemBase {
   public boolean isReadyToShoot() {
     double rightMotorVelocity = m_rightEncoder.getVelocity();
     double leftMotorVelocity = m_leftEncoder.getVelocity();
+
+    double rightTolerance = m_idealRightSpeed * m_kShootingTolerance;
+    double leftTolerance = m_idealRightSpeed * m_kShootingTolerance;
     return (
-      rightMotorVelocity <= m_idealRightSpeed + m_kShootingTolerance || 
-      rightMotorVelocity >= m_idealRightSpeed - m_kShootingTolerance &&
-      leftMotorVelocity <= m_idealLeftSpeed + m_kShootingTolerance || 
-      leftMotorVelocity >= m_idealLeftSpeed - m_kShootingTolerance
+      rightMotorVelocity * (1.0 - rightTolerance) <= m_idealRightSpeed || 
+      rightMotorVelocity * (1.0 + rightTolerance) >= m_idealRightSpeed &&
+      leftMotorVelocity  * (1.0 -leftTolerance) <= m_idealLeftSpeed || 
+      leftMotorVelocity  * (1.0 + leftTolerance) >= m_idealLeftSpeed
     );
   }
 
