@@ -100,10 +100,16 @@ public class SwerveModule {
     m_turningEncoder = m_turningMotor.getEncoder();
     m_turningEncoder.setPositionConversionFactor(SwerveModuleConstants.kTurningPositionConversionFactor);
     m_turningEncoder.setVelocityConversionFactor(SwerveModuleConstants.kTurningVelocityConversionFactor);
+    // Stabilize encoder readings before initializing the cache.
+    m_turningEncoder.setPosition(0.0);
+    while (
+      Math.abs(m_turningEncoder.getPosition())
+      > SwerveModuleConstants.kTurningEncoderStabilizeToleranceRadians
+    ) {Thread.yield();}
     m_turningCache = new ValueCache<Double>(m_turningEncoder::getPosition,
       SwerveModuleConstants.kValueCacheTtlMicroseconds);
     updateTurningEncoderOffset();
-    m_prevAngle = getRotation2d();
+    m_prevAngle = getUnconstrainedRotation2d();
 
     m_turningPidController = m_turningMotor.getPIDController();
     m_turningPidController.setFeedbackDevice(m_turningEncoder);
@@ -128,16 +134,24 @@ public class SwerveModule {
   }
 
   public void setDesiredState(SwerveModuleState desiredState) {
-    // Optimize the reference state to avoid spinning further than 90 degrees
-    SwerveModuleState state =
-      SwerveModuleState.optimize(desiredState, getRotation2d());
+    // Optimize the reference state to avoid spinning further than 90 degrees. Note that providing
+    // m_prevAngle as the current angle is not as truthful as providing getRotation2d(), because the
+    // module may not have yet reached the angle it was most recently commanded to. However, there
+    // is inherent instability in the algorithm if we tell the truth using getRotation2d(), because
+    // commanding a position and reading current position are both asynchronous.
+    SwerveModuleState state = SwerveModuleState.optimize(desiredState, m_prevAngle);
 
     m_drivePidController.setReference(state.speedMetersPerSecond, ControlType.kVelocity);
 
     if (!state.angle.equals(m_prevAngle)) {
+      // deltaAngle is in [-pi..pi], which is added (intentionally unconstrained) to m_prevAngle.
+      // This causes the module to turn e.g. 4 degrees rather than -356 degrees.
+      Rotation2d deltaAngle = state.angle.minus(m_prevAngle);
+      // Avoid Rotation2d.plus() here, since it constrains the result to [-pi..pi].
+      Rotation2d angle = Rotation2d.fromRadians(m_prevAngle.getRadians() + deltaAngle.getRadians());
       // Take care to cancel out the encoder offset when setting the position.
-      m_turningPidController.setReference(state.angle.plus(m_turningEncoderOffset).getRadians(), ControlType.kPosition);
-      m_prevAngle = state.angle;
+      m_turningPidController.setReference(angle.getRadians() + m_turningEncoderOffset.getRadians(), ControlType.kPosition);
+      m_prevAngle = angle;
     }
   }
 
@@ -147,13 +161,24 @@ public class SwerveModule {
     return new Rotation2d(absolutePositionRadians).minus(m_absoluteRotationEncoderOffset);
   }
 
+  /**
+   * Update relative turning encoder offset to correspond to the absolute turning encoder. This
+   * should only be done when the robot is (at least nearly) stationary. Unfortunately, the
+   * relative encoder in the NEO isn't very accurate, and angle mismatches up to ~15 degrees
+   * commonly occur in the absence of such updates.
+   */
   public void updateTurningEncoderOffset() {
     Rotation2d absolute = getAbsoluteRotation2d();
     double relativeRadians = m_turningCache.get();
-    m_turningEncoderOffset = Rotation2d.fromRadians(relativeRadians - absolute.getRadians());
+    m_turningEncoderOffset = Rotation2d.fromRadians(relativeRadians).minus(absolute);
   }
 
   private Rotation2d getRotation2d() {
-    return new Rotation2d(m_turningCache.get()).minus(m_turningEncoderOffset);
+    return Rotation2d.fromRadians(m_turningCache.get()).minus(m_turningEncoderOffset);
+  }
+
+  private Rotation2d getUnconstrainedRotation2d() {
+    // Avoid Rotation2d.minus() here, since it constrains the result to [-pi..pi].
+    return Rotation2d.fromRadians(m_turningCache.get() - m_turningEncoderOffset.getRadians());
   }
 }
