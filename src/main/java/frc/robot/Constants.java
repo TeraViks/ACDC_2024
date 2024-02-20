@@ -220,7 +220,7 @@ public final class Constants {
 
     public static final int kShooterCurrentLimit = 40;
 
-    public static final double kFlywheelDiameterMeters = Units.inchesToMeters(4.0) * Math.PI;
+    public static final double kFlywheelDiameterMeters = Units.inchesToMeters(4.0);
     public static final double kFlywheelGearRatio = 1.0;
 
     // The native position units are motor rotations, but we want meters.
