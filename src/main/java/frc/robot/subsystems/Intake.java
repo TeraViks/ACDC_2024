@@ -52,12 +52,12 @@ public class Intake extends SubsystemBase {
 
     m_ultrasonicSensor = new Ultrasonic(pingPort, echoPort);
   }
-
+  //speed is in m/s
   public void startIntake(double speed) {
     m_intakePidControllerTop.setReference(speed, ControlType.kVelocity);
     m_intakePidControllerBottom.setReference(speed, ControlType.kVelocity);
   }
-
+  
   public void stopIntake() {
     m_intakeMotorTop.stopMotor();
     m_intakeMotorBottom.stopMotor();
