@@ -201,8 +201,8 @@ public final class Constants {
     public static final int kTopIntakeMotorID = 0;
     public static final int kBottomIntakeMotorID = 1;
     public static final int kIntakeCurrentLimit = 40;
-    public static final double kTopIntakeWheelDiameter = 2;
-    public static final double kBottomIntakeWheelDiameter = 1;
+    public static final double kTopIntakeWheelDiameter = Units.inchesToMeters(2);
+    public static final double kBottomIntakeWheelDiameter = Units.inchesToMeters(1);
     public static final double kTopGearRatio = 15/18;
     public static final double kBottomGearRatio = 1;
     //VelocityCoversionFactors convert between revolutions per minute and m/s
