@@ -81,10 +81,10 @@ public class Shooter extends SubsystemBase {
     double rightTolerance = m_idealRightSpeed * m_kShootingTolerance;
     double leftTolerance = m_idealRightSpeed * m_kShootingTolerance;
     return (
-      rightMotorVelocity * (1.0 - rightTolerance) <= m_idealRightSpeed || 
-      rightMotorVelocity * (1.0 + rightTolerance) >= m_idealRightSpeed &&
-      leftMotorVelocity  * (1.0 -leftTolerance) <= m_idealLeftSpeed || 
-      leftMotorVelocity  * (1.0 + leftTolerance) >= m_idealLeftSpeed
+      rightMotorVelocity >= m_idealRightSpeed * (1.0 - rightTolerance) &&
+      rightMotorVelocity <= m_idealRightSpeed * (1.0 + rightTolerance) &&
+      leftMotorVelocity >= m_idealLeftSpeed * (1.0 - leftTolerance) &&
+      leftMotorVelocity <= m_idealLeftSpeed * (1.0 + leftTolerance)
     );
   }
 
