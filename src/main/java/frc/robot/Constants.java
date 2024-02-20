@@ -235,5 +235,7 @@ public final class Constants {
     
     public static final PID kLeftPID = new PID(0, 0, 0);
     public static final PID kRightPID = new PID(0, 0, 0);
+
+    public static final double kShootingTolerance = 0.05;
   }
 }
