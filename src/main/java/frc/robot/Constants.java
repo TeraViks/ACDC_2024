@@ -122,6 +122,15 @@ public final class Constants {
       kTurningPositionConversionFactor
       / 60.0 /* s */;
 
+    // The NEO's relative encoder can return spurious results during initialization, and there is
+    // no synchronous API for setting the encoder value. This presents a conundrum regarding how to
+    // get valid/stable output early on. Our heuristic strategy is to set the encoder to zero, and
+    // keep reading the encoder value until it is acceptably close to zero. This value can be quite
+    // low, but there is the hypothetical danger of encoder jitter causing an infinite loop as the
+    // tolerance approches zero.
+    public static final double kTurningEncoderStabilizeToleranceRadians =
+      Units.degreesToRadians(1.0);
+
     public static final PID kDrivePID = new PID(0.5, 0.0, 0.0);
     public static final PID kTurningPID = new PID(0.5, 0.0, 0.0);
 
