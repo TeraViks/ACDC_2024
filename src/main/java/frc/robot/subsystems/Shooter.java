@@ -26,7 +26,7 @@ public class Shooter extends SubsystemBase {
   double m_idealRightSpeed;
 
   PID m_leftMotorPID = ShooterConstants.kLeftPID;
-  PID m_rightMotorPID = ShooterConstants.kLeftPID;
+  PID m_rightMotorPID = ShooterConstants.kRightPID;
 
   double m_kShootingTolerance = 0.05;
 
