@@ -201,12 +201,13 @@ public final class Constants {
     public static final int kTopIntakeMotorID = 0;
     public static final int kBottomIntakeMotorID = 1;
     public static final int kIntakeCurrentLimit = 40;
-    public static final double kShaftDiameter = 0.0127;
+    public static final double kTopIntakeWheelDiameter = 2;
+    public static final double kBottomIntakeWheelDiameter = 1;
     public static final double kTopGearRatio = 15/18;
     public static final double kBottomGearRatio = 1;
     //VelocityCoversionFactors convert between revolutions per minute and m/s
-    public static final double kTopVelocityConversionFactor = (kShaftDiameter * Math.PI)/kTopGearRatio/60;
-    public static final double kBottomVelocityConversionFactor = (kShaftDiameter * Math.PI)/kBottomGearRatio/60;
+    public static final double kTopVelocityConversionFactor = (kTopIntakeWheelDiameter * Math.PI)/kTopGearRatio/60;
+    public static final double kBottomVelocityConversionFactor = (kBottomIntakeWheelDiameter * Math.PI)/kBottomGearRatio/60;
     public static final PID kIntakePIDTop = new PID(0.5, 0.0, 0.0);
     public static final PID kIntakePIDBottom = new PID(0.5, 0.0, 0.0);
   }
