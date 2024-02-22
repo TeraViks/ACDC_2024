@@ -198,9 +198,8 @@ public final class Constants {
   }
 
   public static class IntakeConstants {
-    //TODO: Assign a real CAN ID
-    public static final int kTopIntakeMotorID = 0;
-    public static final int kBottomIntakeMotorID = 1;
+    public static final int kTopIntakeMotorID = 13;
+    public static final int kBottomIntakeMotorID = 14;
     public static final int kIntakeCurrentLimit = 40;
     public static final double kTopIntakeWheelDiameter = Units.inchesToMeters(2);
     public static final double kBottomIntakeWheelDiameter = Units.inchesToMeters(1);
@@ -214,9 +213,8 @@ public final class Constants {
   }
 
   public static class ShooterConstants {
-    //TODO: Assign real CAN ID's for the 2 flywheels
-    public static final int kLeftFlywheelID = 0;
-    public static final int kRigthFlywheelID = 0;
+    public static final int kLeftFlywheelID = 15;
+    public static final int kRigthFlywheelID = 16;
 
     public static final int kShooterCurrentLimit = 40;
 
