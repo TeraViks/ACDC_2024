@@ -3,7 +3,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ChamberConstants; 
 import frc.robot.PID;
-import edu.wpi.first.wpilibj.Ultrasonic;
+import edu.wpi.first.wpilibj.DigitalInput;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.ControlType;
@@ -22,9 +22,9 @@ public class Chamber extends SubsystemBase{
   private final PID m_leftChamberMotorPID = ChamberConstants.kLeftPID;
   private final PID m_rightChamberMotorPID = ChamberConstants.kRightPID;
 
-  private final Ultrasonic m_ultrasonicSensor;
+  private final DigitalInput m_noteChamberedSensor;
 
-  public Chamber(int leftChamberMotorID, int rightChamberMotorID, boolean motorReversed, int pingPort, int echoPort) {
+  public Chamber(int leftChamberMotorID, int rightChamberMotorID, boolean motorReversed, int sensorID) {
     m_leftChamberMotor = new CANSparkMax(leftChamberMotorID, MotorType.kBrushless);
     m_leftChamberMotor.restoreFactoryDefaults();
     m_leftChamberMotor.setInverted(motorReversed);
@@ -55,11 +55,11 @@ public class Chamber extends SubsystemBase{
     m_rightChamberPIDController.setD(m_rightChamberMotorPID.d(), 0);
     m_rightChamberPIDController.setFF(0);
 
-    m_ultrasonicSensor = new Ultrasonic(pingPort, echoPort);
+    m_noteChamberedSensor = new DigitalInput(sensorID);
   }
   
   public boolean isNoteChambered() {
-    return(m_ultrasonicSensor.getRangeInches() <= 1.0);
+    return !m_noteChamberedSensor.get();
   }
 
   // speed in m/s
