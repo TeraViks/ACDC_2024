@@ -145,6 +145,7 @@ public final class Constants {
 
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
+    public static final int kOperatorControllerPort = 1;
     public static final double kMaxRadPerSec = DriveConstants.kMaxAngularSpeedRadiansPerSecond;
     public static final double kMaxMetersPerSec = DriveConstants.kMaxSpeedMetersPerSecond;
     
@@ -167,6 +168,8 @@ public final class Constants {
     public static int kRightJoyYAxis = 5;
 
     public static final int kJoystickTargetNoteButton = kY;
+
+    public static final int kStartIntakeButton = kA;
 
     public static final double kDebounceSeconds = 0.01;
 
@@ -220,6 +223,7 @@ public final class Constants {
     public static final double kBottomVelocityConversionFactor = (kBottomIntakeWheelDiameter * Math.PI)/kBottomGearRatio/60;
     public static final PID kIntakePIDTop = new PID(0.5, 0.0, 0.0);
     public static final PID kIntakePIDBottom = new PID(0.5, 0.0, 0.0);
+    public static final double kIntakeSpeed = 5;
   }
 
   public static class ChamberConstants {
