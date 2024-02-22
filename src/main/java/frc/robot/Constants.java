@@ -213,6 +213,18 @@ public final class Constants {
     public static final PID kIntakePIDBottom = new PID(0.5, 0.0, 0.0);
   }
 
+  public static class ChamberConstants {
+    public static final int kleftChamberMotorID = 0;
+    public static final int krightChamberMotorID = 1;
+    public static final int kChamberCurrentLimit = 40;
+    public static final double kChamberWheelDiameter = Units.inchesToMeters(3);
+    public static final double kChamberGearRatio = 3 / 1;
+    // VelocityCoversionFactors convert between revolutions per minute and m/s
+    public static final double kChamberVelocityConversionFactor = (kChamberWheelDiameter * Math.PI) / kChamberGearRatio / 60;
+    public static final PID kLeftPID = new PID(0, 0, 0);
+    public static final PID kRightPID = new PID(0, 0, 0);
+  }
+
   public static class ShooterConstants {
     //TODO: Assign real CAN ID's for the 2 flywheels
     public static final int kLeftFlywheelID = 0;
