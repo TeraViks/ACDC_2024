@@ -16,17 +16,24 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Constants.ChamberConstants;
 import frc.robot.Constants.FieldConstants;
+import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.PhotonVisionConstants;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.JoystickTargetNote;
 import frc.robot.commands.PickupCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.subsystems.CameraSubsystem;
+import frc.robot.subsystems.Chamber;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.Shooter;
 
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -39,6 +46,9 @@ public class RobotContainer {
   private final SendableChooser<Command> m_chooser = new SendableChooser<>();
   private final CameraSubsystem m_cameraSystem = new CameraSubsystem(PhotonVisionConstants.kCameraName1, PhotonVisionConstants.kCameraName2);
   public final DriveSubsystem m_robotDrive = new DriveSubsystem(m_cameraSystem);
+  private final Intake m_intake = new Intake(IntakeConstants.kTopIntakeMotorID, IntakeConstants.kBottomIntakeMotorID, false);
+  private final Chamber m_chamber = new Chamber(ChamberConstants.kleftChamberMotorID, ChamberConstants.krightChamberMotorID, false, ChamberConstants.kSensorID);
+  private final Shooter m_shooter = new Shooter(ShooterConstants.kLeftFlywheelID, ShooterConstants.kRigthFlywheelID, false, true);
 
   GenericHID m_driverController = new GenericHID(OIConstants.kDriverControllerPort);
 
@@ -82,6 +92,38 @@ public class RobotContainer {
         () -> reverseFactor * joystickTransform(m_driverController.getRawAxis(OIConstants.kLeftJoyYAxis)) * OIConstants.kMaxMetersPerSec,
         () -> reverseFactor * joystickTransform(m_driverController.getRawAxis(OIConstants.kLeftJoyXAxis)) * OIConstants.kMaxMetersPerSec
       ));
+
+    // temporary, manual commands for tuning motor speeds
+    if (true) {
+      // Intake and Chamber
+      new JoystickButton(m_driverController, OIConstants.kB)
+        .toggleOnTrue(Commands.startEnd(
+          () -> {
+            Commands.runOnce(() -> m_intake.startIntake(SmartDashboard.getNumber("Intake Speed (m/s)", 0)))
+              .alongWith(Commands.runOnce(() ->m_chamber.moveNote(SmartDashboard.getNumber("Chamber Intake Speed (m/s)", 0))))
+              .andThen(Commands.waitUntil(m_chamber::isNoteChambered))
+              .andThen(Commands.runOnce(() -> m_chamber.moveNote(0)));
+          },
+          () -> {
+            m_intake.stopIntake();
+            m_chamber.moveNote(0);
+          }
+        ));
+
+        // Chamber and Shooter
+        new JoystickButton(m_driverController, OIConstants.kA)
+          .toggleOnTrue(Commands.startEnd(
+            () -> {
+              Commands.runOnce(() -> m_shooter.shoot(SmartDashboard.getNumber("Shooter Speed Right (m/s)", 0), SmartDashboard.getNumber("Shooter Speed Left (m/s)", 0)))
+                .andThen(Commands.waitUntil(m_shooter::isReadyToShoot))
+                .andThen(Commands.runOnce(() -> m_chamber.moveNote(SmartDashboard.getNumber("Chamber Shoot Speed (m/s)", 0))));
+            },
+            () -> {
+              m_shooter.stopShooter();
+              m_chamber.moveNote(0);
+            }
+          ));
+    }
   }
 
   public Command getAutonomousCommand() {
