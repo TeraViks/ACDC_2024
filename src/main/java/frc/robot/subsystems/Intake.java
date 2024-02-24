@@ -12,7 +12,6 @@ import com.revrobotics.CANSparkBase.ControlType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import frc.robot.Constants.IntakeConstants;
-import edu.wpi.first.wpilibj.Ultrasonic;
 
 public class Intake extends SubsystemBase {
   private final CANSparkMax m_intakeMotorTop;
@@ -20,10 +19,9 @@ public class Intake extends SubsystemBase {
   private final RelativeEncoder m_intakeEncoderTop;
   private final RelativeEncoder m_intakeEncoderBottom;
   private final SparkPIDController m_intakePidControllerTop;
-    private final SparkPIDController m_intakePidControllerBottom;
-  private final Ultrasonic m_ultrasonicSensor;
+  private final SparkPIDController m_intakePidControllerBottom;
 
-  public Intake(int topMotorID, int bottomMotorID, boolean motorReversed, int pingPort, int echoPort) {
+  public Intake(int topMotorID, int bottomMotorID, boolean motorReversed) {
     m_intakeMotorTop = new CANSparkMax(topMotorID, MotorType.kBrushless);
     m_intakeMotorTop.restoreFactoryDefaults();
     m_intakeMotorTop.setInverted(motorReversed);
@@ -49,8 +47,6 @@ public class Intake extends SubsystemBase {
     m_intakePidControllerBottom.setI(IntakeConstants.kIntakePIDBottom.i(), 0);
     m_intakePidControllerBottom.setD(IntakeConstants.kIntakePIDBottom.d(), 0);
     m_intakePidControllerBottom.setFF(0);
-
-    m_ultrasonicSensor = new Ultrasonic(pingPort, echoPort);
   }
   //speed is in m/s
   public void startIntake(double speed) {
@@ -63,16 +59,14 @@ public class Intake extends SubsystemBase {
     m_intakeMotorBottom.stopMotor();
   }
 
-  public boolean isNoteChambered() {
-    return(m_ultrasonicSensor.getRangeInches() <= 1.0);
-  }
-
   public double getTopIntakeSpeed() {
     return m_intakeEncoderTop.getVelocity();
   }
+
   public double getBottomIntakeSpeed() {
   return m_intakeEncoderBottom.getVelocity();
   }
+
   @Override
   public void periodic() {}
 }
