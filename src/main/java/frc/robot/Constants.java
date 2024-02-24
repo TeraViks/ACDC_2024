@@ -75,12 +75,12 @@ public final class Constants {
     // Note that SwerveModuleConstants.kMaxSpeedMedersPerSecond may saturate if this is set too high, in combination with
     // SwerveModuleConstants.kMaxAngularSpeedRadiansPerSecond.
     public static final double kMaxSpeedMetersPerSecond = 5.0;
-    public static final double kMaxAccelerationMetersPerSecondSquared = 7.5;
-    public static final double kMaxDecelerationMetersPerSecondSquared = 15.0;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 10.0;
+    public static final double kMaxDecelerationMetersPerSecondSquared = 30.0;
 
     public static final double kMaxAngularSpeedRadiansPerSecond = 3.0 * Math.PI;
-    public static final double kMaxAngularAccelerationRadiansPerSecondSquared = 1.5 * Math.PI;
-    public static final double kMaxAngularDecelerationRadiansPerSecondSquared = 3.0 * Math.PI;
+    public static final double kMaxAngularAccelerationRadiansPerSecondSquared = 3.0 * Math.PI;
+    public static final double kMaxAngularDecelerationRadiansPerSecondSquared = 9.0 * Math.PI;
 
     public static final TrapezoidalConstraint kVelocityProfile = new TrapezoidalConstraint(
       kMaxSpeedMetersPerSecond,
@@ -131,8 +131,8 @@ public final class Constants {
     public static final double kTurningEncoderStabilizeToleranceRadians =
       Units.degreesToRadians(1.0);
 
-    public static final PID kDrivePID = new PID(0.5, 0.0, 0.0);
-    public static final PID kTurningPID = new PID(0.5, 0.0, 0.0);
+    public static final PID kDrivePID = new PID(0.375, 0.002, 0.0);
+    public static final PID kTurningPID = new PID(0.375, 0.0, 0.0);
 
     public static final int kDriveMotorCurrentLimit = 40;
     public static final int kTurningMotorCurrentLimit = 20;
@@ -268,4 +268,4 @@ public final class Constants {
     public static final PID kClimberPIDLeft =  new PID(0.5, 0.0, 0.0);
     public static final PID kClimberPIDRight =  new PID(0.5, 0.0, 0.0);
   }
-} 
+}
