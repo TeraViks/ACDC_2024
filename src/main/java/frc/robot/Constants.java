@@ -225,6 +225,7 @@ public final class Constants {
   public static class ChamberConstants {
     public static final int kleftChamberMotorID = 13;
     public static final int krightChamberMotorID = 14;
+    public static final int kSensorID = 0;
     public static final int kChamberCurrentLimit = 40;
     public static final double kChamberWheelDiameter = Units.inchesToMeters(3);
     public static final double kChamberGearRatio = 3 / 1;
