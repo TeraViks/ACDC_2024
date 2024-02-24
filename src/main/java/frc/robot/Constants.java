@@ -201,6 +201,8 @@ public final class Constants {
     //TODO: Assign a real CAN ID
     public static final int kTopIntakeMotorID = 0;
     public static final int kBottomIntakeMotorID = 1;
+    public static final int kPingPort = 0;
+    public static final int kEchoPort = 1;
     public static final int kIntakeCurrentLimit = 40;
     public static final double kTopIntakeWheelDiameter = Units.inchesToMeters(2);
     public static final double kBottomIntakeWheelDiameter = Units.inchesToMeters(1);
@@ -216,6 +218,7 @@ public final class Constants {
   public static class ChamberConstants {
     public static final int kleftChamberMotorID = 13;
     public static final int krightChamberMotorID = 14;
+    public static final int kSensorID = 0;
     public static final int kChamberCurrentLimit = 40;
     public static final double kChamberWheelDiameter = Units.inchesToMeters(3);
     public static final double kChamberGearRatio = 3 / 1;
