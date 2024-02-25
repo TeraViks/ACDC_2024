@@ -51,6 +51,7 @@ public class RobotContainer {
   private final Shooter m_shooter = new Shooter(ShooterConstants.kLeftFlywheelID, ShooterConstants.kRigthFlywheelID, false, true);
 
   GenericHID m_driverController = new GenericHID(OIConstants.kDriverControllerPort);
+  GenericHID m_operatorController = new GenericHID(OIConstants.kOperatorControllerPort);
 
   double reverseFactor = DriverStation.getAlliance().get() == Alliance.Blue ? 1 : -1;
 
@@ -100,7 +101,7 @@ public class RobotContainer {
         .toggleOnTrue(Commands.startEnd(
           () -> {
             Commands.runOnce(() -> m_intake.startIntake(SmartDashboard.getNumber("Intake Speed (m/s)", 0)))
-              .alongWith(Commands.runOnce(() ->m_chamber.moveNote(SmartDashboard.getNumber("Chamber Intake Speed (m/s)", 0))))
+              .alongWith(Commands.runOnce(() -> m_chamber.moveNote(SmartDashboard.getNumber("Chamber Intake Speed (m/s)", 0))))
               .andThen(Commands.waitUntil(m_chamber::isNoteChambered))
               .andThen(Commands.runOnce(() -> m_chamber.moveNote(0)));
           },
