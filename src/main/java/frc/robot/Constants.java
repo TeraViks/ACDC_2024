@@ -96,6 +96,10 @@ public final class Constants {
   }
 
   public static final class SwerveModuleConstants {
+    public static final int kAutoPIDSlotID = 0;
+    public static final int kTeleopPIDSlotID = 1;
+    public static final int kDefaultPIDSlotID = kAutoPIDSlotID;
+
     public static final double kMaxSpeedMetersPerSecond = DriveConstants.kMaxSpeedMetersPerSecond * 2.0;
 
     //TODO: Find actual wheel diameter
@@ -131,8 +135,11 @@ public final class Constants {
     public static final double kTurningEncoderStabilizeToleranceRadians =
       Units.degreesToRadians(1.0);
 
-    public static final PID kDrivePID = new PID(0.375, 0.002, 0.0);
-    public static final PID kTurningPID = new PID(0.375, 0.0, 0.0);
+    public static final PID kAutoDrivePID = new PID(0.5, 0.002, 0.0);
+    public static final PID kAutoTurningPID = new PID(0.5, 0.0, 0.0);
+
+    public static final PID kTeleopDrivePID = new PID(0.375, 0.0, 0.0);
+    public static final PID kTeleopTurningPID = new PID(0.375, 0.0, 0.0);
 
     public static final int kDriveMotorCurrentLimit = 40;
     public static final int kTurningMotorCurrentLimit = 20;
