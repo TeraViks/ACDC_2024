@@ -134,6 +134,12 @@ public class DriveSubsystem extends SubsystemBase {
     );
   }
 
+  public void setPIDSlotID(int slotID) {
+    for (SwerveModule module : m_modules) {
+      module.setPIDSlotID(slotID);
+    }
+  }
+
   @Override
   public void periodic() {
     // Update turning encoder offsets if the robot is stationary.
