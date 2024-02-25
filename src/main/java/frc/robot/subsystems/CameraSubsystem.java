@@ -37,20 +37,20 @@ public class CameraSubsystem extends SubsystemBase {
     m_camera2 = new PhotonCamera(Camera2Name);
 
     m_photonPoseEstimatorCam1 = 
-    new PhotonPoseEstimator(
-      m_aprilTagFieldLayout,
-      PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
-      m_camera1,
-      PhotonVisionConstants.kRobotToCamera1Transform
-    );
-    
+      new PhotonPoseEstimator(
+        m_aprilTagFieldLayout,
+        PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
+        m_camera1,
+        PhotonVisionConstants.kRobotToCamera1Transform
+      );
+
     m_photonPoseEstimatorCam2 =
-    new PhotonPoseEstimator(
-      m_aprilTagFieldLayout,
-      PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
-      m_camera2,
-      PhotonVisionConstants.kRobotToCamera2Transform
-    );
+      new PhotonPoseEstimator(
+        m_aprilTagFieldLayout,
+        PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
+        m_camera2,
+        PhotonVisionConstants.kRobotToCamera2Transform
+      );
 
     m_photonPoseEstimatorCam1.setTagModel(TargetModel.kAprilTag36h11);
     m_photonPoseEstimatorCam2.setTagModel(TargetModel.kAprilTag36h11);

@@ -44,11 +44,17 @@ import frc.robot.subsystems.Shooter;
 public class RobotContainer {
   public final Limelight m_limelight = new Limelight();
   private final SendableChooser<Command> m_chooser = new SendableChooser<>();
-  private final CameraSubsystem m_cameraSystem = new CameraSubsystem(PhotonVisionConstants.kCameraName1, PhotonVisionConstants.kCameraName2);
+  private final CameraSubsystem m_cameraSystem =
+    new CameraSubsystem(PhotonVisionConstants.kCameraName1, PhotonVisionConstants.kCameraName2);
   public final DriveSubsystem m_robotDrive = new DriveSubsystem(m_cameraSystem);
-  private final Intake m_intake = new Intake(IntakeConstants.kTopIntakeMotorID, IntakeConstants.kBottomIntakeMotorID, false);
-  private final Chamber m_chamber = new Chamber(ChamberConstants.kleftChamberMotorID, ChamberConstants.krightChamberMotorID, false, ChamberConstants.kSensorID);
-  private final Shooter m_shooter = new Shooter(ShooterConstants.kLeftFlywheelID, ShooterConstants.kRigthFlywheelID, false, true);
+  private final Intake m_intake =
+    new Intake(IntakeConstants.kTopIntakeMotorID, IntakeConstants.kBottomIntakeMotorID, false);
+  private final Chamber m_chamber =
+    new Chamber(ChamberConstants.kleftChamberMotorID, ChamberConstants.krightChamberMotorID, false,
+      ChamberConstants.kSensorID);
+  private final Shooter m_shooter =
+    new Shooter(ShooterConstants.kLeftFlywheelID, ShooterConstants.kRigthFlywheelID,
+      false, true);
 
   GenericHID m_driverController = new GenericHID(OIConstants.kDriverControllerPort);
   GenericHID m_operatorController = new GenericHID(OIConstants.kOperatorControllerPort);
