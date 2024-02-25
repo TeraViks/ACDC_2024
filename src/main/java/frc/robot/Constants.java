@@ -226,8 +226,8 @@ public final class Constants {
     public static final int kIntakeCurrentLimit = 40;
     public static final double kTopIntakeWheelDiameter = Units.inchesToMeters(2);
     public static final double kBottomIntakeWheelDiameter = Units.inchesToMeters(1);
-    public static final double kTopGearRatio = 15/18;
-    public static final double kBottomGearRatio = 1;
+    public static final double kTopGearRatio = 15.0 / 18.0;
+    public static final double kBottomGearRatio = 1.0;
     //VelocityCoversionFactors convert between revolutions per minute and m/s
     public static final double kTopVelocityConversionFactor = (kTopIntakeWheelDiameter * Math.PI)/kTopGearRatio/60;
     public static final double kBottomVelocityConversionFactor = (kBottomIntakeWheelDiameter * Math.PI)/kBottomGearRatio/60;
@@ -241,7 +241,7 @@ public final class Constants {
     public static final int kSensorID = 0;
     public static final int kChamberCurrentLimit = 40;
     public static final double kChamberWheelDiameter = Units.inchesToMeters(3);
-    public static final double kChamberGearRatio = 3 / 1;
+    public static final double kChamberGearRatio = 3.0 / 1.0;
     // VelocityCoversionFactors convert between revolutions per minute and m/s
     public static final double kChamberVelocityConversionFactor = (kChamberWheelDiameter * Math.PI) / kChamberGearRatio / 60;
     public static final PID kLeftPID = new PID(0, 0, 0);
