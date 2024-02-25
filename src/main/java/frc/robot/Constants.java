@@ -260,4 +260,13 @@ public final class Constants {
 
     public static final double kShootingTolerance = 0.05;
   }
-}
+  
+  public static class ClimberConstants {
+    public static final int m_climberLeftMotorID = 19;
+    public static final int m_climberRightMotorID = 20;
+    //3000 rpm, 12 mm per rotation, needs to move 12 inches
+    public static final double kClimberVelocityConversionFactor = (0.2);
+    public static final PID kClimberPIDLeft =  new PID(0.5, 0.0, 0.0);
+    public static final PID kClimberPIDRight =  new PID(0.5, 0.0, 0.0);
+  }
+} 
