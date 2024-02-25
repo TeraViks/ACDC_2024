@@ -1,0 +1,25 @@
+{
+  "robotWidth": 0.9,
+  "robotLength": 0.9,
+  "holonomicMode": true,
+  "pathFolders": [
+    "A two note",
+    "AB three note ",
+    "ABC four note",
+    "B two note",
+    "BF three note",
+    "C two note",
+    "GH three note "
+  ],
+  "autoFolders": [
+    "two note auto folder",
+    "three note auto folder",
+    "Zero note",
+    "one note folder"
+  ],
+  "defaultMaxVel": 3.0,
+  "defaultMaxAccel": 3.0,
+  "defaultMaxAngVel": 540.0,
+  "defaultMaxAngAccel": 720.0,
+  "maxModuleSpeed": 4.5
+}

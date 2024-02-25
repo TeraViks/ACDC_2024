@@ -103,7 +103,11 @@ public class RobotContainer {
         )
       );
 
-      m_chooser.setDefaultOption("Two Note Path", new PathPlannerAuto("two note auto"));
+      m_chooser.setDefaultOption("zero note C", new PathPlannerAuto("zero note C"));
+      m_chooser.addOption("Test Auto 0", new PathPlannerAuto("testauto0"));
+      m_chooser.addOption("One Note C", new PathPlannerAuto("one note C"));
+      m_chooser.addOption("One Note B", new PathPlannerAuto("one note B"));
+      m_chooser.addOption("Two Note A", new PathPlannerAuto("two note A auto"));
       SmartDashboard.putData(m_chooser);
   }
 

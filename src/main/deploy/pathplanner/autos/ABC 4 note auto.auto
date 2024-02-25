@@ -1,0 +1,79 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.855874387805114,
+      "y": 6.937433593177046
+    },
+    "rotation": 180.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "A shooting pos"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "rotate to -151"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShooterCommand"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "get A note"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "return to A shooting pos"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShooterCommand"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "collect B note"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShooterCommand"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "goto C note"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShooterCommand"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

@@ -1,0 +1,58 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.6597537983808364,
+        "y": 4.81
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 5.76988984963903,
+        "y": 0.9538971190568607
+      },
+      "isLocked": false,
+      "linkedName": "start of right"
+    },
+    {
+      "anchor": {
+        "x": 2.7492156392765246,
+        "y": 4.350348982383123
+      },
+      "prevControl": {
+        "x": -0.49140154618319865,
+        "y": 3.7866825029325044
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "get right note"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1,
+      "rotationDegrees": 154.0,
+      "rotateFast": false
+    }
+  ],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 151.0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "C two note",
+  "previewStartingState": {
+    "rotation": 180.0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": false
+}
