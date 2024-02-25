@@ -168,12 +168,12 @@ public final class Constants {
     public static final int kLeftJoy = 9;
     public static final int kRightJoy = 10;
 
-    public static int kLeftJoyXAxis = 0;
-    public static int kLeftJoyYAxis = 1;
-    public static int kLeftTriggerAxis = 2;
-    public static int kRightTriggerAxis = 3;
-    public static int kRightJoyXAxis = 4;
-    public static int kRightJoyYAxis = 5;
+    public static final int kLeftJoyXAxis = 0;
+    public static final int kLeftJoyYAxis = 1;
+    public static final int kLeftTriggerAxis = 2;
+    public static final int kRightTriggerAxis = 3;
+    public static final int kRightJoyXAxis = 4;
+    public static final int kRightJoyYAxis = 5;
 
     public static final int kJoystickTargetNoteButton = kY;
 
@@ -203,13 +203,13 @@ public final class Constants {
     public static final int kRelayPort = 0;
   }
 
-  public static class FieldConstants {
+  public static final class FieldConstants {
     public static final double kFieldLength = 4.0;
     public static final double kFieldWidth = 3.0;
     public static final double kMaxX = 16.54;
   }
 
-  public static class PhotonVisionConstants {
+  public static final class PhotonVisionConstants {
     public static final String kCameraName1 = "camera1";
     public static final String kCameraName2 = "camera2";
     public static final Transform3d kRobotToCamera1Transform = new Transform3d(
@@ -220,7 +220,7 @@ public final class Constants {
       new Rotation3d(Units.degreesToRadians(-21.9), 0.0, Units.degreesToRadians(100.0)));
   }
 
-  public static class IntakeConstants {
+  public static final class IntakeConstants {
     public static final int kTopIntakeMotorID = 13;
     public static final int kBottomIntakeMotorID = 14;
     public static final int kIntakeCurrentLimit = 40;
@@ -235,7 +235,7 @@ public final class Constants {
     public static final PID kIntakePIDBottom = new PID(0.5, 0.0, 0.0);
   }
 
-  public static class ChamberConstants {
+  public static final class ChamberConstants {
     public static final int kleftChamberMotorID = 13;
     public static final int krightChamberMotorID = 14;
     public static final int kSensorID = 0;
@@ -248,7 +248,7 @@ public final class Constants {
     public static final PID kRightPID = new PID(0, 0, 0);
   }
 
-  public static class ShooterConstants {
+  public static final class ShooterConstants {
     public static final int kLeftFlywheelID = 15;
     public static final int kRigthFlywheelID = 16;
 
@@ -273,7 +273,7 @@ public final class Constants {
     public static final double kShootingTolerance = 0.05;
   }
   
-  public static class ClimberConstants {
+  public static final class ClimberConstants {
     public static final int m_climberLeftMotorID = 19;
     public static final int m_climberRightMotorID = 20;
     //3000 rpm, 12 mm per rotation, needs to move 12 inches
