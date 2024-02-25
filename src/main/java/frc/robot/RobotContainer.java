@@ -53,12 +53,35 @@ public class RobotContainer {
   GenericHID m_driverController = new GenericHID(OIConstants.kDriverControllerPort);
   GenericHID m_operatorController = new GenericHID(OIConstants.kOperatorControllerPort);
 
-  double reverseFactor = DriverStation.getAlliance().get() == Alliance.Blue ? 1 : -1;
+  double m_reverseFactor = DriverStation.getAlliance().get() == Alliance.Blue ? 1 : -1;
 
   private static double joystickTransform(double value) {
     double postDeadbandValue = MathUtil.applyDeadband(value, OIConstants.kJoystickDeadband);
     double postDeadbandValueSquared = postDeadbandValue * Math.abs(postDeadbandValue);
     return postDeadbandValueSquared;
+  }
+
+  private double getXSpeedInput() {
+    // The Y axis on the controller is inverted! Pushing forward (up) generates a negative value.
+    // Negate the input value here.
+    return m_reverseFactor
+      * joystickTransform(-m_driverController.getRawAxis(OIConstants.kLeftJoyYAxis))
+      * OIConstants.kMaxMetersPerSec;
+  }
+
+  private double getYSpeedInput() {
+    // The X axis on the controller behaves as expected (right is positive), but we're using it for
+    // Y axis control, where left is positive. Negate the input value here.
+    return m_reverseFactor
+      * joystickTransform(-m_driverController.getRawAxis(OIConstants.kLeftJoyXAxis))
+      * OIConstants.kMaxMetersPerSec;
+  }
+
+  private double getRotationSpeedInput() {
+    // Moving the joystick to the right causes positive input, which we negate in order to rotate
+    // clockwise.
+    return -joystickTransform(m_driverController.getRawAxis(OIConstants.kRightJoyXAxis))
+      * OIConstants.kMaxRadPerSec;
   }
 
   public RobotContainer() {
@@ -72,9 +95,9 @@ public class RobotContainer {
         new RunCommand(
           () -> {
             m_robotDrive.drive(
-              reverseFactor*joystickTransform(m_driverController.getRawAxis(OIConstants.kLeftJoyYAxis))*OIConstants.kMaxMetersPerSec,
-              reverseFactor*joystickTransform(m_driverController.getRawAxis(OIConstants.kLeftJoyXAxis))*OIConstants.kMaxMetersPerSec,
-              -joystickTransform(m_driverController.getRawAxis(OIConstants.kRightJoyXAxis))*OIConstants.kMaxRadPerSec,
+              getXSpeedInput(),
+              getYSpeedInput(),
+              getRotationSpeedInput(),
               true);
           }, m_robotDrive
         )
@@ -93,8 +116,8 @@ public class RobotContainer {
       .whileTrue(new JoystickTargetNote(
         m_robotDrive,
         m_limelight,
-        () -> reverseFactor * joystickTransform(m_driverController.getRawAxis(OIConstants.kLeftJoyYAxis)) * OIConstants.kMaxMetersPerSec,
-        () -> reverseFactor * joystickTransform(m_driverController.getRawAxis(OIConstants.kLeftJoyXAxis)) * OIConstants.kMaxMetersPerSec
+        () -> getXSpeedInput(),
+        () -> getYSpeedInput()
       ));
 
     // temporary, manual commands for tuning motor speeds
