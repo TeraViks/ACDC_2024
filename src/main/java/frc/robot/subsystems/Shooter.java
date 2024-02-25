@@ -50,8 +50,8 @@ public class Shooter extends SubsystemBase {
     m_rightMotor.setInverted(rightMotorReversed);
     m_rightMotor.setSmartCurrentLimit(ShooterConstants.kShooterCurrentLimit);
 
-    m_rightEncoder = m_leftMotor.getEncoder();
-     m_rightEncoder.setVelocityConversionFactor(ShooterConstants.kShooterVelocityConversionFactor);
+    m_rightEncoder = m_rightMotor.getEncoder();
+    m_rightEncoder.setVelocityConversionFactor(ShooterConstants.kShooterVelocityConversionFactor);
     m_rightEncoder.setPositionConversionFactor(ShooterConstants.kShooterPositionConversionFactor);
 
     m_rightPIDController = m_rightMotor.getPIDController();
