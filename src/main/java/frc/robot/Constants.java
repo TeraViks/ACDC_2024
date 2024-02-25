@@ -16,7 +16,7 @@ import edu.wpi.first.math.util.Units;
 
 public final class Constants {
   public static final double kDt = 0.02;
-  public static class DriveConstants {
+  public static final class DriveConstants {
     public static final int kFrontLeftDriveMotorPort = 1; //Q1
     public static final int kRearLeftDriveMotorPort = 2; //Q2
     public static final int kRearRightDriveMotorPort = 3; //Q3
@@ -102,8 +102,7 @@ public final class Constants {
 
     public static final double kMaxSpeedMetersPerSecond = DriveConstants.kMaxSpeedMetersPerSecond * 2.0;
 
-    //TODO: Find actual wheel diameter
-    public static final double kWheelDiameterMeters = 0.09924;
+    public static final double kWheelDiameterMeters = 0.09525;
 
     public static final double kDriveGearRatio = 6.75;
     public static final double kTurningGearRatio = 150.0 / 7.0;
