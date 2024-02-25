@@ -1,0 +1,52 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 2.9371044657582277,
+        "y": 6.3882201003838635
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 3.9371044657582273,
+        "y": 5.8882201003838635
+      },
+      "isLocked": false,
+      "linkedName": "shoot"
+    },
+    {
+      "anchor": {
+        "x": 8.306970746316626,
+        "y": 7.38689820850758
+      },
+      "prevControl": {
+        "x": 6.632802961487318,
+        "y": 6.637928410031311
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -151.0,
+    "rotateFast": true
+  },
+  "reversed": false,
+  "folder": "AB three note ",
+  "previewStartingState": {
+    "rotation": -151.0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": false
+}

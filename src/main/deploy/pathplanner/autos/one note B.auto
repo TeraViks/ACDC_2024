@@ -1,0 +1,25 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.5351647604703664,
+      "y": 5.651117781108802
+    },
+    "rotation": 180.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "B Shooting position"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "one note folder",
+  "choreoAuto": false
+}

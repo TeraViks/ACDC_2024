@@ -1,0 +1,58 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.587488865118576,
+        "y": 5.651117781108802
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.983207346696384,
+        "y": 7.8768777255864375
+      },
+      "isLocked": false,
+      "linkedName": "shooting position"
+    },
+    {
+      "anchor": {
+        "x": 3.587488865118576,
+        "y": 5.651117781108802
+      },
+      "prevControl": {
+        "x": 1.332822947336036,
+        "y": 4.942921435138645
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "First Endpoint"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0,
+      "rotationDegrees": 180.0,
+      "rotateFast": true
+    }
+  ],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 180.0,
+    "rotateFast": true
+  },
+  "reversed": false,
+  "folder": "BF three note",
+  "previewStartingState": {
+    "rotation": 180.0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": false
+}

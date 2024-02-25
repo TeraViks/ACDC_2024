@@ -1,0 +1,43 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.9859512676771837,
+      "y": 4.104648209296419
+    },
+    "rotation": 160.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "start of C auto"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShooterCommand"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "get C note"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShooterCommand"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "two note auto folder",
+  "choreoAuto": false
+}
