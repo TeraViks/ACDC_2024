@@ -58,15 +58,17 @@ public final class Constants {
     public static final double kTrackWidth = 0.629; // Distance between centers of right and left wheels on robot
     public static final double kWheelBase = 0.629; // Distance between front and back wheels on robot
 
-    public static final Vector<N3> stateStdDeviations = VecBuilder.fill(0.005, 0.005, Math.toRadians(1));
-    public static final Vector<N3> visionStdDeviations = VecBuilder.fill(0.050, 0.050, Math.toRadians(5));
+    public static final Vector<N3> stateStdDeviations =
+      VecBuilder.fill(0.005, 0.005, Math.toRadians(1.0));
+    public static final Vector<N3> visionStdDeviations =
+      VecBuilder.fill(0.050, 0.050, Math.toRadians(5.0));
 
     public static final SwerveDriveKinematics kDriveKinematics =
       new SwerveDriveKinematics(
-        new Translation2d(kWheelBase / 2, kTrackWidth / 2), //Q1
-        new Translation2d(-kWheelBase / 2, kTrackWidth / 2), //Q2
-        new Translation2d(-kWheelBase / 2, -kTrackWidth / 2), //Q3
-        new Translation2d(kWheelBase / 2, -kTrackWidth / 2)); //Q4
+        new Translation2d(kWheelBase / 2.0, kTrackWidth / 2.0), //Q1
+        new Translation2d(-kWheelBase / 2.0, kTrackWidth / 2.0), //Q2
+        new Translation2d(-kWheelBase / 2.0, -kTrackWidth / 2.0), //Q3
+        new Translation2d(kWheelBase / 2.0, -kTrackWidth / 2.0)); //Q4
 
     public static final boolean kGyroReversed = false;
 
@@ -183,8 +185,8 @@ public final class Constants {
   }
 
   public static final class AutoConstants {
-    public static final double kMaxSpeedMetersPerSecond = 1;
-    public static final double kMaxAccelerationMetersPerSecondSquared = 1;
+    public static final double kMaxSpeedMetersPerSecond = 1.0;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 1.0;
     public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 
@@ -195,11 +197,11 @@ public final class Constants {
   }
   
   public static final class VisionConstants {
-    public static final double kTargetingTolerance = Units.degreesToRadians(3);
-    public static final double kLimelightMountDegrees = -5;
+    public static final double kTargetingTolerance = Units.degreesToRadians(3.0);
+    public static final double kLimelightMountDegrees = -20.0;
     public static final double kLimelightLensHeightInches = 16.25;
     public static final double kNoteHeightInches = 2.0;
-    public static final double kTargetCoefficient = 30;
+    public static final double kTargetCoefficient = 30.0;
     public static final int kRelayPort = 0;
   }
 
@@ -224,13 +226,17 @@ public final class Constants {
     public static final int kTopIntakeMotorID = 13;
     public static final int kBottomIntakeMotorID = 14;
     public static final int kIntakeCurrentLimit = 40;
-    public static final double kTopIntakeWheelDiameter = Units.inchesToMeters(2);
-    public static final double kBottomIntakeWheelDiameter = Units.inchesToMeters(1);
+    public static final double kTopIntakeWheelDiameter = Units.inchesToMeters(2.0);
+    public static final double kBottomIntakeWheelDiameter = Units.inchesToMeters(1.0);
     public static final double kTopGearRatio = 15.0 / 18.0;
     public static final double kBottomGearRatio = 1.0;
-    //VelocityCoversionFactors convert between revolutions per minute and m/s
-    public static final double kTopVelocityConversionFactor = (kTopIntakeWheelDiameter * Math.PI)/kTopGearRatio/60;
-    public static final double kBottomVelocityConversionFactor = (kBottomIntakeWheelDiameter * Math.PI)/kBottomGearRatio/60;
+    // VelocityCoversionFactors convert between revolutions per minute and m/s
+    public static final double kTopVelocityConversionFactor =
+      (kTopIntakeWheelDiameter * Math.PI)
+      / (kTopGearRatio * 60.0);
+    public static final double kBottomVelocityConversionFactor =
+      (kBottomIntakeWheelDiameter * Math.PI)
+      / (kBottomGearRatio * 60.0);
     public static final PID kIntakePIDTop = new PID(0.5, 0.0, 0.0);
     public static final PID kIntakePIDBottom = new PID(0.5, 0.0, 0.0);
   }
@@ -240,12 +246,14 @@ public final class Constants {
     public static final int krightChamberMotorID = 16;
     public static final int kSensorID = 0;
     public static final int kChamberCurrentLimit = 40;
-    public static final double kChamberWheelDiameter = Units.inchesToMeters(3);
+    public static final double kChamberWheelDiameter = Units.inchesToMeters(3.0);
     public static final double kChamberGearRatio = 3.0 / 1.0;
     // VelocityCoversionFactors convert between revolutions per minute and m/s
-    public static final double kChamberVelocityConversionFactor = (kChamberWheelDiameter * Math.PI) / kChamberGearRatio / 60;
-    public static final PID kLeftPID = new PID(0, 0, 0);
-    public static final PID kRightPID = new PID(0, 0, 0);
+    public static final double kChamberVelocityConversionFactor =
+      (kChamberWheelDiameter * Math.PI)
+      / kChamberGearRatio / 60.0;
+    public static final PID kLeftPID = new PID(0.0, 0.0, 0.0);
+    public static final PID kRightPID = new PID(0.0, 0.0, 0.0);
   }
 
   public static final class ShooterConstants {
@@ -267,8 +275,8 @@ public final class Constants {
       kShooterPositionConversionFactor
       / 60.0 /* s */;
     
-    public static final PID kLeftPID = new PID(0, 0, 0);
-    public static final PID kRightPID = new PID(0, 0, 0);
+    public static final PID kLeftPID = new PID(0.0, 0.0, 0.0);
+    public static final PID kRightPID = new PID(0.0, 0.0, 0.0);
 
     public static final double kShootingTolerance = 0.05;
   }
@@ -277,8 +285,8 @@ public final class Constants {
     public static final int m_climberLeftMotorID = 19;
     public static final int m_climberRightMotorID = 20;
     //3000 rpm, 12 mm per rotation, needs to move 12 inches
-    public static final double kClimberVelocityConversionFactor = (0.2);
-    public static final PID kClimberPIDLeft =  new PID(0.5, 0.0, 0.0);
-    public static final PID kClimberPIDRight =  new PID(0.5, 0.0, 0.0);
+    public static final double kClimberVelocityConversionFactor = 0.2;
+    public static final PID kClimberPIDLeft = new PID(0.5, 0.0, 0.0);
+    public static final PID kClimberPIDRight = new PID(0.5, 0.0, 0.0);
   }
 }
