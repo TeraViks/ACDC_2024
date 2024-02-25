@@ -236,8 +236,8 @@ public final class Constants {
   }
 
   public static final class ChamberConstants {
-    public static final int kleftChamberMotorID = 13;
-    public static final int krightChamberMotorID = 14;
+    public static final int kleftChamberMotorID = 15;
+    public static final int krightChamberMotorID = 16;
     public static final int kSensorID = 0;
     public static final int kChamberCurrentLimit = 40;
     public static final double kChamberWheelDiameter = Units.inchesToMeters(3);
@@ -249,8 +249,8 @@ public final class Constants {
   }
 
   public static final class ShooterConstants {
-    public static final int kLeftFlywheelID = 15;
-    public static final int kRigthFlywheelID = 16;
+    public static final int kLeftFlywheelID = 17;
+    public static final int kRigthFlywheelID = 18;
 
     public static final int kShooterCurrentLimit = 40;
 
