@@ -218,8 +218,8 @@ public class DriveSubsystem extends SubsystemBase {
         m_idealVelocity.getX(), m_idealVelocity.getY(), m_idealAngularVelocity, getEstimatedRotation2d())
       : new ChassisSpeeds(m_idealVelocity.getX(), m_idealVelocity.getY(), m_idealAngularVelocity);
     var swerveModuleStates =
-        DriveConstants.kDriveKinematics.toSwerveModuleStates(
-          ChassisSpeeds.discretize(chassisSpeeds, Constants.kDt));
+      DriveConstants.kDriveKinematics.toSwerveModuleStates(
+        ChassisSpeeds.discretize(chassisSpeeds, Constants.kDt));
 
     setModuleStates(swerveModuleStates);
   }
