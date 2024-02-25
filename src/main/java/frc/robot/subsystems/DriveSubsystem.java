@@ -13,7 +13,6 @@ import org.photonvision.EstimatedRobotPose;
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
-import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -27,6 +26,8 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
@@ -88,6 +89,8 @@ public class DriveSubsystem extends SubsystemBase {
   private CameraSubsystem m_cameraSystem;
   private ArrayList<Optional<EstimatedRobotPose>> m_photonRobotPoseList = new ArrayList<>();
 
+  private Field2d m_field;
+
   private SwerveModulePosition[] getPositions() {
     SwerveModulePosition[] positions = Arrays.stream(m_modules)
       .map(module -> module.getPosition())
@@ -132,6 +135,8 @@ public class DriveSubsystem extends SubsystemBase {
         },
         this // Reference to this subsystem to set requirements
     );
+
+    m_field = new Field2d();
   }
 
   public void setPIDSlotID(int slotID) {
@@ -165,6 +170,12 @@ public class DriveSubsystem extends SubsystemBase {
       m_odometry.addVisionMeasurement(estimate.estimatedPose.toPose2d(), estimate.timestampSeconds);
     }
     m_photonRobotPoseList = photonRobotPoseList;
+
+    Pose2d pose = getPose();
+    m_field.setRobotPose(pose);
+    SmartDashboard.putNumber("X", pose.getX());
+    SmartDashboard.putNumber("Y", pose.getY());
+    SmartDashboard.putData("Field", m_field);
   }
 
   private Pose2d getPose() {
