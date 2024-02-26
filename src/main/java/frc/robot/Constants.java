@@ -205,8 +205,6 @@ public final class Constants {
   }
 
   public static final class FieldConstants {
-    public static final double kFieldLength = 4.0;
-    public static final double kFieldWidth = 3.0;
     public static final double kMaxX = 16.54;
   }
 
