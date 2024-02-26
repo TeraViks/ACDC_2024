@@ -47,7 +47,9 @@ public class TrapezoidalConstraint {
     Translation2d desiredDeltaVelocity = desiredVelocity.minus(currentVelocity);
     Translation2d desiredAcceleration = desiredDeltaVelocity.div(deltaT);
     double desiredAccelerationMagnitude = desiredAcceleration.getNorm();
-    assert(desiredAccelerationMagnitude != 0.0);
+    if (desiredAccelerationMagnitude == 0.0) {
+      return currentVelocity;
+    }
     double clampedAccelerationMagnitude = MathUtil.clamp(desiredAccelerationMagnitude, -m_maxDeceleration, m_maxAcceleration);
     double accelerationScalar = clampedAccelerationMagnitude / desiredAccelerationMagnitude;
     Translation2d newVelocity = currentVelocity.plus(desiredDeltaVelocity.times(accelerationScalar));
