@@ -220,70 +220,68 @@ public final class Constants {
   }
 
   public static final class IntakeConstants {
-    public static final int kTopIntakeMotorID = 13;
-    public static final int kBottomIntakeMotorID = 14;
-    public static final int kIntakeCurrentLimit = 40;
-    public static final double kTopIntakeWheelDiameter = Units.inchesToMeters(2.0);
-    public static final double kBottomIntakeWheelDiameter = Units.inchesToMeters(1.0);
+    public static final int kTopMotorID = 13;
+    public static final int kBottomMotorID = 14;
+    public static final int kCurrentLimit = 20;
+    public static final double kTopWheelDiameterMeters = Units.inchesToMeters(2.0);
+    public static final double kBottomWheelDiameterMeters = Units.inchesToMeters(1.0);
     public static final double kTopGearRatio = 15.0 / 18.0;
     public static final double kBottomGearRatio = 1.0;
     // VelocityCoversionFactors convert between revolutions per minute and m/s
     public static final double kTopVelocityConversionFactor =
-      (kTopIntakeWheelDiameter * Math.PI)
+      (kTopWheelDiameterMeters * Math.PI)
       / (kTopGearRatio * 60.0);
     public static final double kBottomVelocityConversionFactor =
-      (kBottomIntakeWheelDiameter * Math.PI)
+      (kBottomWheelDiameterMeters * Math.PI)
       / (kBottomGearRatio * 60.0);
-    public static final PID kIntakePIDTop = new PID(0.5, 0.0, 0.0);
-    public static final PID kIntakePIDBottom = new PID(0.5, 0.0, 0.0);
+    public static final PID kTopPID = new PID(0.5, 0.0, 0.0);
+    public static final PID kBottomPID = new PID(0.5, 0.0, 0.0);
   }
 
   public static final class ChamberConstants {
-    public static final int kleftChamberMotorID = 15;
-    public static final int krightChamberMotorID = 16;
+    public static final int kLeftMotorID = 15;
+    public static final int kRightMotorID = 16;
     public static final int kSensorID = 3;
-    public static final int kChamberCurrentLimit = 40;
-    public static final double kChamberWheelDiameter = Units.inchesToMeters(3.0);
-    public static final double kChamberGearRatio = 3.0 / 1.0;
+    public static final int kCurrentLimit = 20;
+    public static final double kWheelDiameterMeters = Units.inchesToMeters(3.0);
+    public static final double kGearRatio = 3.0 / 1.0;
     // VelocityCoversionFactors convert between revolutions per minute and m/s
     public static final double kChamberVelocityConversionFactor =
-      (kChamberWheelDiameter * Math.PI)
-      / kChamberGearRatio / 60.0;
-    public static final PID kLeftPID = new PID(0.0, 0.0, 0.0);
-    public static final PID kRightPID = new PID(0.0, 0.0, 0.0);
+      (kWheelDiameterMeters * Math.PI)
+      / kGearRatio / 60.0;
+    public static final PID kPID = new PID(0.0, 0.0, 0.0);
   }
 
   public static final class ShooterConstants {
-    public static final int kLeftFlywheelID = 17;
-    public static final int kRigthFlywheelID = 18;
+    public static final int kLeftMotorID = 17;
+    public static final int kRigthMotorID = 18;
 
-    public static final int kShooterCurrentLimit = 40;
+    public static final int kCurrentLimit = 40;
 
-    public static final double kFlywheelDiameterMeters = Units.inchesToMeters(4.0);
+    public static final double kWheelDiameterMeters = Units.inchesToMeters(4.0);
     public static final double kFlywheelGearRatio = 1.0;
 
     // The native position units are motor rotations, but we want meters.
-    public static final double kShooterPositionConversionFactor =
-      (ShooterConstants.kFlywheelDiameterMeters * Math.PI)
+    public static final double kPositionConversionFactor =
+      (ShooterConstants.kWheelDiameterMeters * Math.PI)
       / ShooterConstants.kFlywheelGearRatio;
     // The native velocity units are motor rotations [aka revolutions] per minute (RPM),
     // but we want meters per second.
-    public static final double kShooterVelocityConversionFactor =
-      kShooterPositionConversionFactor
+    public static final double kVelocityConversionFactor =
+      kPositionConversionFactor
       / 60.0 /* s */;
     
-    public static final PID kLeftPID = new PID(0.0, 0.0, 0.0);
-    public static final PID kRightPID = new PID(0.0, 0.0, 0.0);
+    public static final PID kPID = new PID(0.0, 0.0, 0.0);
 
     public static final double kShootingTolerance = 0.05;
   }
-  
+
   public static final class ClimberConstants {
-    public static final int m_climberLeftMotorID = 19;
-    public static final int m_climberRightMotorID = 20;
+    public static final int kLeftMotorID = 19;
+    public static final int kRightMotorID = 20;
+    public static final int kCurrentLimit = 20;
     //3000 rpm, 12 mm per rotation, needs to move 12 inches
-    public static final double kClimberVelocityConversionFactor = 0.2;
-    public static final PID kClimberPIDLeft = new PID(0.5, 0.0, 0.0);
-    public static final PID kClimberPIDRight = new PID(0.5, 0.0, 0.0);
+    public static final double kVelocityConversionFactor = 0.2;
+    public static final PID kPID = new PID(0.5, 0.0, 0.0);
   }
 }

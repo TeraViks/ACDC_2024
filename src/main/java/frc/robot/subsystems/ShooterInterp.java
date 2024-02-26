@@ -4,9 +4,9 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
 import java.util.Arrays;
+
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ShooterInterp extends SubsystemBase {
   static class PosEntry{double distance; double speed; public PosEntry(double dist, double pow) {distance = dist; speed = pow;}}

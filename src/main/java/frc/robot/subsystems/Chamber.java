@@ -1,78 +1,74 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.ChamberConstants; 
-import frc.robot.PID;
-import edu.wpi.first.wpilibj.DigitalInput;
-
-import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 
-public class Chamber extends SubsystemBase{
-  private final CANSparkMax m_leftChamberMotor;
-  private final CANSparkMax m_rightChamberMotor;
-  private final RelativeEncoder m_leftChamberEncoder;
-  private final RelativeEncoder m_rightChamberEncoder;
-  private final SparkPIDController m_leftChamberPIDController;
-  private final SparkPIDController m_rightChamberPIDController;
-  
-  private final PID m_leftChamberMotorPID = ChamberConstants.kLeftPID;
-  private final PID m_rightChamberMotorPID = ChamberConstants.kRightPID;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.ChamberConstants;
+
+public class Chamber extends SubsystemBase {
+  private final CANSparkMax m_leftMotor;
+  private final CANSparkMax m_rightMotor;
+  private final RelativeEncoder m_leftEncoder;
+  private final RelativeEncoder m_rightEncoder;
+  private final SparkPIDController m_leftPIDController;
+  private final SparkPIDController m_rightPIDController;
 
   private final DigitalInput m_noteChamberedSensor;
 
   public Chamber(int leftChamberMotorID, int rightChamberMotorID, boolean motorReversed, int sensorID) {
-    m_leftChamberMotor = new CANSparkMax(leftChamberMotorID, MotorType.kBrushless);
-    m_leftChamberMotor.restoreFactoryDefaults();
-    m_leftChamberMotor.setInverted(motorReversed);
-    m_leftChamberMotor.setSmartCurrentLimit(ChamberConstants.kChamberCurrentLimit);
+    m_leftMotor = new CANSparkMax(leftChamberMotorID, MotorType.kBrushless);
+    m_leftMotor.restoreFactoryDefaults();
+    m_leftMotor.setInverted(motorReversed);
+    m_leftMotor.setSmartCurrentLimit(ChamberConstants.kCurrentLimit);
 
-    m_leftChamberEncoder = m_leftChamberMotor.getEncoder();
-    m_leftChamberEncoder.setVelocityConversionFactor(ChamberConstants.kChamberVelocityConversionFactor);
+    m_leftEncoder = m_leftMotor.getEncoder();
+    m_leftEncoder.setVelocityConversionFactor(ChamberConstants.kChamberVelocityConversionFactor);
 
-    m_leftChamberPIDController = m_leftChamberMotor.getPIDController();
-    m_leftChamberPIDController.setFeedbackDevice(m_leftChamberEncoder);
-    m_leftChamberPIDController.setP(m_leftChamberMotorPID.p(), 0);
-    m_leftChamberPIDController.setI(m_leftChamberMotorPID.i(), 0);
-    m_leftChamberPIDController.setD(m_leftChamberMotorPID.d(), 0);
-    m_leftChamberPIDController.setFF(0);
+    m_leftPIDController = m_leftMotor.getPIDController();
+    m_leftPIDController.setFeedbackDevice(m_leftEncoder);
+    m_leftPIDController.setP(ChamberConstants.kPID.p(), 0);
+    m_leftPIDController.setI(ChamberConstants.kPID.i(), 0);
+    m_leftPIDController.setD(ChamberConstants.kPID.d(), 0);
+    m_leftPIDController.setFF(0);
 
-    m_rightChamberMotor = new CANSparkMax(rightChamberMotorID, MotorType.kBrushless);
-    m_rightChamberMotor.restoreFactoryDefaults();
-    m_rightChamberMotor.setInverted(!motorReversed);
-    m_rightChamberMotor.setSmartCurrentLimit(ChamberConstants.kChamberCurrentLimit);
+    m_rightMotor = new CANSparkMax(rightChamberMotorID, MotorType.kBrushless);
+    m_rightMotor.restoreFactoryDefaults();
+    m_rightMotor.setInverted(!motorReversed);
+    m_rightMotor.setSmartCurrentLimit(ChamberConstants.kCurrentLimit);
 
-    m_rightChamberEncoder = m_rightChamberMotor.getEncoder();
-    m_rightChamberEncoder.setVelocityConversionFactor(ChamberConstants.kChamberVelocityConversionFactor);
+    m_rightEncoder = m_rightMotor.getEncoder();
+    m_rightEncoder.setVelocityConversionFactor(ChamberConstants.kChamberVelocityConversionFactor);
 
-    m_rightChamberPIDController = m_rightChamberMotor.getPIDController();
-    m_rightChamberPIDController.setFeedbackDevice(m_rightChamberEncoder);
-    m_rightChamberPIDController.setP(m_rightChamberMotorPID.p(), 0);
-    m_rightChamberPIDController.setI(m_rightChamberMotorPID.i(), 0);
-    m_rightChamberPIDController.setD(m_rightChamberMotorPID.d(), 0);
-    m_rightChamberPIDController.setFF(0);
+    m_rightPIDController = m_rightMotor.getPIDController();
+    m_rightPIDController.setFeedbackDevice(m_rightEncoder);
+    m_rightPIDController.setP(ChamberConstants.kPID.p(), 0);
+    m_rightPIDController.setI(ChamberConstants.kPID.i(), 0);
+    m_rightPIDController.setD(ChamberConstants.kPID.d(), 0);
+    m_rightPIDController.setFF(0);
 
     m_noteChamberedSensor = new DigitalInput(sensorID);
   }
-  
+
   public boolean isNoteChambered() {
     return !m_noteChamberedSensor.get();
   }
 
   // speed in m/s
   public void moveNote(double speed) {
-    m_leftChamberPIDController.setReference(speed, ControlType.kVelocity);
-    m_rightChamberPIDController.setReference(speed, ControlType.kVelocity);
+    m_leftPIDController.setReference(speed, ControlType.kVelocity);
+    m_rightPIDController.setReference(speed, ControlType.kVelocity);
   }
 
   public double getLeftIntakeSpeed() {
-    return m_leftChamberEncoder.getVelocity();
+    return m_leftEncoder.getVelocity();
   }
 
   public double getRightIntakeSpeed() {
-    return m_rightChamberEncoder.getVelocity();
+    return m_rightEncoder.getVelocity();
   }
 }

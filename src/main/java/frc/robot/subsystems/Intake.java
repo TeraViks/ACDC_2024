@@ -4,67 +4,68 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkBase.ControlType;
+import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
-import com.revrobotics.CANSparkBase.ControlType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import com.revrobotics.CANSparkLowLevel.MotorType;
 import frc.robot.Constants.IntakeConstants;
 
 public class Intake extends SubsystemBase {
-  private final CANSparkMax m_intakeMotorTop;
-  private final CANSparkMax m_intakeMotorBottom;
-  private final RelativeEncoder m_intakeEncoderTop;
-  private final RelativeEncoder m_intakeEncoderBottom;
-  private final SparkPIDController m_intakePidControllerTop;
-  private final SparkPIDController m_intakePidControllerBottom;
+  private final CANSparkMax m_topMotor;
+  private final CANSparkMax m_bottomMotor;
+  private final RelativeEncoder m_topEncoder;
+  private final RelativeEncoder m_bottomEncoder;
+  private final SparkPIDController m_topPIDController;
+  private final SparkPIDController m_bottomPIDController;
 
   public Intake(int topMotorID, int bottomMotorID, boolean motorReversed) {
-    m_intakeMotorTop = new CANSparkMax(topMotorID, MotorType.kBrushless);
-    m_intakeMotorTop.restoreFactoryDefaults();
-    m_intakeMotorTop.setInverted(motorReversed);
-    m_intakeMotorTop.setSmartCurrentLimit(IntakeConstants.kIntakeCurrentLimit);
-    m_intakeEncoderTop = m_intakeMotorTop.getEncoder();
-    m_intakeEncoderTop.setVelocityConversionFactor(IntakeConstants.kTopVelocityConversionFactor);
-    m_intakePidControllerTop = m_intakeMotorTop.getPIDController();
-    m_intakePidControllerTop.setFeedbackDevice(m_intakeEncoderTop);
-    m_intakePidControllerTop.setP(IntakeConstants.kIntakePIDTop.p(), 0);
-    m_intakePidControllerTop.setI(IntakeConstants.kIntakePIDTop.i(), 0);
-    m_intakePidControllerTop.setD(IntakeConstants.kIntakePIDTop.d(), 0);
-    m_intakePidControllerTop.setFF(0);
+    m_topMotor = new CANSparkMax(topMotorID, MotorType.kBrushless);
+    m_topMotor.restoreFactoryDefaults();
+    m_topMotor.setInverted(motorReversed);
+    m_topMotor.setSmartCurrentLimit(IntakeConstants.kCurrentLimit);
+    m_topEncoder = m_topMotor.getEncoder();
+    m_topEncoder.setVelocityConversionFactor(IntakeConstants.kTopVelocityConversionFactor);
+    m_topPIDController = m_topMotor.getPIDController();
+    m_topPIDController.setFeedbackDevice(m_topEncoder);
+    m_topPIDController.setP(IntakeConstants.kTopPID.p(), 0);
+    m_topPIDController.setI(IntakeConstants.kTopPID.i(), 0);
+    m_topPIDController.setD(IntakeConstants.kTopPID.d(), 0);
+    m_topPIDController.setFF(0);
    
-    m_intakeMotorBottom = new CANSparkMax(bottomMotorID, MotorType.kBrushless);
-    m_intakeMotorBottom.restoreFactoryDefaults();
-    m_intakeMotorBottom.setInverted(!motorReversed);
-    m_intakeMotorBottom.setSmartCurrentLimit(IntakeConstants.kIntakeCurrentLimit);
-    m_intakeEncoderBottom = m_intakeMotorBottom.getEncoder();
-    m_intakeEncoderBottom.setVelocityConversionFactor(IntakeConstants.kBottomVelocityConversionFactor);
-    m_intakePidControllerBottom = m_intakeMotorBottom.getPIDController();
-    m_intakePidControllerBottom.setFeedbackDevice(m_intakeEncoderBottom);
-    m_intakePidControllerBottom.setP(IntakeConstants.kIntakePIDBottom.p(), 0);
-    m_intakePidControllerBottom.setI(IntakeConstants.kIntakePIDBottom.i(), 0);
-    m_intakePidControllerBottom.setD(IntakeConstants.kIntakePIDBottom.d(), 0);
-    m_intakePidControllerBottom.setFF(0);
+    m_bottomMotor = new CANSparkMax(bottomMotorID, MotorType.kBrushless);
+    m_bottomMotor.restoreFactoryDefaults();
+    m_bottomMotor.setInverted(!motorReversed);
+    m_bottomMotor.setSmartCurrentLimit(IntakeConstants.kCurrentLimit);
+    m_bottomEncoder = m_bottomMotor.getEncoder();
+    m_bottomEncoder.setVelocityConversionFactor(IntakeConstants.kBottomVelocityConversionFactor);
+    m_bottomPIDController = m_bottomMotor.getPIDController();
+    m_bottomPIDController.setFeedbackDevice(m_bottomEncoder);
+    m_bottomPIDController.setP(IntakeConstants.kIntakePIDBottom.p(), 0);
+    m_bottomPIDController.setI(IntakeConstants.kIntakePIDBottom.i(), 0);
+    m_bottomPIDController.setD(IntakeConstants.kIntakePIDBottom.d(), 0);
+    m_bottomPIDController.setFF(0);
   }
-  //speed is in m/s
+
+  // speed is in m/s
   public void startIntake(double speed) {
-    m_intakePidControllerTop.setReference(speed, ControlType.kVelocity);
-    m_intakePidControllerBottom.setReference(speed, ControlType.kVelocity);
+    m_topPIDController.setReference(speed, ControlType.kVelocity);
+    m_bottomPIDController.setReference(speed, ControlType.kVelocity);
   }
   
   public void stopIntake() {
-    m_intakeMotorTop.stopMotor();
-    m_intakeMotorBottom.stopMotor();
+    m_topMotor.stopMotor();
+    m_bottomMotor.stopMotor();
   }
 
   public double getTopIntakeSpeed() {
-    return m_intakeEncoderTop.getVelocity();
+    return m_topEncoder.getVelocity();
   }
 
   public double getBottomIntakeSpeed() {
-  return m_intakeEncoderBottom.getVelocity();
+    return m_bottomEncoder.getVelocity();
   }
 
   @Override

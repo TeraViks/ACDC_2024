@@ -48,12 +48,12 @@ public class RobotContainer {
     new CameraSubsystem(PhotonVisionConstants.kCameraName1, PhotonVisionConstants.kCameraName2);
   public final DriveSubsystem m_robotDrive = new DriveSubsystem(m_cameraSystem);
   private final Intake m_intake =
-    new Intake(IntakeConstants.kTopIntakeMotorID, IntakeConstants.kBottomIntakeMotorID, false);
+    new Intake(IntakeConstants.kTopMotorID, IntakeConstants.kBottomMotorID, false);
   private final Chamber m_chamber =
-    new Chamber(ChamberConstants.kleftChamberMotorID, ChamberConstants.krightChamberMotorID, false,
+    new Chamber(ChamberConstants.kLeftMotorID, ChamberConstants.kRightMotorID, false,
       ChamberConstants.kSensorID);
   private final Shooter m_shooter =
-    new Shooter(ShooterConstants.kLeftFlywheelID, ShooterConstants.kRigthFlywheelID,
+    new Shooter(ShooterConstants.kLeftMotorID, ShooterConstants.kRigthMotorID,
       false, true);
 
   GenericHID m_driverController = new GenericHID(OIConstants.kDriverControllerPort);
