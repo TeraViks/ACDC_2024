@@ -201,7 +201,7 @@ public final class Constants {
     public static final double kLimelightLensHeightInches = 16.25;
     public static final double kNoteHeightInches = 2.0;
     public static final double kTargetCoefficient = 30.0;
-    public static final int kRelayPort = 0;
+    public static final int kRelayPort = 3;
   }
 
   public static final class FieldConstants {
