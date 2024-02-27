@@ -26,7 +26,8 @@ public class Chamber extends SubsystemBase {
 
   private final DigitalInput m_noteChamberedSensor;
 
-  private final TunableConstant m_speed = new TunableConstant("Chamber.speed", ChamberConstants.kChamberingSpeed);
+  private final TunableConstant m_feedingSpeed = new TunableConstant("Chamber.speed", ChamberConstants.kChamberingSpeed);
+  private final TunableConstant m_calibrateSpeed = new TunableConstant("Chamber.speed", ChamberConstants.kCalibratingSpeed);
 
   private enum State {
     STOPPED,
@@ -87,7 +88,7 @@ public class Chamber extends SubsystemBase {
 
   public void chamberNote() {
     if (!isNoteChambered()) {
-      double speed = m_speed.get();
+      double speed = m_feedingSpeed.get();
       setSpeed(speed);
       m_state = State.CHAMBERING;
     }
@@ -109,14 +110,28 @@ public class Chamber extends SubsystemBase {
     }
   }
 
+  public void calibrateChamber() {
+    setSpeed(m_calibrateSpeed.get());
+    int i = 0;
+    while (i < 1) {
+      if (!m_noteChamberedSensor.get()) i++;
+      Thread.yield();
+    }
+    // Continues to feed note back until not detected by sensor
+    while (!m_noteChamberedSensor.get()) Thread.yield();
+    stopChamber();
+  }
+
   @Override
   public void periodic() {
     switch (m_state) {
       case STOPPED: {}
       case CHAMBERING: {
         if (isNoteChambered()) {
-          stopChamber();
           m_intake.stopIntake();
+          calibrateChamber();
+          stopChamber();
+          m_shooter.idleShooter();
         }
       }
       case SHOOTING: {

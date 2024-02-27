@@ -259,6 +259,7 @@ public final class Constants {
     public static final double kChamberingSpeed = 2.0;
     public static final double kShootingSpeed = 10.0;
     public static final double kRecoilTimeSeconds = 1.0;
+    public static final double kCalibratingSpeed = 1.0;
   }
 
   public static final class ShooterConstants {
