@@ -128,7 +128,7 @@ public class Chamber extends SubsystemBase {
       }
       case CLEARING: {
         double currentTimeSeconds = RobotController.getFPGATime();
-        if (m_shootTimeSeconds + ChamberConstants.kRecoilTimeSeconds <= currentTimeSeconds) {
+        if (m_shootTimeSeconds + ChamberConstants.kClearingTimeSeconds <= currentTimeSeconds) {
           stopChamber();
           m_shooter.idleShooter();
         }
