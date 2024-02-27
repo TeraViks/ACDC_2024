@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkBase.ControlType;
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -41,6 +42,7 @@ public class Chamber extends SubsystemBase {
     m_leftMotor.restoreFactoryDefaults();
     m_leftMotor.setInverted(ChamberConstants.kLeftMotorReversed);
     m_leftMotor.setSmartCurrentLimit(ChamberConstants.kCurrentLimit);
+    m_leftMotor.setIdleMode(IdleMode.kBrake);
 
     m_leftEncoder = m_leftMotor.getEncoder();
     m_leftEncoder.setVelocityConversionFactor(ChamberConstants.kChamberVelocityConversionFactor);
@@ -56,6 +58,7 @@ public class Chamber extends SubsystemBase {
     m_rightMotor.restoreFactoryDefaults();
     m_rightMotor.setInverted(ChamberConstants.kRightMotorReversed);
     m_rightMotor.setSmartCurrentLimit(ChamberConstants.kCurrentLimit);
+    m_rightMotor.setIdleMode(IdleMode.kBrake);
 
     m_rightEncoder = m_rightMotor.getEncoder();
     m_rightEncoder.setVelocityConversionFactor(ChamberConstants.kChamberVelocityConversionFactor);
