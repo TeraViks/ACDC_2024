@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkBase.ControlType;
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -22,7 +23,8 @@ public class Shooter extends SubsystemBase {
   private final SparkPIDController m_leftPIDController;
   private final SparkPIDController m_rightPIDController;
 
-  private final TunableConstant m_idleSpeed = new TunableConstant("Shooter.idleSpeed", ShooterConstants.kIdleSpeed);
+  private final TunableConstant m_idleSpeed =
+    new TunableConstant("Shooter.idleSpeed", ShooterConstants.kIdleSpeed);
 
   private double m_idealLeftSpeed;
   private double m_idealRightSpeed;
@@ -39,6 +41,7 @@ public class Shooter extends SubsystemBase {
     m_leftMotor.restoreFactoryDefaults();
     m_leftMotor.setInverted(ShooterConstants.kLeftMotorReversed);
     m_leftMotor.setSmartCurrentLimit(ShooterConstants.kCurrentLimit);
+    m_leftMotor.setIdleMode(IdleMode.kBrake);
 
     m_leftEncoder = m_leftMotor.getEncoder();
     m_leftEncoder.setVelocityConversionFactor(ShooterConstants.kVelocityConversionFactor);
@@ -55,6 +58,7 @@ public class Shooter extends SubsystemBase {
     m_rightMotor.restoreFactoryDefaults();
     m_rightMotor.setInverted(ShooterConstants.kRightMotorReversed);
     m_rightMotor.setSmartCurrentLimit(ShooterConstants.kCurrentLimit);
+    m_rightMotor.setIdleMode(IdleMode.kBrake);
 
     m_rightEncoder = m_rightMotor.getEncoder();
     m_rightEncoder.setVelocityConversionFactor(ShooterConstants.kVelocityConversionFactor);
@@ -73,11 +77,13 @@ public class Shooter extends SubsystemBase {
     m_idealRightSpeed = rightSpeed;
     m_rightPIDController.setReference(m_idealRightSpeed, ControlType.kVelocity);
     m_leftPIDController.setReference(m_idealLeftSpeed, ControlType.kVelocity);
-
   }
 
   public void stopShooter() {
-    setSpeeds(0.0, 0.0);
+    m_idealLeftSpeed = 0.0;
+    m_idealRightSpeed = 0.0;
+    m_leftMotor.stopMotor();
+    m_rightMotor.stopMotor();
     m_state = State.STOPPED;
   }
 
