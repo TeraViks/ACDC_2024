@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ChamberConstants;
-import frc.robot.Constants.ShooterConstants;
 import frc.robot.TunableConstant;
 
 public class Chamber extends SubsystemBase {
@@ -23,18 +22,23 @@ public class Chamber extends SubsystemBase {
   private final SparkPIDController m_rightPIDController;
   private final Intake m_intake;
   private final Shooter m_shooter;
+  private final DigitalInput m_noteDetectedSensor;
 
-  private final DigitalInput m_noteChamberedSensor;
-
-  private final TunableConstant m_speed = new TunableConstant("Chamber.speed", ChamberConstants.kChamberingSpeed);
+  private final TunableConstant m_intakingSpeed =
+    new TunableConstant("Chamber.intakingSpeed", ChamberConstants.kIntakingSpeed);
 
   private enum State {
-    STOPPED,
-    CHAMBERING,
-    SHOOTING,
-    CLEARING
+    // The chamber controls the intake/chamber/shooter such that they progress in lockstep through
+    // the following states.
+    //             Intake   Chamber  Shooter
+    EMPTY,      // stopped  stopped  stopped
+    CHAMBERING, // intaking intaking stopped
+    ALIGNING,   // stopped  aligning stopped
+    CHAMBERED,  // stopped  stopped  idling
+    SHOOTING,   // stopped  stopped  revving
+    CLEARING    // stopped  shooting revving
   }
-  private State m_state = State.STOPPED;
+  private State m_state = State.EMPTY;
   private double m_shootTimeSeconds = 0.0;
 
   public Chamber(Intake intake, Shooter shooter) {
@@ -70,14 +74,10 @@ public class Chamber extends SubsystemBase {
     m_rightPIDController.setD(ChamberConstants.kRightPID.d(), 0);
     m_rightPIDController.setFF(0);
 
-    m_noteChamberedSensor = new DigitalInput(ChamberConstants.kSensorID);
+    m_noteDetectedSensor = new DigitalInput(ChamberConstants.kSensorID);
 
     m_intake = intake;
     m_shooter = shooter;
-  }
-
-  public boolean isNoteChambered() {
-    return !m_noteChamberedSensor.get();
   }
 
   private void setSpeed(double speed) {
@@ -85,40 +85,73 @@ public class Chamber extends SubsystemBase {
     m_rightPIDController.setReference(speed, ControlType.kVelocity);
   }
 
-  public void chamberNote() {
-    if (!isNoteChambered()) {
-      double speed = m_speed.get();
-      setSpeed(speed);
-      m_state = State.CHAMBERING;
+  private void stopChamber() {
+    if (m_state != State.EMPTY) {
+      m_leftMotor.stopMotor();
+      m_rightMotor.stopMotor();
+      m_state = State.EMPTY;
     }
   }
 
-  public boolean shootNote() { // XXX Pass in interpolated speeds.
-    if (isNoteChambered()) {return true;}
-    double shooterSpeed = ShooterConstants.kIdleSpeed; // XXX Use interpolated speeds.
-    m_shooter.revShooter(shooterSpeed, shooterSpeed);
-    m_state = State.SHOOTING;
-    return false;
+  private boolean isNoteDetected() {
+    return m_noteDetectedSensor.get() == ChamberConstants.kSensorNoteDetectedValue;
   }
 
-  public void stopChamber() {
-    if (m_state != State.STOPPED) {
-      m_leftMotor.stopMotor();
-      m_rightMotor.stopMotor();
-      m_state = State.STOPPED;
+  public boolean isNoteChambered() {
+    return m_state == State.CHAMBERED;
+  }
+
+  public boolean chamberNote() {
+    switch (m_state) {
+      case EMPTY: {
+        double speed = m_intakingSpeed.get();
+        setSpeed(speed);
+        m_intake.startIntake();
+        m_state = State.CHAMBERING;
+        return false;
+      }
+      default: return true;
+    }
+  }
+
+  public boolean cancelChambering() {
+    switch (m_state) {
+      case CHAMBERING: {
+        stopChamber();
+        m_intake.stopIntake();
+        return false;
+      }
+      default: return true;
+    }
+  }
+
+  public boolean shootNote(double leftSpeed, double rightSpeed) {
+    switch (m_state) {
+      case CHAMBERED: {
+        m_shooter.revShooter(leftSpeed, rightSpeed);
+        m_state = State.SHOOTING;
+        return false;
+      }
+      default: return true;
     }
   }
 
   @Override
   public void periodic() {
     switch (m_state) {
-      case STOPPED: {}
+      case EMPTY: {}
       case CHAMBERING: {
-        if (isNoteChambered()) {
-          stopChamber();
+        if (isNoteDetected()) {
           m_intake.stopIntake();
+          stopChamber(); // TODO: Change motor speeds for aligning.
+          m_state = State.ALIGNING;
         }
       }
+      case ALIGNING: {
+        // TODO: Align note.
+        // TODO: Once aligned, stop chamber motors, idle shooter, change state to CHAMBERED.
+      }
+      case CHAMBERED: {}
       case SHOOTING: {
         if (m_shooter.isReadyToShoot()) {
           m_shootTimeSeconds = RobotController.getFPGATime();

@@ -248,6 +248,9 @@ public final class Constants {
     public static final int kCurrentLimit = 20;
     public static final boolean kLeftMotorReversed = false;
     public static final boolean kRightMotorReversed = true;
+    // Sensor sense may be reversed (false when note is detected), in which case this should be set
+    // to false.
+    public static final boolean kSensorNoteDetectedValue = false;
     public static final double kWheelDiameterMeters = Units.inchesToMeters(3.0);
     public static final double kGearRatio = 3.0 / 1.0;
     // VelocityCoversionFactors convert between revolutions per minute and m/s
@@ -256,7 +259,7 @@ public final class Constants {
       / kGearRatio / 60.0;
     public static final PID kLeftPID = new PID(0.43, 0.0, 0.0);
     public static final PID kRightPID = new PID(0.43, 0.0, 0.0);
-    public static final double kChamberingSpeed = 5.0;
+    public static final double kIntakingSpeed = 5.0;
     public static final double kShootingSpeed = 10.0;
     public static final double kClearingTimeSeconds = 1.0;
   }

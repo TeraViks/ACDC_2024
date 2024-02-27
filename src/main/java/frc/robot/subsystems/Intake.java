@@ -22,7 +22,8 @@ public class Intake extends SubsystemBase {
   private final SparkPIDController m_topPIDController;
   private final SparkPIDController m_bottomPIDController;
 
-  private final TunableConstant m_speed = new TunableConstant("Intake.speed", IntakeConstants.kSpeed);
+  private final TunableConstant m_speed =
+    new TunableConstant("Intake.speed", IntakeConstants.kSpeed);
 
   public Intake() {
     m_topMotor = new CANSparkMax(IntakeConstants.kTopMotorID, MotorType.kBrushless);
@@ -37,7 +38,7 @@ public class Intake extends SubsystemBase {
     m_topPIDController.setI(IntakeConstants.kTopPID.i(), 0);
     m_topPIDController.setD(IntakeConstants.kTopPID.d(), 0);
     m_topPIDController.setFF(0);
-   
+
     m_bottomMotor = new CANSparkMax(IntakeConstants.kBottomMotorID, MotorType.kBrushless);
     m_bottomMotor.restoreFactoryDefaults();
     m_bottomMotor.setInverted(IntakeConstants.kBottomMotorReversed);
@@ -55,7 +56,7 @@ public class Intake extends SubsystemBase {
   public void startIntake() {
     double speed = m_speed.get();
     m_topPIDController.setReference(speed, ControlType.kVelocity);
-    // m_bottomPIDController.setReference(speed, ControlType.kVelocity);
+    m_bottomPIDController.setReference(speed, ControlType.kVelocity);
   }
   
   public void stopIntake() {
