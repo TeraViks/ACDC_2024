@@ -224,11 +224,11 @@ public final class Constants {
     public static final int kBottomMotorID = 14;
     public static final int kCurrentLimit = 20;
     public static final boolean kTopMotorReversed = false;
-    public static final boolean kBottomMotorReversed = true;
+    public static final boolean kBottomMotorReversed = false;
     public static final double kTopWheelDiameterMeters = Units.inchesToMeters(2.0);
     public static final double kBottomWheelDiameterMeters = Units.inchesToMeters(1.0);
-    public static final double kTopGearRatio = 15.0 / 18.0;
-    public static final double kBottomGearRatio = 1.0;
+    public static final double kTopGearRatio = 3.0 * (15.0 / 18.0);
+    public static final double kBottomGearRatio = 3.0;
     // VelocityCoversionFactors convert between revolutions per minute and m/s
     public static final double kTopVelocityConversionFactor =
       (kTopWheelDiameterMeters * Math.PI)
@@ -238,7 +238,7 @@ public final class Constants {
       / (kBottomGearRatio * 60.0);
     public static final PID kTopPID = new PID(0.5, 0.0, 0.0);
     public static final PID kBottomPID = new PID(0.5, 0.0, 0.0);
-    public static final double kSpeed = 2.0;
+    public static final double kSpeed = 5.0;
   }
 
   public static final class ChamberConstants {
@@ -254,9 +254,9 @@ public final class Constants {
     public static final double kChamberVelocityConversionFactor =
       (kWheelDiameterMeters * Math.PI)
       / kGearRatio / 60.0;
-    public static final PID kLeftPID = new PID(0.43, 0.0, 50.0);
-    public static final PID kRightPID = new PID(0.43, 0.0, 100.0);
-    public static final double kChamberingSpeed = 2.0;
+    public static final PID kLeftPID = new PID(0.43, 0.0, 0.0);
+    public static final PID kRightPID = new PID(0.43, 0.0, 0.0);
+    public static final double kChamberingSpeed = 5.0;
     public static final double kShootingSpeed = 10.0;
     public static final double kRecoilTimeSeconds = 1.0;
   }
