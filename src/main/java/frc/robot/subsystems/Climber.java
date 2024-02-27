@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkBase.ControlType;
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -26,6 +27,7 @@ public class Climber extends SubsystemBase {
     m_leftMotor.restoreFactoryDefaults();
     m_leftMotor.setInverted(motorReversed);
     m_leftMotor.setSmartCurrentLimit(ClimberConstants.kCurrentLimit);
+    m_leftMotor.setIdleMode(IdleMode.kBrake);
 
     m_leftEncoder = m_leftMotor.getEncoder();
     m_leftEncoder.setVelocityConversionFactor(ClimberConstants.kVelocityConversionFactor);
@@ -41,6 +43,7 @@ public class Climber extends SubsystemBase {
     m_rightMotor.restoreFactoryDefaults();
     m_rightMotor.setSmartCurrentLimit(ClimberConstants.kCurrentLimit);
     m_rightMotor.setInverted(motorReversed);
+    m_rightMotor.setIdleMode(IdleMode.kBrake);
 
     m_rightEncoder = m_rightMotor.getEncoder();
     m_rightEncoder.setVelocityConversionFactor(ClimberConstants.kVelocityConversionFactor);
