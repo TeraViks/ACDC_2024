@@ -12,22 +12,32 @@ import com.revrobotics.SparkPIDController;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.TunableConstant;
 
 public class Shooter extends SubsystemBase {
-  CANSparkMax m_leftMotor;
-  CANSparkMax m_rightMotor;
-  RelativeEncoder m_leftEncoder;
-  RelativeEncoder m_rightEncoder;
-  SparkPIDController m_leftPIDController;
-  SparkPIDController m_rightPIDController;
+  private final CANSparkMax m_leftMotor;
+  private final CANSparkMax m_rightMotor;
+  private final RelativeEncoder m_leftEncoder;
+  private final RelativeEncoder m_rightEncoder;
+  private final SparkPIDController m_leftPIDController;
+  private final SparkPIDController m_rightPIDController;
 
-  double m_idealLeftSpeed;
-  double m_idealRightSpeed;
+  private final TunableConstant m_idleSpeed = new TunableConstant("Shooter.idleSpeed", ShooterConstants.kIdleSpeed);
 
-  public Shooter(int leftMotorID, int rightMotorID, boolean leftMotorReversed, boolean rightMotorReversed) {
-    m_leftMotor = new CANSparkMax(leftMotorID, MotorType.kBrushless);
+  private double m_idealLeftSpeed;
+  private double m_idealRightSpeed;
+
+  private enum State {
+    STOPPED,
+    IDLING,
+    REVVING
+  }
+  private State m_state = State.STOPPED;
+
+  public Shooter() {
+    m_leftMotor = new CANSparkMax(ShooterConstants.kLeftMotorID, MotorType.kBrushless);
     m_leftMotor.restoreFactoryDefaults();
-    m_leftMotor.setInverted(leftMotorReversed);
+    m_leftMotor.setInverted(ShooterConstants.kLeftMotorReversed);
     m_leftMotor.setSmartCurrentLimit(ShooterConstants.kCurrentLimit);
 
     m_leftEncoder = m_leftMotor.getEncoder();
@@ -41,9 +51,9 @@ public class Shooter extends SubsystemBase {
     m_leftPIDController.setD(ShooterConstants.kPID.d(), 0);
     m_leftPIDController.setFF(0);
 
-    m_rightMotor = new CANSparkMax(rightMotorID, MotorType.kBrushless);
+    m_rightMotor = new CANSparkMax(ShooterConstants.kRightMotorID, MotorType.kBrushless);
     m_rightMotor.restoreFactoryDefaults();
-    m_rightMotor.setInverted(rightMotorReversed);
+    m_rightMotor.setInverted(ShooterConstants.kRightMotorReversed);
     m_rightMotor.setSmartCurrentLimit(ShooterConstants.kCurrentLimit);
 
     m_rightEncoder = m_rightMotor.getEncoder();
@@ -58,17 +68,34 @@ public class Shooter extends SubsystemBase {
     m_rightPIDController.setFF(0);
   }
 
-  public void shoot(double rightMotorSpeed, double leftMotorSpeed) {
-    m_idealLeftSpeed = leftMotorSpeed;
-    m_idealRightSpeed = rightMotorSpeed;
+  private void setSpeeds(double leftSpeed, double rightSpeed) {
+    m_idealLeftSpeed = leftSpeed;
+    m_idealRightSpeed = rightSpeed;
+    m_rightPIDController.setReference(m_idealRightSpeed, ControlType.kVelocity);
+    m_leftPIDController.setReference(m_idealLeftSpeed, ControlType.kVelocity);
+
   }
 
   public void stopShooter() {
-    m_idealLeftSpeed = 0.0;
-    m_idealRightSpeed = 0.0;
+    setSpeeds(0.0, 0.0);
+    m_state = State.STOPPED;
+  }
+
+  public void idleShooter() {
+    double idleSpeed = m_idleSpeed.get();
+    setSpeeds(idleSpeed, idleSpeed);
+    m_state = State.IDLING;
+  }
+
+  public void revShooter(double leftSpeed, double rightSpeed) {
+    setSpeeds(leftSpeed, rightSpeed);
+    m_state = State.REVVING;
   }
 
   public boolean isReadyToShoot() {
+    if (m_state != State.REVVING) {
+      return false;
+    }
     double rightMotorVelocity = m_rightEncoder.getVelocity();
     double leftMotorVelocity = m_leftEncoder.getVelocity();
     return (
@@ -80,8 +107,5 @@ public class Shooter extends SubsystemBase {
   }
 
   @Override
-  public void periodic() {
-    m_rightPIDController.setReference(m_idealRightSpeed, ControlType.kVelocity);
-    m_leftPIDController.setReference(m_idealLeftSpeed, ControlType.kVelocity);
-  }
+  public void periodic() {}
 }

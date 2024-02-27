@@ -11,20 +11,16 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.Constants.ChamberConstants;
 import frc.robot.Constants.FieldConstants;
-import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.OIConstants;
-import frc.robot.Constants.PhotonVisionConstants;
-import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.JoystickTargetNote;
 import frc.robot.commands.PickupCommand;
 import frc.robot.commands.ShooterCommand;
@@ -44,17 +40,11 @@ import frc.robot.subsystems.Shooter;
 public class RobotContainer {
   public final Limelight m_limelight = new Limelight();
   private final SendableChooser<Command> m_chooser = new SendableChooser<>();
-  private final CameraSubsystem m_cameraSystem =
-    new CameraSubsystem(PhotonVisionConstants.kCameraName1, PhotonVisionConstants.kCameraName2);
+  private final CameraSubsystem m_cameraSystem = new CameraSubsystem();
   public final DriveSubsystem m_robotDrive = new DriveSubsystem(m_cameraSystem);
-  private final Intake m_intake =
-    new Intake(IntakeConstants.kTopMotorID, IntakeConstants.kBottomMotorID, false);
-  private final Chamber m_chamber =
-    new Chamber(ChamberConstants.kLeftMotorID, ChamberConstants.kRightMotorID, false,
-      ChamberConstants.kSensorID);
-  private final Shooter m_shooter =
-    new Shooter(ShooterConstants.kLeftMotorID, ShooterConstants.kRigthMotorID,
-      false, true);
+  private final Intake m_intake = new Intake();
+  private final Shooter m_shooter = new Shooter();
+  private final Chamber m_chamber = new Chamber(m_intake, m_shooter);
 
   GenericHID m_driverController = new GenericHID(OIConstants.kDriverControllerPort);
   GenericHID m_operatorController = new GenericHID(OIConstants.kOperatorControllerPort);
@@ -136,29 +126,31 @@ public class RobotContainer {
       new JoystickButton(m_driverController, OIConstants.kB)
         .toggleOnTrue(Commands.startEnd(
           () -> {
-            Commands.runOnce(() -> m_intake.startIntake(SmartDashboard.getNumber("Intake Speed (m/s)", 0)))
-              .alongWith(Commands.runOnce(() -> m_chamber.moveNote(SmartDashboard.getNumber("Chamber Intake Speed (m/s)", 0))))
-              .andThen(Commands.waitUntil(m_chamber::isNoteChambered))
-              .andThen(Commands.runOnce(() -> m_chamber.moveNote(0)));
+            if (!m_chamber.isNoteChambered()) {
+              m_chamber.chamberNote();
+              m_intake.startIntake();
+            }
           },
           () -> {
             m_intake.stopIntake();
-            m_chamber.moveNote(0);
-          }
-        ));
+            m_chamber.stopChamber();
+          },
+          m_intake, m_chamber
+        )
+      );
 
         // Chamber and Shooter
         new JoystickButton(m_driverController, OIConstants.kA)
           .toggleOnTrue(Commands.startEnd(
             () -> {
-              Commands.runOnce(() -> m_shooter.shoot(SmartDashboard.getNumber("Shooter Speed Right (m/s)", 0), SmartDashboard.getNumber("Shooter Speed Left (m/s)", 0)))
-                .andThen(Commands.waitUntil(m_shooter::isReadyToShoot))
-                .andThen(Commands.runOnce(() -> m_chamber.moveNote(SmartDashboard.getNumber("Chamber Shoot Speed (m/s)", 0))));
+              m_chamber.chamberNote();
+              m_shooter.idleShooter();
             },
             () -> {
+              m_chamber.stopChamber();
               m_shooter.stopShooter();
-              m_chamber.moveNote(0);
-            }
+            },
+            m_chamber, m_shooter
           ));
     }
   }

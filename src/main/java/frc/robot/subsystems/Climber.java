@@ -22,10 +22,10 @@ public class Climber extends SubsystemBase {
   private final SparkPIDController m_leftPIDController;
   private final SparkPIDController m_rightPIDController;
 
-  public Climber(int climberRightMotorID, int climberLeftMotorID, boolean motorReversed) {
-    m_leftMotor = new CANSparkMax(climberLeftMotorID, MotorType.kBrushless);
+  public Climber() {
+    m_leftMotor = new CANSparkMax(ClimberConstants.kLeftMotorID, MotorType.kBrushless);
     m_leftMotor.restoreFactoryDefaults();
-    m_leftMotor.setInverted(motorReversed);
+    m_leftMotor.setInverted(ClimberConstants.kLeftMotorReversed);
     m_leftMotor.setSmartCurrentLimit(ClimberConstants.kCurrentLimit);
     m_leftMotor.setIdleMode(IdleMode.kBrake);
 
@@ -39,10 +39,10 @@ public class Climber extends SubsystemBase {
     m_leftPIDController.setD(ClimberConstants.kPID.d(), 0);
     m_leftPIDController.setFF(0);
 
-    m_rightMotor = new CANSparkMax(climberRightMotorID, MotorType.kBrushless);
+    m_rightMotor = new CANSparkMax(ClimberConstants.kRightMotorID, MotorType.kBrushless);
     m_rightMotor.restoreFactoryDefaults();
     m_rightMotor.setSmartCurrentLimit(ClimberConstants.kCurrentLimit);
-    m_rightMotor.setInverted(motorReversed);
+    m_rightMotor.setInverted(ClimberConstants.kRightMotorReversed);
     m_rightMotor.setIdleMode(IdleMode.kBrake);
 
     m_rightEncoder = m_rightMotor.getEncoder();

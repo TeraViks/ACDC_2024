@@ -32,9 +32,9 @@ public class CameraSubsystem extends SubsystemBase {
 
   AprilTagFieldLayout m_aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
 
-  public CameraSubsystem(String Camera1Name, String Camera2Name) {
-    m_camera1 = new PhotonCamera(Camera1Name);
-    m_camera2 = new PhotonCamera(Camera2Name);
+  public CameraSubsystem() {
+    m_camera1 = new PhotonCamera(PhotonVisionConstants.kCameraName1);
+    m_camera2 = new PhotonCamera(PhotonVisionConstants.kCameraName2);
 
     m_photonPoseEstimatorCam1 = 
       new PhotonPoseEstimator(
