@@ -99,17 +99,19 @@ public class Shooter extends SubsystemBase {
   }
 
   public boolean isReadyToShoot() {
-    if (m_state != State.REVVING) {
-      return false;
+    switch (m_state) {
+      case REVVING: {
+        double rightMotorVelocity = m_rightEncoder.getVelocity();
+        double leftMotorVelocity = m_leftEncoder.getVelocity();
+        return (
+          rightMotorVelocity >= m_idealRightSpeed * (1.0 - ShooterConstants.kShootingTolerance) &&
+          rightMotorVelocity <= m_idealRightSpeed * (1.0 + ShooterConstants.kShootingTolerance) &&
+          leftMotorVelocity >= m_idealLeftSpeed * (1.0 - ShooterConstants.kShootingTolerance) &&
+          leftMotorVelocity <= m_idealLeftSpeed * (1.0 + ShooterConstants.kShootingTolerance)
+        );
+      }
+      default: return false;
     }
-    double rightMotorVelocity = m_rightEncoder.getVelocity();
-    double leftMotorVelocity = m_leftEncoder.getVelocity();
-    return (
-      rightMotorVelocity >= m_idealRightSpeed * (1.0 - ShooterConstants.kShootingTolerance) &&
-      rightMotorVelocity <= m_idealRightSpeed * (1.0 + ShooterConstants.kShootingTolerance) &&
-      leftMotorVelocity >= m_idealLeftSpeed * (1.0 - ShooterConstants.kShootingTolerance) &&
-      leftMotorVelocity <= m_idealLeftSpeed * (1.0 + ShooterConstants.kShootingTolerance)
-    );
   }
 
   @Override

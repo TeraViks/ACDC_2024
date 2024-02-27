@@ -126,14 +126,10 @@ public class RobotContainer {
       new JoystickButton(m_driverController, OIConstants.kB)
         .toggleOnTrue(Commands.startEnd(
           () -> {
-            if (!m_chamber.isNoteChambered()) {
-              m_chamber.chamberNote();
-              m_intake.startIntake();
-            }
+            m_chamber.chamberNote();
           },
           () -> {
-            m_intake.stopIntake();
-            m_chamber.stopChamber();
+            m_chamber.cancelChambering();
           },
           m_intake, m_chamber
         )
@@ -147,7 +143,7 @@ public class RobotContainer {
               m_shooter.idleShooter();
             },
             () -> {
-              m_chamber.stopChamber();
+              m_chamber.cancelChambering();
               m_shooter.stopShooter();
             },
             m_chamber, m_shooter
