@@ -258,8 +258,8 @@ public final class Constants {
     public static final PID kRightPID = new PID(0.43, 0.0, 100.0);
     public static final double kChamberingSpeed = 2.0;
     public static final double kShootingSpeed = 10.0;
-    public static final double kRecoilTimeSeconds = 1.0;
     public static final double kCalibratingSpeed = 1.0;
+    public static final double kClearingTimeSeconds = 1.0;
   }
 
   public static final class ShooterConstants {
