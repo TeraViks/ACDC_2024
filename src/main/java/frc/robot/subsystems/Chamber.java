@@ -31,13 +31,14 @@ public class Chamber extends SubsystemBase {
   private enum State {
     // The chamber controls the intake/chamber/shooter such that they progress in lockstep through
     // the following states.
-    //             Intake   Chamber  Shooter
-    EMPTY,      // stopped  stopped  stopped
-    CHAMBERING, // intaking intaking stopped
-    ALIGNING,   // stopped  aligning stopped
-    CHAMBERED,  // stopped  stopped  idling
-    SHOOTING,   // stopped  stopped  revving
-    CLEARING    // stopped  shooting revving
+    //                      Intake   Chamber  Shooter
+    EMPTY,               // stopped  stopped  stopped
+    CHAMBERING,          // intaking intaking stopped
+    ALIGNING_UNDETECTED, // stopped  aligning stopped
+    ALIGNING_DETECTED,   // stopped  aligning stopped
+    CHAMBERED,           // stopped  stopped  idling
+    SHOOTING,            // stopped  stopped  revving
+    CLEARING             // stopped  shooting revving
   }
   private State m_state = State.EMPTY;
   private double m_shootTimeSeconds = 0.0;
@@ -150,14 +151,23 @@ public class Chamber extends SubsystemBase {
       case CHAMBERING: {
         if (isNoteDetected()) {
           m_intake.stopIntake();
-          stopChamber(); // TODO: Change motor speeds for aligning.
-          m_state = State.ALIGNING;
+          setSpeed(ChamberConstants.kAligningSpeed);
+          m_state = State.ALIGNING_UNDETECTED;
         }
         break;
       }
-      case ALIGNING: {
-        // TODO: Align note.
-        // TODO: Once aligned, stop chamber motors, idle shooter, change state to CHAMBERED.
+      case ALIGNING_UNDETECTED: {
+        if (isNoteDetected()) {
+          m_state = State.ALIGNING_DETECTED;
+        }
+        break;
+      }
+      case ALIGNING_DETECTED: {
+        if (!isNoteDetected()) {
+          stopChamber();
+          m_shooter.idleShooter();
+          m_state = State.CHAMBERED;
+        }
         break;
       }
       case CHAMBERED: {
