@@ -139,25 +139,32 @@ public class Chamber extends SubsystemBase {
   @Override
   public void periodic() {
     switch (m_state) {
-      case EMPTY: {}
+      case EMPTY: {
+        break;
+      }
       case CHAMBERING: {
         if (isNoteDetected()) {
           m_intake.stopIntake();
           stopChamber(); // TODO: Change motor speeds for aligning.
           m_state = State.ALIGNING;
         }
+        break;
       }
       case ALIGNING: {
         // TODO: Align note.
         // TODO: Once aligned, stop chamber motors, idle shooter, change state to CHAMBERED.
+        break;
       }
-      case CHAMBERED: {}
+      case CHAMBERED: {
+        break;
+      }
       case SHOOTING: {
         if (m_shooter.isReadyToShoot()) {
           m_shootTimeSeconds = RobotController.getFPGATime();
           setSpeed(ChamberConstants.kShootingSpeed);
           m_state = State.CLEARING;
         }
+        break;
       }
       case CLEARING: {
         double currentTimeSeconds = RobotController.getFPGATime();
@@ -165,6 +172,7 @@ public class Chamber extends SubsystemBase {
           stopChamber();
           m_shooter.idleShooter();
         }
+        break;
       }
     }
   }
