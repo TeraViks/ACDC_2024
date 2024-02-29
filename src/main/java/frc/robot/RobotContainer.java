@@ -116,6 +116,7 @@ public class RobotContainer {
 
   private void configureButtonBindings() {
     new JoystickButton(m_driverController, OIConstants.kJoystickTargetNoteButton)
+      .debounce(OIConstants.kDebounceSeconds)
       .whileTrue(new JoystickTargetNote(
         m_robotDrive,
         m_limelight,
@@ -127,6 +128,7 @@ public class RobotContainer {
     if (true) {
       // Intake and Chamber
       new JoystickButton(m_driverController, OIConstants.kB)
+        .debounce(OIConstants.kDebounceSeconds)
         .toggleOnTrue(Commands.startEnd(
           () -> {
             m_chamber.chamberNote();
@@ -140,6 +142,7 @@ public class RobotContainer {
 
         // Chamber and Shooter
         new JoystickButton(m_driverController, OIConstants.kA)
+          .debounce(OIConstants.kDebounceSeconds)
           .toggleOnTrue(Commands.startEnd(
             () -> {
               m_chamber.chamberNote();
@@ -153,11 +156,13 @@ public class RobotContainer {
           ));
         
         new JoystickButton(m_operatorController, OIConstants.kEjectButton)
+            .debounce(OIConstants.kDebounceSeconds)
             .onTrue(Commands.runOnce(
               () -> m_chamber.ejectNote(),
               m_chamber, m_shooter));
 
         new JoystickButton(m_driverController, OIConstants.kShootButton)
+            .debounce(OIConstants.kDebounceSeconds)
             .onTrue(Commands.runOnce(
               () -> {
                 double speed = m_shootingSpeed.get();
