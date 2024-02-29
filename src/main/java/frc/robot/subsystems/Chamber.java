@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ChamberConstants;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.TunableConstant;
 
 public class Chamber extends SubsystemBase {
@@ -134,6 +135,10 @@ public class Chamber extends SubsystemBase {
       }
       default: return true;
     }
+  }
+
+  public boolean ejectNote() {
+    return (shootNote(ShooterConstants.kIdleSpeed, ShooterConstants.kIdleSpeed));
   }
 
   @Override
