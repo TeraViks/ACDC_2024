@@ -303,7 +303,7 @@ public final class Constants {
     public static final int kRightMotorID = 20;
     public static final int kCurrentLimit = 40;
     public static final boolean kLeftMotorReversed = false;
-    public static final boolean kRightMotorReversed = true;
+    public static final boolean kRightMotorReversed = false;
     public static final PID kPID = new PID(0.5, 0.0, 0.0);
   }
 }
