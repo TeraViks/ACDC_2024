@@ -101,6 +101,8 @@ public class Shooter extends SubsystemBase {
   public boolean isReadyToShoot() {
     switch (m_state) {
       case REVVING: {
+        if (true) return true;
+        //TODO: Fix the ideal speed
         double rightMotorVelocity = m_rightEncoder.getVelocity();
         double leftMotorVelocity = m_leftEncoder.getVelocity();
         return (
