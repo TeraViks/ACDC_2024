@@ -296,8 +296,6 @@ public final class Constants {
     public static final int kCurrentLimit = 40;
     public static final boolean kLeftMotorReversed = false;
     public static final boolean kRightMotorReversed = true;
-    //3000 rpm, 12 mm per rotation, needs to move 12 inches
-    public static final double kVelocityConversionFactor = 0.2;
     public static final PID kPID = new PID(0.5, 0.0, 0.0);
   }
 }
