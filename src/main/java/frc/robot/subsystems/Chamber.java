@@ -49,6 +49,8 @@ public class Chamber extends SubsystemBase {
   public Chamber(Intake intake, Shooter shooter) {
     m_chooser.setDefaultOption("Empty", State.EMPTY);
     m_chooser.addOption("Preloaded", State.CHAMBERED);
+    SmartDashboard.putData(m_chooser);
+    m_state = State.EMPTY;
 
     m_leftMotor = new CANSparkMax(ChamberConstants.kLeftMotorID, MotorType.kBrushless);
     m_leftMotor.restoreFactoryDefaults();
@@ -86,6 +88,10 @@ public class Chamber extends SubsystemBase {
 
     m_intake = intake;
     m_shooter = shooter;
+  }
+
+  public void initializePreloaded() {
+    m_state = m_chooser.getSelected();
   }
 
   private void setSpeed(double speed) {

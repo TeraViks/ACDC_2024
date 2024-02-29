@@ -134,6 +134,10 @@ public class RobotContainer {
     m_robotDrive.setPIDSlotID(slotID);
   }
 
+  public void initializePreloaded() {
+    m_chamber.initializePreloaded();
+  }
+
   private void configureButtonBindings() {
     new JoystickButton(m_driverController, OIConstants.kJoystickTargetNoteButton)
       .debounce(OIConstants.kDebounceSeconds)
