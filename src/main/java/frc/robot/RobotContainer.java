@@ -162,8 +162,24 @@ public class RobotContainer {
         () -> m_intake.reverseIntake()
       ));
 
+    new JoystickButton(m_operatorController, OIConstants.kEjectButton)
+      .debounce(OIConstants.kDebounceSeconds)
+      .onTrue(Commands.runOnce(
+        () -> m_chamber.ejectNote(),
+        m_chamber, m_shooter));
+
+    new JoystickButton(m_driverController, OIConstants.kShootButton)
+      .debounce(OIConstants.kDebounceSeconds)
+      .onTrue(Commands.runOnce(
+        () -> {
+          double speed = m_shootingSpeed.get();
+          m_chamber.shootNote(speed, speed);
+        },
+        m_chamber, m_shooter
+      ));
+
     // temporary, manual commands for tuning motor speeds
-    if (true) {
+    if (false) {
       // Intake and Chamber
       new JoystickButton(m_driverController, OIConstants.kB)
         .debounce(OIConstants.kDebounceSeconds)
@@ -178,36 +194,20 @@ public class RobotContainer {
         )
       );
 
-        // Chamber and Shooter
-        new JoystickButton(m_driverController, OIConstants.kA)
-          .debounce(OIConstants.kDebounceSeconds)
-          .toggleOnTrue(Commands.startEnd(
-            () -> {
-              m_chamber.chamberNote();
-              m_shooter.idleShooter();
-            },
-            () -> {
-              m_chamber.cancelChambering();
-              m_shooter.stopShooter();
-            },
-            m_chamber, m_shooter
-          ));
-        
-        new JoystickButton(m_operatorController, OIConstants.kEjectButton)
-            .debounce(OIConstants.kDebounceSeconds)
-            .onTrue(Commands.runOnce(
-              () -> m_chamber.ejectNote(),
-              m_chamber, m_shooter));
-
-        new JoystickButton(m_driverController, OIConstants.kShootButton)
-            .debounce(OIConstants.kDebounceSeconds)
-            .onTrue(Commands.runOnce(
-              () -> {
-                double speed = m_shootingSpeed.get();
-                m_chamber.shootNote(speed, speed);
-              },
-              m_chamber, m_shooter
-            ));
+      // Chamber and Shooter
+      new JoystickButton(m_driverController, OIConstants.kA)
+        .debounce(OIConstants.kDebounceSeconds)
+        .toggleOnTrue(Commands.startEnd(
+          () -> {
+            m_chamber.chamberNote();
+            m_shooter.idleShooter();
+          },
+          () -> {
+            m_chamber.cancelChambering();
+            m_shooter.stopShooter();
+          },
+          m_chamber, m_shooter
+        ));
     }
   }
 
