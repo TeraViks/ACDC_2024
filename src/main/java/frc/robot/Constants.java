@@ -180,6 +180,10 @@ public final class Constants {
     public static final int kEjectButton = kRightBumper;
     public static final int kShootButton = kRightBumper;
 
+    public static final int kIntakeOn = kX;
+    public static final int kIntakeOff = kB;
+    public static final int kIntakeReverse = kA;
+    
     public static final double kDebounceSeconds = 0.01;
 
     public static final double kJoystickDeadband = 0.05;

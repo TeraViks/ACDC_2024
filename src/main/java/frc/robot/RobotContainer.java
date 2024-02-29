@@ -124,6 +124,24 @@ public class RobotContainer {
         () -> getYSpeedInput()
       ));
 
+    new JoystickButton(m_operatorController, OIConstants.kIntakeOn)
+      .debounce(OIConstants.kDebounceSeconds)
+      .onTrue(Commands.runOnce(
+        () -> m_intake.startIntake()
+      ));
+
+    new JoystickButton(m_operatorController, OIConstants.kIntakeOff)
+      .debounce(OIConstants.kDebounceSeconds)
+      .onTrue(Commands.runOnce(
+        () -> m_intake.stopIntake()
+      ));
+
+    new JoystickButton(m_operatorController, OIConstants.kIntakeReverse)
+      .debounce(OIConstants.kDebounceSeconds)
+      .onTrue(Commands.runOnce(
+        () -> m_intake.reverseIntake()
+      ));
+
     // temporary, manual commands for tuning motor speeds
     if (true) {
       // Intake and Chamber
