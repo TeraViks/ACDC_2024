@@ -9,6 +9,7 @@ import com.revrobotics.SparkPIDController;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ChamberConstants;
 import frc.robot.Constants.ShooterConstants;
@@ -24,6 +25,7 @@ public class Chamber extends SubsystemBase {
   private final Intake m_intake;
   private final Shooter m_shooter;
   private final DigitalInput m_noteDetectedSensor;
+  private final SendableChooser<State> m_chooser = new SendableChooser<>();
 
   private final TunableConstant m_intakingSpeed =
     new TunableConstant("Chamber.intakingSpeed", ChamberConstants.kIntakingSpeed);
@@ -40,10 +42,14 @@ public class Chamber extends SubsystemBase {
     SHOOTING,            // stopped  stopped  revving
     CLEARING             // stopped  shooting revving
   }
-  private State m_state = State.EMPTY;
+  private State m_state;
   private double m_shootTimeSeconds = 0.0;
 
   public Chamber(Intake intake, Shooter shooter) {
+    m_chooser.setDefaultOption("Empty", State.EMPTY);
+    m_chooser.addOption("Preloaded", State.CHAMBERED);
+    m_state = m_chooser.getSelected();
+
     m_leftMotor = new CANSparkMax(ChamberConstants.kLeftMotorID, MotorType.kBrushless);
     m_leftMotor.restoreFactoryDefaults();
     m_leftMotor.setInverted(ChamberConstants.kLeftMotorReversed);
