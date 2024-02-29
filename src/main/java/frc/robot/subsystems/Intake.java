@@ -64,6 +64,12 @@ public class Intake extends SubsystemBase {
     m_bottomMotor.stopMotor();
   }
 
+  public void reverseIntake() {
+    double speed = -m_speed.get();
+    m_topPIDController.setReference(speed, ControlType.kVelocity);
+    m_bottomPIDController.setReference(speed, ControlType.kVelocity);
+  }
+
   @Override
   public void periodic() {}
 }
