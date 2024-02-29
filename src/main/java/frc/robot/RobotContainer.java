@@ -159,7 +159,10 @@ public class RobotContainer {
 
         new JoystickButton(m_driverController, OIConstants.kShootButton)
             .onTrue(Commands.runOnce(
-              () -> m_chamber.shootNote(m_shootingSpeed.get(), m_shootingSpeed.get()),
+              () -> {
+                double speed = m_shootingSpeed.get();
+                m_chamber.shootNote(speed, speed);
+              },
               m_chamber, m_shooter
             ));
     }
