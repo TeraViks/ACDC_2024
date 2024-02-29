@@ -219,10 +219,10 @@ public final class Constants {
     public static final String kCameraName2 = "camera2";
     public static final Transform3d kRobotToCamera1Transform = new Transform3d(
       0.196, 0.238, 0.26,
-      new Rotation3d(0.0, Units.degreesToRadians(-21), 0.0));
+      new Rotation3d(0.0, Units.degreesToRadians(-21.0), 0.0));
     public static final Transform3d kRobotToCamera2Transform = new Transform3d(
       0.126, -0.306, 0.297,
-      new Rotation3d(Units.degreesToRadians(-20.5), 0.0, Units.degreesToRadians(100.0)));
+      new Rotation3d(Units.degreesToRadians(-20.5), 0.0, Units.degreesToRadians(90.0)));
   }
 
   public static final class IntakeConstants {
