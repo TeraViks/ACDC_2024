@@ -177,6 +177,7 @@ public final class Constants {
     public static final int kRightJoyYAxis = 5;
 
     public static final int kJoystickTargetNoteButton = kY;
+    public static final int kEjectButton = kRightBumper;
 
     public static final double kDebounceSeconds = 0.01;
 

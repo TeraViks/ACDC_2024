@@ -149,7 +149,7 @@ public class RobotContainer {
             m_chamber, m_shooter
           ));
         
-        new JoystickButton(m_operatorController, OIConstants.kRightBumper)
+        new JoystickButton(m_operatorController, OIConstants.kEjectButton)
             .onTrue(Commands.runOnce(
               () -> m_chamber.ejectNote(),
               m_chamber, m_shooter));
