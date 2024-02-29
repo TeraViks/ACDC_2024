@@ -10,6 +10,7 @@ import com.revrobotics.SparkPIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ChamberConstants;
 import frc.robot.Constants.ShooterConstants;
@@ -48,7 +49,6 @@ public class Chamber extends SubsystemBase {
   public Chamber(Intake intake, Shooter shooter) {
     m_chooser.setDefaultOption("Empty", State.EMPTY);
     m_chooser.addOption("Preloaded", State.CHAMBERED);
-    m_state = m_chooser.getSelected();
 
     m_leftMotor = new CANSparkMax(ChamberConstants.kLeftMotorID, MotorType.kBrushless);
     m_leftMotor.restoreFactoryDefaults();
