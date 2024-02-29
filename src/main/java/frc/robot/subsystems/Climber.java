@@ -30,7 +30,6 @@ public class Climber extends SubsystemBase {
     m_leftMotor.setIdleMode(IdleMode.kBrake);
 
     m_leftEncoder = m_leftMotor.getEncoder();
-    m_leftEncoder.setVelocityConversionFactor(ClimberConstants.kVelocityConversionFactor);
 
     m_leftPIDController = m_leftMotor.getPIDController();
     m_leftPIDController.setFeedbackDevice(m_leftEncoder);
@@ -46,7 +45,6 @@ public class Climber extends SubsystemBase {
     m_rightMotor.setIdleMode(IdleMode.kBrake);
 
     m_rightEncoder = m_rightMotor.getEncoder();
-    m_rightEncoder.setVelocityConversionFactor(ClimberConstants.kVelocityConversionFactor);
 
     m_rightPIDController = m_rightMotor.getPIDController();
     m_rightPIDController.setFeedbackDevice(m_rightEncoder);
@@ -57,8 +55,8 @@ public class Climber extends SubsystemBase {
   }
 
   public void startClimber(double speed) {
-    m_leftPIDController.setReference(speed, ControlType.kVelocity);
-    m_rightPIDController.setReference(speed, ControlType.kVelocity);
+    m_leftPIDController.setReference(speed, ControlType.kCurrent);
+    m_rightPIDController.setReference(speed, ControlType.kCurrent);
   }
 
   public void stopClimber() {

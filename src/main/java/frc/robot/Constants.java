@@ -293,7 +293,7 @@ public final class Constants {
   public static final class ClimberConstants {
     public static final int kLeftMotorID = 19;
     public static final int kRightMotorID = 20;
-    public static final int kCurrentLimit = 20;
+    public static final int kCurrentLimit = 40;
     public static final boolean kLeftMotorReversed = false;
     public static final boolean kRightMotorReversed = true;
     //3000 rpm, 12 mm per rotation, needs to move 12 inches
