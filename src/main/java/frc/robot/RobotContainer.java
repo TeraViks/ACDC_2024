@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.JoystickTargetNote;
 import frc.robot.commands.PickupCommand;
 import frc.robot.commands.ShooterCommand;
@@ -45,6 +46,8 @@ public class RobotContainer {
   private final Intake m_intake = new Intake();
   private final Shooter m_shooter = new Shooter();
   private final Chamber m_chamber = new Chamber(m_intake, m_shooter);
+  private final TunableConstant m_shootingSpeed =
+    new TunableConstant("ShootingSpeed", ShooterConstants.kShootingSpeed);
 
   GenericHID m_driverController = new GenericHID(OIConstants.kDriverControllerPort);
   GenericHID m_operatorController = new GenericHID(OIConstants.kOperatorControllerPort);
@@ -153,6 +156,12 @@ public class RobotContainer {
             .onTrue(Commands.runOnce(
               () -> m_chamber.ejectNote(),
               m_chamber, m_shooter));
+
+        new JoystickButton(m_driverController, OIConstants.kShootButton)
+            .onTrue(Commands.runOnce(
+              () -> m_chamber.shootNote(m_shootingSpeed.get(), m_shootingSpeed.get()),
+              m_chamber, m_shooter
+            ));
     }
   }
 

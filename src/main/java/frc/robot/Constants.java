@@ -178,6 +178,7 @@ public final class Constants {
 
     public static final int kJoystickTargetNoteButton = kY;
     public static final int kEjectButton = kRightBumper;
+    public static final int kShootButton = kRightTriggerAxis;
 
     public static final double kDebounceSeconds = 0.01;
 
@@ -287,6 +288,7 @@ public final class Constants {
     
     public static final PID kPID = new PID(0.5, 0.0, 0.0);
     public static final double kIdleSpeed = 9.0;
+    public static final double kShootingSpeed = 11.5;
 
     public static final double kShootingTolerance = 0.05;
   }
