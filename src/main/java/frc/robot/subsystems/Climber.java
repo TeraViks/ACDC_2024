@@ -54,9 +54,9 @@ public class Climber extends SubsystemBase {
     m_rightPIDController.setFF(0);
   }
 
-  public void startClimber(double speed) {
-    m_leftPIDController.setReference(speed, ControlType.kCurrent);
-    m_rightPIDController.setReference(speed, ControlType.kCurrent);
+  public void startClimber(double leftSpeed, double rightSpeed) {
+    m_leftPIDController.setReference(leftSpeed, ControlType.kDutyCycle);
+    m_rightPIDController.setReference(rightSpeed, ControlType.kDutyCycle);
   }
 
   public void stopClimber() {

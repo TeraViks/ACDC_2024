@@ -27,6 +27,7 @@ import frc.robot.commands.PickupCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.subsystems.CameraSubsystem;
 import frc.robot.subsystems.Chamber;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Limelight;
@@ -46,9 +47,9 @@ public class RobotContainer {
   private final Intake m_intake = new Intake();
   private final Shooter m_shooter = new Shooter();
   private final Chamber m_chamber = new Chamber(m_intake, m_shooter);
+  private final Climber m_climber = new Climber();
   private final TunableConstant m_shootingSpeed =
     new TunableConstant("ShootingSpeed", ShooterConstants.kShootingSpeed);
-
   GenericHID m_driverController = new GenericHID(OIConstants.kDriverControllerPort);
   GenericHID m_operatorController = new GenericHID(OIConstants.kOperatorControllerPort);
 
@@ -79,8 +80,16 @@ public class RobotContainer {
   private double getRotationSpeedInput() {
     // Moving the joystick to the right causes positive input, which we negate in order to rotate
     // clockwise.
-    return -joystickTransform(m_driverController.getRawAxis(OIConstants.kRightJoyXAxis))
+    return joystickTransform(m_driverController.getRawAxis(OIConstants.kRightJoyXAxis))
       * OIConstants.kMaxRadPerSec;
+  }
+
+  private double getLeftClimbInput() {
+    return joystickTransform(-m_operatorController.getRawAxis(OIConstants.kLeftJoyYAxis));
+  }
+
+  private double getRightClimbInput() {
+    return joystickTransform(-m_operatorController.getRawAxis(OIConstants.kRightJoyYAxis));
   }
 
   public RobotContainer() {
@@ -99,6 +108,17 @@ public class RobotContainer {
               getRotationSpeedInput(),
               true);
           }, m_robotDrive
+        )
+      );
+
+      m_climber.setDefaultCommand(
+        new RunCommand(
+          () -> {
+            m_climber.startClimber(
+              getLeftClimbInput(),
+              getRightClimbInput()
+            );
+          }, m_climber
         )
       );
 
