@@ -291,9 +291,9 @@ public final class Constants {
       kPositionConversionFactor
       / 60.0 /* s */;
     
-    public static final PID kPID = new PID(0.5, 0.0, 0.0);
-    public static final double kIdleSpeed = 9.0;
-    public static final double kShootingSpeed = 11.5;
+    public static final PID kPID = new PID(0.08, 0.0, 3);
+    public static final double kIdleSpeed = 15.0; // achieves 9 m/s
+    public static final double kShootingSpeed = 18.0; // achieves 11.5 m/s
 
     public static final double kShootingTolerance = 0.05;
   }
