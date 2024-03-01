@@ -292,6 +292,7 @@ public final class Constants {
       / 60.0 /* s */;
     
     public static final PID kPID = new PID(0.08, 0.0, 3);
+    public static final double kFF = 0.1;
     public static final double kIdleSpeed = 15.0; // achieves 9 m/s
     public static final double kShootingSpeed = 18.0; // achieves 11.5 m/s
 
