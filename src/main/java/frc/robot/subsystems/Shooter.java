@@ -52,7 +52,7 @@ public class Shooter extends SubsystemBase {
     m_leftPIDController.setP(ShooterConstants.kPID.p(), 0);
     m_leftPIDController.setI(ShooterConstants.kPID.i(), 0);
     m_leftPIDController.setD(ShooterConstants.kPID.d(), 0);
-    m_leftPIDController.setFF(0);
+    m_leftPIDController.setFF(ShooterConstants.kFF);
 
     m_rightMotor = new CANSparkMax(ShooterConstants.kRightMotorID, MotorType.kBrushless);
     m_rightMotor.restoreFactoryDefaults();
@@ -69,7 +69,7 @@ public class Shooter extends SubsystemBase {
     m_rightPIDController.setP(ShooterConstants.kPID.p(), 0);
     m_rightPIDController.setI(ShooterConstants.kPID.i(), 0);
     m_rightPIDController.setD(ShooterConstants.kPID.d(), 0);
-    m_rightPIDController.setFF(0);
+    m_rightPIDController.setFF(ShooterConstants.kFF);
   }
 
   private void setSpeeds(double leftSpeed, double rightSpeed) {
