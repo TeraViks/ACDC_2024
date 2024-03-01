@@ -265,7 +265,7 @@ public final class Constants {
       / kGearRatio / 60.0;
     public static final PID kLeftPID = new PID(0.43, 0.0, 0.0);
     public static final PID kRightPID = new PID(0.43, 0.0, 0.0);
-    public static final double kIntakingSpeed = 5.0;
+    public static final double kIntakingSpeed = 2.0;
     public static final double kShootingSpeed = 10.0;
     public static final double kClearingTimeSeconds = 1.0;
     public static final double kAligningSpeed = -1.0;
