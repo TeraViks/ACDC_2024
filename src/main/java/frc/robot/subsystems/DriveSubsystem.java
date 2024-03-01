@@ -90,7 +90,7 @@ public class DriveSubsystem extends SubsystemBase {
   private CameraSubsystem m_cameraSystem;
   private ArrayList<Optional<EstimatedRobotPose>> m_photonRobotPoseList = new ArrayList<>();
 
-  private Field2d m_field;
+  // private Field2d m_field;
 
   private SwerveModulePosition[] getPositions() {
     SwerveModulePosition[] positions = Arrays.stream(m_modules)
@@ -137,7 +137,7 @@ public class DriveSubsystem extends SubsystemBase {
         this // Reference to this subsystem to set requirements
     );
 
-    m_field = new Field2d();
+    // m_field = new Field2d();
   }
 
   public void setPIDSlotID(int slotID) {
@@ -172,11 +172,11 @@ public class DriveSubsystem extends SubsystemBase {
     }
     m_photonRobotPoseList = photonRobotPoseList;
 
-    Pose2d pose = getPose();
-    m_field.setRobotPose(pose);
-    SmartDashboard.putNumber("X", pose.getX());
-    SmartDashboard.putNumber("Y", pose.getY());
-    SmartDashboard.putData("Field", m_field);
+    // Pose2d pose = getPose();
+    // m_field.setRobotPose(pose);
+    // SmartDashboard.putNumber("X", pose.getX());
+    // SmartDashboard.putNumber("Y", pose.getY());
+    // SmartDashboard.putData("Field", m_field);
   }
 
   private Pose2d getPose() {
