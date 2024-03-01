@@ -224,12 +224,12 @@ public class RobotContainer {
     if (selectedCommand instanceof PathPlannerAuto) {
       PathPlannerAuto selectedAuto = (PathPlannerAuto)selectedCommand;
       Pose2d startingPose = PathPlannerAuto.getStaringPoseFromAutoFile(selectedAuto.getName());
-      Pose2d transformedPose = mirrorPose2d(startingPose);
-      initialPose = transformedPose;
+      initialPose = startingPose;
     } else {
       initialPose = new Pose2d();
     }
-    m_robotDrive.initOdometry(initialPose);
+    Pose2d transformedPose = mirrorPose2d(initialPose);
+    m_robotDrive.initOdometry(transformedPose);
     return selectedCommand;
   }
 
