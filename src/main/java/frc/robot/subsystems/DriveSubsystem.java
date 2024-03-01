@@ -85,8 +85,8 @@ public class DriveSubsystem extends SubsystemBase {
   // The gyro sensor uses NavX
   private final AHRS m_gyro = new AHRS(SPI.Port.kMXP);
   private Pose2d m_initialPose = new Pose2d();
-  private CameraSubsystem m_cameraSystem;
-  private ArrayList<Optional<EstimatedRobotPose>> m_photonRobotPoseList = new ArrayList<>();
+  // private CameraSubsystem m_cameraSystem;
+  // private ArrayList<Optional<EstimatedRobotPose>> m_photonRobotPoseList = new ArrayList<>();
 
   // private Field2d m_field;
 
@@ -110,8 +110,8 @@ public class DriveSubsystem extends SubsystemBase {
   // private final Field2d m_field = new Field2d();
 
   /** Creates a new DriveSubsystem. */
-  public DriveSubsystem(CameraSubsystem cameraSystem) {
-    m_cameraSystem = cameraSystem;
+  public DriveSubsystem() {
+    // m_cameraSystem = cameraSystem;
     m_gyro.enableBoardlevelYawReset(true);
     // We have to wait for the gyro to callibrate before we can reset the gyro
     while (m_gyro.isCalibrating()) {Thread.yield();}
@@ -161,14 +161,14 @@ public class DriveSubsystem extends SubsystemBase {
     m_odometry.update(getUncorrectedRotation2d(), getPositions());
 
     // Integrate fresh PhotonVision pose estimates into odometry.
-    ArrayList<Optional<EstimatedRobotPose>> photonRobotPoseList =
-      m_cameraSystem.getFieldRelativePoseEstimators();
-    ArrayList<EstimatedRobotPose> freshEstimates =
-      m_cameraSystem.selectFreshEstimates(m_photonRobotPoseList, photonRobotPoseList);
-    for (EstimatedRobotPose estimate : freshEstimates) {
-      m_odometry.addVisionMeasurement(estimate.estimatedPose.toPose2d(), estimate.timestampSeconds);
-    }
-    m_photonRobotPoseList = photonRobotPoseList;
+    // ArrayList<Optional<EstimatedRobotPose>> photonRobotPoseList =
+    //   m_cameraSystem.getFieldRelativePoseEstimators();
+    // ArrayList<EstimatedRobotPose> freshEstimates =
+    //   m_cameraSystem.selectFreshEstimates(m_photonRobotPoseList, photonRobotPoseList);
+    // for (EstimatedRobotPose estimate : freshEstimates) {
+    //   m_odometry.addVisionMeasurement(estimate.estimatedPose.toPose2d(), estimate.timestampSeconds);
+    // }
+    // m_photonRobotPoseList = photonRobotPoseList;
 
     // Pose2d pose = getPose();
     // m_field.setRobotPose(pose);
