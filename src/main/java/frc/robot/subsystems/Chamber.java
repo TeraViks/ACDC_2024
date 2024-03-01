@@ -92,6 +92,9 @@ public class Chamber extends SubsystemBase {
 
   public void initializePreloaded() {
     m_state = m_chooser.getSelected();
+    if (m_state == State.CHAMBERED) {
+      m_shooter.idleShooter();
+    }
   }
 
   private void setSpeed(double speed) {
