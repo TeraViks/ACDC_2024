@@ -197,7 +197,7 @@ public class Chamber extends SubsystemBase {
         double currentTimeSeconds = RobotController.getFPGATime() / 1000000.0;
         if (m_shootTimeSeconds + ChamberConstants.kClearingTimeSeconds <= currentTimeSeconds) {
           stopChamber();
-          m_shooter.idleShooter();
+          m_shooter.stopShooter();
         }
         break;
       }
