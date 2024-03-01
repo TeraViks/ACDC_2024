@@ -266,7 +266,7 @@ public final class Constants {
     public static final PID kLeftPID = new PID(0.43, 0.0, 0.0);
     public static final PID kRightPID = new PID(0.43, 0.0, 0.0);
     public static final double kIntakingSpeed = 2.0;
-    public static final double kShootingSpeed = 10.0;
+    public static final double kShootingSpeed = 15.0;
     public static final double kClearingTimeSeconds = 1.0;
     public static final double kAligningSpeed = -1.0;
   }
@@ -292,8 +292,8 @@ public final class Constants {
       / 60.0 /* s */;
     
     public static final PID kPID = new PID(0.08, 0.0, 3);
-    public static final double kIdleSpeed = 15.0; // achieves 9 m/s
-    public static final double kShootingSpeed = 18.0; // achieves 11.5 m/s
+    public static final double kIdleSpeed = 30.0; // achieves 9 m/s
+    public static final double kShootingSpeed = 30.0; // achieves 11.5 m/s
 
     public static final double kShootingTolerance = 0.05;
   }
