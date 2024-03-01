@@ -219,15 +219,18 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     Command selectedCommand = m_chooser.getSelected();
+    Pose2d initialPose;
     
     if (selectedCommand instanceof PathPlannerAuto) {
       PathPlannerAuto selectedAuto = (PathPlannerAuto)selectedCommand;
       Pose2d startingPose = PathPlannerAuto.getStaringPoseFromAutoFile(selectedAuto.getName());
       Pose2d transformedPose = mirrorPose2d(startingPose);
-      m_robotDrive.initOdometry(transformedPose);
+      initialPose = transformedPose;
+    } else {
+      initialPose = new Pose2d();
     }
-
-     return selectedCommand;
+    m_robotDrive.initOdometry(initialPose);
+    return selectedCommand;
   }
 
   private Pose2d mirrorPose2d(Pose2d pose) {
