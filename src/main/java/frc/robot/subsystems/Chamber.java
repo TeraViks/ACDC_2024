@@ -187,14 +187,14 @@ public class Chamber extends SubsystemBase {
       }
       case SHOOTING: {
         if (m_shooter.isReadyToShoot()) {
-          m_shootTimeSeconds = RobotController.getFPGATime();
+          m_shootTimeSeconds = RobotController.getFPGATime() / 1000000.0;
           setSpeed(ChamberConstants.kShootingSpeed);
           m_state = State.CLEARING;
         }
         break;
       }
       case CLEARING: {
-        double currentTimeSeconds = RobotController.getFPGATime();
+        double currentTimeSeconds = RobotController.getFPGATime() / 1000000.0;
         if (m_shootTimeSeconds + ChamberConstants.kClearingTimeSeconds <= currentTimeSeconds) {
           stopChamber();
           m_shooter.idleShooter();
