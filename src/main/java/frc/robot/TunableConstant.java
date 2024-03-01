@@ -5,6 +5,8 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
 public class TunableConstant {
+  private static boolean enableTuning = false;
+
   private static NetworkTable table = NetworkTableInstance.getDefault().getTable("tuning");
   private final NetworkTableEntry m_dashboardEntry;
   private final double m_defaultValue;
@@ -22,6 +24,9 @@ public class TunableConstant {
   }
 
   private void update() {
+    if (!enableTuning) {
+      return;
+    }
     m_currentValue = m_dashboardEntry.getDouble(m_defaultValue);
   }
 
@@ -30,6 +35,9 @@ public class TunableConstant {
   }
 
   public boolean hasChanged() {
+    if (!enableTuning) {
+      return false;
+    }
     double newValue = peek();
     return newValue != m_currentValue;
   }
