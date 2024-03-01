@@ -10,7 +10,6 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Relay;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.VisionConstants;
 
@@ -66,12 +65,12 @@ public class Limelight extends SubsystemBase {
     return m_filteredY;
   }
 
-  private double getDistance() {
-    double noteOffsetAngle_Vertical = getY();
-    double angleToNoteDegrees = VisionConstants.kLimelightMountDegrees + noteOffsetAngle_Vertical;
-    double angleToNoteRadians = Units.degreesToRadians(angleToNoteDegrees);
-    double distanceFromLightToNote = (VisionConstants.kNoteHeightInches - VisionConstants.kLimelightLensHeightInches) / Math.tan(angleToNoteRadians);
+  // private double getDistance() {
+  //   double noteOffsetAngle_Vertical = getY();
+  //   double angleToNoteDegrees = VisionConstants.kLimelightMountDegrees + noteOffsetAngle_Vertical;
+  //   double angleToNoteRadians = Units.degreesToRadians(angleToNoteDegrees);
+  //   double distanceFromLightToNote = (VisionConstants.kNoteHeightInches - VisionConstants.kLimelightLensHeightInches) / Math.tan(angleToNoteRadians);
 
-    return distanceFromLightToNote;
-  }
+  //   return distanceFromLightToNote;
+  // }
 }
