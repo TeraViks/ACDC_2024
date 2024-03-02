@@ -9,6 +9,7 @@ import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.revrobotics.CANSparkBase.ControlType;
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -56,6 +57,7 @@ public class SwerveModule {
     m_driveMotor.setClosedLoopRampRate(SwerveModuleConstants.kDriveMotorRampRate);
     m_driveMotor.setInverted(driveMotorReversed);
     m_driveMotor.setSmartCurrentLimit(SwerveModuleConstants.kDriveMotorCurrentLimit);
+    m_driveMotor.setIdleMode(IdleMode.kBrake);
 
     m_driveEncoder = m_driveMotor.getEncoder();
     m_driveEncoder.setPositionConversionFactor(SwerveModuleConstants.kDrivePositionConversionFactor);
@@ -95,6 +97,7 @@ public class SwerveModule {
     m_turningMotor.setClosedLoopRampRate(SwerveModuleConstants.kTurningMotorRampRate);
     m_turningMotor.setInverted(turningMotorReversed);
     m_turningMotor.setSmartCurrentLimit(SwerveModuleConstants.kTurningMotorCurrentLimit);
+    m_turningMotor.setIdleMode(IdleMode.kBrake);
 
     m_turningEncoder = m_turningMotor.getEncoder();
     m_turningEncoder.setPositionConversionFactor(SwerveModuleConstants.kTurningPositionConversionFactor);
