@@ -25,9 +25,9 @@ import frc.robot.Constants.ShooterConstants;
 // import frc.robot.commands.JoystickTargetNote;
 import frc.robot.commands.PickupCommand;
 import frc.robot.commands.ShooterCommand;
-import frc.robot.subsystems.CameraSubsystem;
+// import frc.robot.subsystems.CameraSubsystem;
 import frc.robot.subsystems.Chamber;
-import frc.robot.subsystems.Climber;
+// import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Intake;
 // import frc.robot.subsystems.Limelight;
@@ -47,7 +47,7 @@ public class RobotContainer {
   private final Intake m_intake = new Intake();
   private final Shooter m_shooter = new Shooter();
   private final Chamber m_chamber = new Chamber(m_intake, m_shooter);
-  private final Climber m_climber = new Climber();
+  // private final Climber m_climber = new Climber();
   private final TunableConstant m_shootingSpeed =
     new TunableConstant("ShootingSpeed", ShooterConstants.kShootingSpeed);
   GenericHID m_driverController = new GenericHID(OIConstants.kDriverControllerPort);
@@ -111,16 +111,16 @@ public class RobotContainer {
         )
       );
 
-      m_climber.setDefaultCommand(
-        new RunCommand(
-          () -> {
-            m_climber.startClimber(
-              getLeftClimbInput(),
-              getRightClimbInput()
-            );
-          }, m_climber
-        )
-      );
+      // m_climber.setDefaultCommand(
+      //   new RunCommand(
+      //     () -> {
+      //       m_climber.startClimber(
+      //         getLeftClimbInput(),
+      //         getRightClimbInput()
+      //       );
+      //     }, m_climber
+      //   )
+      // );
 
       m_chooser.setDefaultOption("Empty Auto", new PathPlannerAuto("Empty Auto"));
       m_chooser.addOption("Zero Note A", new PathPlannerAuto("zero note A"));
