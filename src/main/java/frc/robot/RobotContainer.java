@@ -80,7 +80,7 @@ public class RobotContainer {
   private double getRotationSpeedInput() {
     // Moving the joystick to the right causes positive input, which we negate in order to rotate
     // clockwise.
-    return joystickTransform(m_driverController.getRawAxis(OIConstants.kRightJoyXAxis))
+    return -joystickTransform(m_driverController.getRawAxis(OIConstants.kRightJoyXAxis))
       * OIConstants.kMaxRadPerSec;
   }
 
