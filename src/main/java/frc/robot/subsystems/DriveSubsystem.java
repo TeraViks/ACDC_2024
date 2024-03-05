@@ -25,6 +25,8 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -85,10 +87,8 @@ public class DriveSubsystem extends SubsystemBase {
   // The gyro sensor uses NavX
   private final AHRS m_gyro = new AHRS(SPI.Port.kMXP);
   private Pose2d m_initialPose = new Pose2d();
-  // private CameraSubsystem m_cameraSystem;
-  // private ArrayList<Optional<EstimatedRobotPose>> m_photonRobotPoseList = new ArrayList<>();
-
-  // private Field2d m_field;
+  private CameraSubsystem m_cameraSystem;
+  private ArrayList<Optional<EstimatedRobotPose>> m_photonRobotPoseList = new ArrayList<>();
 
   private SwerveModulePosition[] getPositions() {
     SwerveModulePosition[] positions = Arrays.stream(m_modules)
@@ -107,7 +107,7 @@ public class DriveSubsystem extends SubsystemBase {
         DriveConstants.stateStdDeviations,
         DriveConstants.visionStdDeviations);
 
-  // private final Field2d m_field = new Field2d();
+  private final Field2d m_field = new Field2d();
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
@@ -135,7 +135,7 @@ public class DriveSubsystem extends SubsystemBase {
         this // Reference to this subsystem to set requirements
     );
 
-    // m_field = new Field2d();
+   
   }
 
   public void setPIDSlotID(int slotID) {
@@ -161,20 +161,20 @@ public class DriveSubsystem extends SubsystemBase {
     m_odometry.update(getUncorrectedRotation2d(), getPositions());
 
     // Integrate fresh PhotonVision pose estimates into odometry.
-    // ArrayList<Optional<EstimatedRobotPose>> photonRobotPoseList =
-    //   m_cameraSystem.getFieldRelativePoseEstimators();
-    // ArrayList<EstimatedRobotPose> freshEstimates =
-    //   m_cameraSystem.selectFreshEstimates(m_photonRobotPoseList, photonRobotPoseList);
-    // for (EstimatedRobotPose estimate : freshEstimates) {
-    //   m_odometry.addVisionMeasurement(estimate.estimatedPose.toPose2d(), estimate.timestampSeconds);
-    // }
-    // m_photonRobotPoseList = photonRobotPoseList;
+    ArrayList<Optional<EstimatedRobotPose>> photonRobotPoseList =
+      m_cameraSystem.getFieldRelativePoseEstimators();
+    ArrayList<EstimatedRobotPose> freshEstimates =
+      m_cameraSystem.selectFreshEstimates(m_photonRobotPoseList, photonRobotPoseList);
+    for (EstimatedRobotPose estimate : freshEstimates) {
+      m_odometry.addVisionMeasurement(estimate.estimatedPose.toPose2d(), estimate.timestampSeconds);
+    }
+    m_photonRobotPoseList = photonRobotPoseList;
 
-    // Pose2d pose = getPose();
-    // m_field.setRobotPose(pose);
-    // SmartDashboard.putNumber("X", pose.getX());
-    // SmartDashboard.putNumber("Y", pose.getY());
-    // SmartDashboard.putData("Field", m_field);
+    Pose2d pose = getPose();
+    m_field.setRobotPose(pose);
+    SmartDashboard.putNumber("X", pose.getX());
+    SmartDashboard.putNumber("Y", pose.getY());
+    SmartDashboard.putData("Field", m_field);
   }
 
   private Pose2d getPose() {
