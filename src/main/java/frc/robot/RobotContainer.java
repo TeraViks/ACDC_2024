@@ -42,8 +42,8 @@ import frc.robot.subsystems.Shooter;
 public class RobotContainer {
   public final Limelight m_limelight = new Limelight();
   private final SendableChooser<Command> m_chooser = new SendableChooser<>();
-  // private final CameraSubsystem m_cameraSystem = new CameraSubsystem();
-  public final DriveSubsystem m_robotDrive = new DriveSubsystem();
+  private final CameraSubsystem m_cameraSystem = new CameraSubsystem();
+  public final DriveSubsystem m_robotDrive = new DriveSubsystem(m_cameraSystem);
   private final Intake m_intake = new Intake();
   private final Shooter m_shooter = new Shooter();
   private final Chamber m_chamber = new Chamber(m_intake, m_shooter);
