@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.ShooterConstants;
-// import frc.robot.commands.JoystickTargetNote;
+import frc.robot.commands.JoystickTargetNote;
 import frc.robot.commands.PickupCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.subsystems.CameraSubsystem;
@@ -30,7 +30,7 @@ import frc.robot.subsystems.Chamber;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Intake;
-// import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
 
 /*
@@ -40,7 +40,7 @@ import frc.robot.subsystems.Shooter;
  * (including subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // public final Limelight m_limelight = new Limelight();
+  public final Limelight m_limelight = new Limelight();
   private final SendableChooser<Command> m_chooser = new SendableChooser<>();
   // private final CameraSubsystem m_cameraSystem = new CameraSubsystem();
   public final DriveSubsystem m_robotDrive = new DriveSubsystem();
@@ -138,14 +138,14 @@ public class RobotContainer {
   }
 
   private void configureButtonBindings() {
-    // new JoystickButton(m_driverController, OIConstants.kJoystickTargetNoteButton)
-    //   .debounce(OIConstants.kDebounceSeconds)
-    //   .whileTrue(new JoystickTargetNote(
-    //     m_robotDrive,
-    //     m_limelight,
-    //     () -> getXSpeedInput(),
-    //     () -> getYSpeedInput()
-    //   ));
+    new JoystickButton(m_driverController, OIConstants.kJoystickTargetNoteButton)
+      .debounce(OIConstants.kDebounceSeconds)
+      .whileTrue(new JoystickTargetNote(
+        m_robotDrive,
+        m_limelight,
+        () -> getXSpeedInput(),
+        () -> getYSpeedInput()
+      ));
 
     new JoystickButton(m_operatorController, OIConstants.kIntakeOn)
       .debounce(OIConstants.kDebounceSeconds)
