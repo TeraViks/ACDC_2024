@@ -17,8 +17,8 @@ public class Limelight extends SubsystemBase {
   private NetworkTable m_table = NetworkTableInstance.getDefault().getTable("limelight");
   private NetworkTableEntry m_tx = m_table.getEntry("tx");
   private NetworkTableEntry m_ty = m_table.getEntry("ty");
-  // private NetworkTableEntry m_ta = m_table.getEntry("ta");
-  // private NetworkTableEntry m_tv = m_table.getEntry("tv");
+  private NetworkTableEntry m_ta = m_table.getEntry("ta");
+  private NetworkTableEntry m_tv = m_table.getEntry("tv");
 
   private MedianFilter m_xFilter = new MedianFilter(5);
   private MedianFilter m_yFilter = new MedianFilter(5);
@@ -43,18 +43,18 @@ public class Limelight extends SubsystemBase {
   public void periodic() {
     double x = m_tx.getDouble(0.0);
     double y = m_ty.getDouble(0.0);
-    // double area = m_ta.getDouble(0.0);
-    // double v = m_tv.getDouble(0.0);
+    double area = m_ta.getDouble(0.0);
+    double v = m_tv.getDouble(0.0);
 
     m_filteredX = m_xFilter.calculate(x);
     m_filteredY = m_yFilter.calculate(y);
 
-    // SmartDashboard.putNumber("LimeLightX", m_filteredX);
-    // SmartDashboard.putNumber("LimeLightY", m_filteredY);
-    // SmartDashboard.putNumber("LimeLightArea", area);
-    // SmartDashboard.putBoolean("Note", v == 1);
-    // var distance = getDistance();
-    // SmartDashboard.putNumber("Distance to Note (in)", distance);
+    SmartDashboard.putNumber("LimeLightX", m_filteredX);
+    SmartDashboard.putNumber("LimeLightY", m_filteredY);
+    SmartDashboard.putNumber("LimeLightArea", area);
+    SmartDashboard.putBoolean("Note", v == 1);
+    var distance = getDistance();
+    SmartDashboard.putNumber("Distance to Note (in)", distance);
   }
 
   public double getX() {
