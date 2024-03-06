@@ -33,9 +33,6 @@ public class JoystickTargetNote extends Command {
       DriveConstants.kMaxAngularSpeedRadiansPerSecond,
       DriveConstants.kMaxAngularAccelerationRadiansPerSecondSquared));
 
-  private TunableDouble m_targetVelocityCoefficient =
-    new TunableDouble("kTargetCoefficient", VisionConstants.kTargetCoefficient);
-
   public JoystickTargetNote(DriveSubsystem drive, Limelight limelight,
       Supplier<Double> xVelocitySupplier, Supplier<Double> yVelocitySupplier) {
     m_drive = drive;

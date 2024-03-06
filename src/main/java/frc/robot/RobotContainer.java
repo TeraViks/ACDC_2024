@@ -24,6 +24,7 @@ import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.JoystickTargetNote;
+import frc.robot.commands.JoystickTargetSpeaker;
 import frc.robot.commands.PickupCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.subsystems.CameraSubsystem;
@@ -146,6 +147,17 @@ public class RobotContainer {
       .whileTrue(new JoystickTargetNote(
         m_robotDrive,
         m_limelight,
+        () -> getXSpeedInput(),
+        () -> getYSpeedInput()
+      ));
+
+    new JoystickButton(m_driverController, OIConstants.kJoystickTargetSpeakerButton)
+      .debounce(OIConstants.kDebounceSeconds)
+      .whileTrue(new JoystickTargetSpeaker(
+        m_robotDrive,
+        m_chamber,
+        m_shooter,
+        m_driverController,
         () -> getXSpeedInput(),
         () -> getYSpeedInput()
       ));

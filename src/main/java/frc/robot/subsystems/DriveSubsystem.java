@@ -179,7 +179,7 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putData("Field", m_field);
   }
 
-  private Pose2d getPose() {
+  public Pose2d getPose() {
     return m_odometry.getEstimatedPosition();
   }
 
