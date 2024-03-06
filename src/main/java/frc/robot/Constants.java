@@ -21,6 +21,11 @@ import edu.wpi.first.math.util.Units;
 public final class Constants {
   public static final double kDt = 0.02;
   public static final boolean kBurnMotors = false;
+
+  // Tunable constants are disabled unless this is set to true.
+  // Intended to remain false in committed code.
+  public static final boolean kEnableTuning = false;
+
   public static final class DriveConstants {
     public static final int kFrontLeftDriveMotorPort = 1; //Q1
     public static final int kRearLeftDriveMotorPort = 2; //Q2
