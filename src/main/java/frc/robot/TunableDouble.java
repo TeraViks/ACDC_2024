@@ -12,13 +12,21 @@ public class TunableDouble {
   
   public TunableDouble(String key, double defaultValue) {
     m_defaultValue = defaultValue;
-    m_dashboardEntry = table.getEntry(key);
-    m_dashboardEntry.setNumber(defaultValue);
+    if (Constants.kEnableTuning) {
+      m_dashboardEntry = table.getEntry(key);
+      m_dashboardEntry.setNumber(defaultValue);
+    } else {
+      m_dashboardEntry = null;
+    }
   }
 
   public double get() {
-    update();
-    return m_currentValue;
+    if (Constants.kEnableTuning) {
+      update();
+      return m_currentValue;
+    } else {
+      return m_defaultValue;
+    }
   }
 
   private void update() {
@@ -30,7 +38,11 @@ public class TunableDouble {
   }
 
   public boolean hasChanged() {
-    double newValue = peek();
-    return newValue != m_currentValue;
+    if (Constants.kEnableTuning) {
+      double newValue = peek();
+      return newValue != m_currentValue;
+    } else {
+      return false;
+    }
   }
 }
