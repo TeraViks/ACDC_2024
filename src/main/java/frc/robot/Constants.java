@@ -6,6 +6,8 @@ package frc.robot;
 
 import com.pathplanner.lib.util.PIDConstants;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -214,7 +216,10 @@ public final class Constants {
   }
 
   public static final class FieldConstants {
-    public static final double kMaxX = 16.54;
+    public static final AprilTagFieldLayout kAprilTagFieldLayout =
+      AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
+
+    public static final double kMaxX = kAprilTagFieldLayout.getFieldLength();
   }
 
   public static final class PhotonVisionConstants {
