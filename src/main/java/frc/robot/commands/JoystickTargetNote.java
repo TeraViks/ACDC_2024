@@ -20,13 +20,13 @@ public class JoystickTargetNote extends Command {
   private final Supplier<Double> m_xVelocitySupplier;
   private final Supplier<Double> m_yVelocitySupplier;
 
-  private ProfiledPIDController thetaController = new ProfiledPIDController(
-      SwerveModule.tunableTeleopTurningPID.get().p(),
-      SwerveModule.tunableTeleopTurningPID.get().i(),
-      SwerveModule.tunableTeleopTurningPID.get().i(),
-      new TrapezoidProfile.Constraints(
-        DriveConstants.kMaxAngularSpeedRadiansPerSecond,
-        DriveConstants.kMaxAngularAccelerationRadiansPerSecondSquared));
+  private ProfiledPIDController m_thetaController = new ProfiledPIDController(
+    SwerveModule.tunableTeleopTurningPID.get().p(),
+    SwerveModule.tunableTeleopTurningPID.get().i(),
+    SwerveModule.tunableTeleopTurningPID.get().i(),
+    new TrapezoidProfile.Constraints(
+      DriveConstants.kMaxAngularSpeedRadiansPerSecond,
+      DriveConstants.kMaxAngularAccelerationRadiansPerSecondSquared));
 
   private TunableDouble m_targetVelocityCoefficient =
     new TunableDouble("kTargetCoefficient", VisionConstants.kTargetCoefficient);
@@ -36,7 +36,8 @@ public class JoystickTargetNote extends Command {
     new TunableDouble("Max Angular Acceleration",
       DriveConstants.kMaxAngularAccelerationRadiansPerSecondSquared);
 
-  public JoystickTargetNote(DriveSubsystem drive, Limelight limelight, Supplier<Double> xVelocitySupplier, Supplier<Double> yVelocitySupplier) {
+  public JoystickTargetNote(DriveSubsystem drive, Limelight limelight,
+      Supplier<Double> xVelocitySupplier, Supplier<Double> yVelocitySupplier) {
     m_drive = drive;
     m_limelight = limelight;
     m_xVelocitySupplier = xVelocitySupplier;
@@ -46,8 +47,8 @@ public class JoystickTargetNote extends Command {
 
   @Override
   public void initialize() {
-    thetaController.reset(0);
-    thetaController.setTolerance(VisionConstants.kTargetingTolerance);
+    m_thetaController.reset(0);
+    m_thetaController.setTolerance(VisionConstants.kTargetingTolerance);
     m_limelight.lightsOn();
   }
 
@@ -55,7 +56,8 @@ public class JoystickTargetNote extends Command {
   public void execute() {
     updateConstants();
     double x = m_limelight.getX();
-    double thetaVelocity = thetaController.calculate(Units.degreesToRadians(x)) * m_targetVelocityCoefficient.get();
+    double thetaVelocity =
+      m_thetaController.calculate(Units.degreesToRadians(x)) * m_targetVelocityCoefficient.get();
     m_drive.drive(
       m_xVelocitySupplier.get(),
       m_yVelocitySupplier.get(),
@@ -66,12 +68,13 @@ public class JoystickTargetNote extends Command {
 
   private void updateConstants() {
     if (m_maxAngularSpeed.hasChanged() || m_maxAngularAcceleration.hasChanged()) {
-      thetaController.setConstraints(new TrapezoidProfile.Constraints(m_maxAngularSpeed.get(), m_maxAngularAcceleration.get()));
+      m_thetaController.setConstraints(
+        new TrapezoidProfile.Constraints(m_maxAngularSpeed.get(), m_maxAngularAcceleration.get()));
     }
 
     if (SwerveModule.tunableTeleopTurningPID.hasChanged()) {
       PID pid = SwerveModule.tunableTeleopTurningPID.get();
-      thetaController.setPID(pid.p(), pid.i(), pid.d());
+      m_thetaController.setPID(pid.p(), pid.i(), pid.d());
     }
   }
 
