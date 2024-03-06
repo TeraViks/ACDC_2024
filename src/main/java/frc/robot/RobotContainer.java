@@ -49,8 +49,8 @@ public class RobotContainer {
   private final Shooter m_shooter = new Shooter();
   private final Chamber m_chamber = new Chamber(m_intake, m_shooter);
   private final Climber m_climber = new Climber();
-  private final TunableConstant m_shootingSpeed =
-    new TunableConstant("ShootingSpeed", ShooterConstants.kShootingSpeed);
+  private final TunableDouble m_shootingSpeed =
+    new TunableDouble("ShootingSpeed", ShooterConstants.kShootingSpeed);
   GenericHID m_driverController = new GenericHID(OIConstants.kDriverControllerPort);
   GenericHID m_operatorController = new GenericHID(OIConstants.kOperatorControllerPort);
 

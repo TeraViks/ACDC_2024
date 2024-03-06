@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ChamberConstants;
 import frc.robot.Constants.ShooterConstants;
-import frc.robot.TunableConstant;
+import frc.robot.TunableDouble;
 import frc.robot.Utilities;
 
 public class Chamber extends SubsystemBase {
@@ -29,8 +29,8 @@ public class Chamber extends SubsystemBase {
   private final DigitalInput m_noteDetectedSensor;
   private final SendableChooser<State> m_chooser = new SendableChooser<>();
 
-  private final TunableConstant m_intakingSpeed =
-    new TunableConstant("Chamber.intakingSpeed", ChamberConstants.kIntakingSpeed);
+  private final TunableDouble m_intakingSpeed =
+    new TunableDouble("Chamber.intakingSpeed", ChamberConstants.kIntakingSpeed);
 
   private enum State {
     // The chamber controls the intake/chamber/shooter such that they progress in lockstep through

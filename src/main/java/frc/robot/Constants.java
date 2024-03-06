@@ -146,6 +146,7 @@ public final class Constants {
     public static final PID kAutoTurningPID = new PID(0.5, 0.0, 0.0);
 
     public static final PID kTeleopDrivePID = new PID(0.375, 0.0, 0.0);
+    // Use SwerveModule.tunableTeleopTurningPID rather than directly using this field.
     public static final PID kTeleopTurningPID = new PID(0.375, 0.0, 0.0);
 
     public static final int kDriveMotorCurrentLimit = 40;

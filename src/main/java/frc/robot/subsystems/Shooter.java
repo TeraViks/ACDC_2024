@@ -13,7 +13,7 @@ import com.revrobotics.SparkPIDController;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
-import frc.robot.TunableConstant;
+import frc.robot.TunableDouble;
 import frc.robot.Utilities;
 
 public class Shooter extends SubsystemBase {
@@ -24,8 +24,8 @@ public class Shooter extends SubsystemBase {
   private final SparkPIDController m_leftPIDController;
   private final SparkPIDController m_rightPIDController;
 
-  private final TunableConstant m_idleSpeed =
-    new TunableConstant("Shooter.idleSpeed", ShooterConstants.kIdleSpeed);
+  private final TunableDouble m_idleSpeed =
+    new TunableDouble("Shooter.idleSpeed", ShooterConstants.kIdleSpeed);
 
   private double m_idealLeftSpeed;
   private double m_idealRightSpeed;
