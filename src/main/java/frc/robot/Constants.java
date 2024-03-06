@@ -213,12 +213,15 @@ public final class Constants {
   }
   
   public static final class VisionConstants {
-    public static final double kTargetingTolerance = Units.degreesToRadians(3.0);
     public static final double kLimelightMountDegrees = -20.0;
     public static final double kLimelightLensHeightInches = 16.25;
     public static final double kNoteHeightInches = 2.0;
-    public static final double kTargetCoefficient = 30.0;
     public static final int kRelayPort = 3;
+  }
+
+  public static final class TargetConstants {
+    public static final double kAngularTolerance = Units.degreesToRadians(3.0);
+    public static final double kAngularVelocityCoefficient = 30.0;
   }
 
   public static final class FieldConstants {

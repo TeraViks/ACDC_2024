@@ -7,7 +7,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.Constants.VisionConstants;
+import frc.robot.Constants.TargetConstants;
 import frc.robot.PID;
 import frc.robot.TunableDouble;
 import frc.robot.subsystems.DriveSubsystem;
@@ -15,6 +15,11 @@ import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.SwerveModule;
 
 public class JoystickTargetNote extends Command {
+  // Also used by JoystickTargetSpeaker.
+  public static TunableDouble targetAngularVelocityCoefficient =
+    new TunableDouble("Target.angularVelocityCoefficient",
+      TargetConstants.kAngularVelocityCoefficient);
+
   private final DriveSubsystem m_drive;
   private final Limelight m_limelight;
   private final Supplier<Double> m_xVelocitySupplier;
@@ -43,7 +48,7 @@ public class JoystickTargetNote extends Command {
   @Override
   public void initialize() {
     m_thetaController.reset(0);
-    m_thetaController.setTolerance(VisionConstants.kTargetingTolerance);
+    m_thetaController.setTolerance(TargetConstants.kAngularTolerance);
     m_limelight.lightsOn();
   }
 
@@ -52,7 +57,7 @@ public class JoystickTargetNote extends Command {
     updateConstants();
     double x = m_limelight.getX();
     double thetaVelocity =
-      m_thetaController.calculate(Units.degreesToRadians(x)) * m_targetVelocityCoefficient.get();
+      m_thetaController.calculate(Units.degreesToRadians(x)) * targetAngularVelocityCoefficient.get();
     m_drive.drive(
       m_xVelocitySupplier.get(),
       m_yVelocitySupplier.get(),
