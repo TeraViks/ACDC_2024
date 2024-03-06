@@ -12,7 +12,7 @@ import com.revrobotics.SparkPIDController;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
-import frc.robot.TunableConstant;
+import frc.robot.TunableDouble;
 import frc.robot.Utilities;
 
 public class Intake extends SubsystemBase {
@@ -23,8 +23,8 @@ public class Intake extends SubsystemBase {
   private final SparkPIDController m_topPIDController;
   private final SparkPIDController m_bottomPIDController;
 
-  private final TunableConstant m_speed =
-    new TunableConstant("Intake.speed", IntakeConstants.kSpeed);
+  private final TunableDouble m_speed =
+    new TunableDouble("Intake.speed", IntakeConstants.kSpeed);
 
   public Intake() {
     m_topMotor = new CANSparkMax(IntakeConstants.kTopMotorID, MotorType.kBrushless);

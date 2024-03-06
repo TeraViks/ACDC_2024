@@ -4,13 +4,13 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
-public class TunableConstant {
+public class TunableDouble {
   private static NetworkTable table = NetworkTableInstance.getDefault().getTable("tuning");
   private final NetworkTableEntry m_dashboardEntry;
   private final double m_defaultValue;
   private double m_currentValue;
   
-  public TunableConstant(String key, double defaultValue) {
+  public TunableDouble(String key, double defaultValue) {
     m_defaultValue = defaultValue;
     m_dashboardEntry = table.getEntry(key);
     m_dashboardEntry.setNumber(defaultValue);

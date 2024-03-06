@@ -20,10 +20,15 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import frc.robot.Constants.SwerveModuleConstants;
+import frc.robot.PID;
+import frc.robot.TunablePID;
 import frc.robot.Utilities;
 import frc.robot.ValueCache;
 
 public class SwerveModule {
+  public static TunablePID tunableTeleopTurningPID =
+    new TunablePID("TeleopTurning", SwerveModuleConstants.kTeleopTurningPID);
+
   private final CANSparkMax m_driveMotor;
   private final CANSparkMax m_turningMotor;
 
@@ -124,9 +129,10 @@ public class SwerveModule {
     m_turningPidController.setI(SwerveModuleConstants.kAutoTurningPID.i(), SwerveModuleConstants.kAutoPIDSlotID);
     m_turningPidController.setD(SwerveModuleConstants.kAutoTurningPID.d(), SwerveModuleConstants.kAutoPIDSlotID);
     // Teleop turning PID
-    m_turningPidController.setP(SwerveModuleConstants.kTeleopTurningPID.p(), SwerveModuleConstants.kTeleopPIDSlotID);
-    m_turningPidController.setI(SwerveModuleConstants.kTeleopTurningPID.i(), SwerveModuleConstants.kTeleopPIDSlotID);
-    m_turningPidController.setD(SwerveModuleConstants.kTeleopTurningPID.d(), SwerveModuleConstants.kTeleopPIDSlotID);
+    PID teleopTurningPID = tunableTeleopTurningPID.get();
+    m_turningPidController.setP(teleopTurningPID.p(), SwerveModuleConstants.kTeleopPIDSlotID);
+    m_turningPidController.setI(teleopTurningPID.i(), SwerveModuleConstants.kTeleopPIDSlotID);
+    m_turningPidController.setD(teleopTurningPID.d(), SwerveModuleConstants.kTeleopPIDSlotID);
     Utilities.burnMotor(m_turningMotor);
   }
 

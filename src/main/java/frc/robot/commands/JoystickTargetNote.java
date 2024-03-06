@@ -7,11 +7,12 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.Constants.SwerveModuleConstants;
 import frc.robot.Constants.VisionConstants;
-import frc.robot.TunableConstant;
+import frc.robot.PID;
+import frc.robot.TunableDouble;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.SwerveModule;
 
 public class JoystickTargetNote extends Command {
   private final DriveSubsystem m_drive;
@@ -20,19 +21,20 @@ public class JoystickTargetNote extends Command {
   private final Supplier<Double> m_yVelocitySupplier;
 
   private ProfiledPIDController thetaController = new ProfiledPIDController(
-      SwerveModuleConstants.kTeleopTurningPID.p(),
-      SwerveModuleConstants.kTeleopTurningPID.i(),
-      SwerveModuleConstants.kTeleopTurningPID.d(),
+      SwerveModule.tunableTeleopTurningPID.get().p(),
+      SwerveModule.tunableTeleopTurningPID.get().i(),
+      SwerveModule.tunableTeleopTurningPID.get().i(),
       new TrapezoidProfile.Constraints(
         DriveConstants.kMaxAngularSpeedRadiansPerSecond,
         DriveConstants.kMaxAngularAccelerationRadiansPerSecondSquared));
 
-  private TunableConstant targetVelocityCoefficient = new TunableConstant("kTargetCoefficient", VisionConstants.kTargetCoefficient);
-  private TunableConstant maxAngularSpeed = new TunableConstant("Max Angular Speed", DriveConstants.kMaxAngularSpeedRadiansPerSecond);
-  private TunableConstant maxAngularAcceleration = new TunableConstant("Max Angular Acceleration", DriveConstants.kMaxAngularAccelerationRadiansPerSecondSquared);
-  private TunableConstant p = new TunableConstant("kP", SwerveModuleConstants.kTeleopTurningPID.p());
-  private TunableConstant i = new TunableConstant("kI", SwerveModuleConstants.kTeleopTurningPID.i());
-  private TunableConstant d = new TunableConstant("kD", SwerveModuleConstants.kTeleopTurningPID.d());
+  private TunableDouble m_targetVelocityCoefficient =
+    new TunableDouble("kTargetCoefficient", VisionConstants.kTargetCoefficient);
+  private TunableDouble m_maxAngularSpeed =
+    new TunableDouble("Max Angular Speed", DriveConstants.kMaxAngularSpeedRadiansPerSecond);
+  private TunableDouble m_maxAngularAcceleration =
+    new TunableDouble("Max Angular Acceleration",
+      DriveConstants.kMaxAngularAccelerationRadiansPerSecondSquared);
 
   public JoystickTargetNote(DriveSubsystem drive, Limelight limelight, Supplier<Double> xVelocitySupplier, Supplier<Double> yVelocitySupplier) {
     m_drive = drive;
@@ -53,7 +55,7 @@ public class JoystickTargetNote extends Command {
   public void execute() {
     updateConstants();
     double x = m_limelight.getX();
-    double thetaVelocity = thetaController.calculate(Units.degreesToRadians(x)) * targetVelocityCoefficient.get();
+    double thetaVelocity = thetaController.calculate(Units.degreesToRadians(x)) * m_targetVelocityCoefficient.get();
     m_drive.drive(
       m_xVelocitySupplier.get(),
       m_yVelocitySupplier.get(),
@@ -63,12 +65,13 @@ public class JoystickTargetNote extends Command {
   }
 
   private void updateConstants() {
-    if (maxAngularSpeed.hasChanged() || maxAngularAcceleration.hasChanged()) {
-      thetaController.setConstraints(new TrapezoidProfile.Constraints(maxAngularSpeed.get(), maxAngularAcceleration.get()));
+    if (m_maxAngularSpeed.hasChanged() || m_maxAngularAcceleration.hasChanged()) {
+      thetaController.setConstraints(new TrapezoidProfile.Constraints(m_maxAngularSpeed.get(), m_maxAngularAcceleration.get()));
     }
 
-    if (p.hasChanged() || i.hasChanged() || d.hasChanged()) {
-      thetaController.setPID(p.get(), i.get(), d.get());
+    if (SwerveModule.tunableTeleopTurningPID.hasChanged()) {
+      PID pid = SwerveModule.tunableTeleopTurningPID.get();
+      thetaController.setPID(pid.p(), pid.i(), pid.d());
     }
   }
 
