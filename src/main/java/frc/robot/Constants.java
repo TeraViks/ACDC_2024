@@ -6,10 +6,12 @@ package frc.robot;
 
 import com.pathplanner.lib.util.PIDConstants;
 
+import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.Vector;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
@@ -187,7 +189,8 @@ public final class Constants {
     public static final int kRightJoyXAxis = 4;
     public static final int kRightJoyYAxis = 5;
 
-    public static final int kJoystickTargetNoteButton = kY;
+    public static final int kJoystickTargetNoteButton = kA;
+    public static final int kJoystickTargetSpeakerButton = kY;
     public static final int kEjectButton = kRightBumper;
     public static final int kShootButton = kRightBumper;
 
@@ -220,6 +223,11 @@ public final class Constants {
   }
 
   public static final class TargetConstants {
+    public static final double kMinPossibleShootingDistance = 2.39;
+    public static final double kMinGoodShootingDistance = 2.54;
+    public static final double kMaxGoodShootingDistance = 3.56;
+    public static final double kMaxPossibleShootingDistance = 4.01;
+
     public static final double kAngularTolerance = Units.degreesToRadians(3.0);
     public static final double kAngularVelocityCoefficient = 30.0;
   }
@@ -229,6 +237,18 @@ public final class Constants {
       AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
 
     public static final double kMaxX = kAprilTagFieldLayout.getFieldLength();
+
+    private static Translation2d getAprilTagTranslation(AprilTagFieldLayout fieldLayout, int aprilTagID) {
+      for (AprilTag aprilTag : fieldLayout.getTags()) {
+        if (aprilTag.ID == aprilTagID) {
+          return new Translation2d(aprilTag.pose.getX(), aprilTag.pose.getY());
+        }
+      }
+      assert(false);
+      return new Translation2d();
+    }
+    public static final Translation2d kBlueSpeaker = getAprilTagTranslation(kAprilTagFieldLayout, 7);
+    public static final Translation2d kRedSpeaker = getAprilTagTranslation(kAprilTagFieldLayout, 4);
   }
 
   public static final class PhotonVisionConstants {
