@@ -16,9 +16,8 @@ import org.photonvision.estimation.TargetModel;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.PhotonVisionConstants;
 
 public class CameraSubsystem extends SubsystemBase {
@@ -30,15 +29,13 @@ public class CameraSubsystem extends SubsystemBase {
   PhotonPipelineResult m_resultCam2;
   Optional<PhotonTrackedTarget> m_lowestAmbiguityTarget;
 
-  AprilTagFieldLayout m_aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
-
   public CameraSubsystem() {
     m_camera1 = new PhotonCamera(PhotonVisionConstants.kCameraName1);
     m_camera2 = new PhotonCamera(PhotonVisionConstants.kCameraName2);
 
     m_photonPoseEstimatorCam1 = 
       new PhotonPoseEstimator(
-        m_aprilTagFieldLayout,
+        FieldConstants.kAprilTagFieldLayout,
         PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
         m_camera1,
         PhotonVisionConstants.kRobotToCamera1Transform
@@ -46,7 +43,7 @@ public class CameraSubsystem extends SubsystemBase {
 
     m_photonPoseEstimatorCam2 =
       new PhotonPoseEstimator(
-        m_aprilTagFieldLayout,
+        FieldConstants.kAprilTagFieldLayout,
         PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
         m_camera2,
         PhotonVisionConstants.kRobotToCamera2Transform
