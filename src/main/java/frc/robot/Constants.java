@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import java.util.List;
+import java.util.Map;
+
 import com.pathplanner.lib.util.PIDConstants;
 
 import edu.wpi.first.apriltag.AprilTag;
@@ -11,7 +14,6 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.Vector;
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
@@ -234,8 +236,36 @@ public final class Constants {
   }
 
   public static final class FieldConstants {
+    private static final AprilTagFieldLayout loadTransformedAprilTagFieldLayout() {
+      final AprilTagFieldLayout rawLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
+      List<AprilTag> aprilTags = List.of();
+      Map<Integer, Rotation3d> rotations = Map.of(
+        // In order to adjust an AprilTag's rotation, specify non-zero roll/pitch/yaw, as viewed
+        // from perspective of the field XYZ axes. For example, if the blue speaker AprilTag is
+        // tilted upward by 2 degrees:
+        //
+        //   7, new Rotation3d(0.0, Units.degreesToRadians(-2.0), 0.0)
+        //
+        // The same upward tilt for the red speaker AprilTag would be corrected as such:
+        //
+        //   4, new Rotation3d(0.0, Units.degreesToRadians(2.0), 0.0)
+      );
+      for (AprilTag aprilTag : rawLayout.getTags()) {
+        AprilTag rotatedAprilTag;
+        if (rotations.containsKey(aprilTag.ID)) {
+          rotatedAprilTag =
+            new AprilTag(aprilTag.ID, aprilTag.pose.rotateBy(rotations.get(aprilTag.ID)));
+        } else {
+          rotatedAprilTag = aprilTag;
+        }
+        aprilTags.add(rotatedAprilTag);
+      }
+
+      return new AprilTagFieldLayout(
+        aprilTags, rawLayout.getFieldLength(), rawLayout.getFieldWidth());
+    }
     public static final AprilTagFieldLayout kAprilTagFieldLayout =
-      AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
+      loadTransformedAprilTagFieldLayout();
 
     public static final double kMaxX = kAprilTagFieldLayout.getFieldLength();
 
