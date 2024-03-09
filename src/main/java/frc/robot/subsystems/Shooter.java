@@ -75,9 +75,9 @@ public class Shooter extends SubsystemBase {
     Utilities.burnMotor(m_rightMotor);
   }
 
-  private void setSpeeds(double leftSpeed, double rightSpeed) {
-    m_idealLeftSpeed = leftSpeed;
-    m_idealRightSpeed = rightSpeed;
+  private void setSpeeds(double speed) {
+    m_idealLeftSpeed = speed + ShooterConstants.kSpinSpeed;
+    m_idealRightSpeed = speed - ShooterConstants.kSpinSpeed;
     m_rightPIDController.setReference(m_idealRightSpeed, ControlType.kVelocity);
     m_leftPIDController.setReference(m_idealLeftSpeed, ControlType.kVelocity);
   }
@@ -92,12 +92,12 @@ public class Shooter extends SubsystemBase {
 
   public void idleShooter() {
     double idleSpeed = m_idleSpeed.get();
-    setSpeeds(idleSpeed, idleSpeed);
+    setSpeeds(idleSpeed);
     m_state = State.IDLING;
   }
 
-  public void revShooter(double leftSpeed, double rightSpeed) {
-    setSpeeds(leftSpeed, rightSpeed);
+  public void revShooter(double speed) {
+    setSpeeds(speed);
     m_state = State.REVVING;
   }
 

@@ -200,7 +200,7 @@ public class RobotContainer {
       .onTrue(Commands.runOnce(
         () -> {
           double speed = m_shootingSpeed.get();
-          m_chamber.shootNote(speed, speed);
+          m_chamber.shootNote(speed);
         },
         m_chamber, m_shooter
       ));

@@ -100,7 +100,7 @@ public class JoystickTargetSpeaker extends Command {
   private void revShooter(double speakerDistance) {
     if (m_chamber.isNoteChambered()) {
       double shooterSpeed = ShooterInterp.distanceToSpeed(speakerDistance);
-      m_shooter.revShooter(shooterSpeed, shooterSpeed);
+      m_shooter.revShooter(shooterSpeed);
     }
   }
 

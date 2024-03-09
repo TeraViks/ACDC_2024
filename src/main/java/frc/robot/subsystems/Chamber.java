@@ -145,10 +145,10 @@ public class Chamber extends SubsystemBase {
     }
   }
 
-  public boolean shootNote(double leftSpeed, double rightSpeed) {
+  public boolean shootNote(double speed) {
     switch (m_state) {
       case CHAMBERED: {
-        m_shooter.revShooter(leftSpeed, rightSpeed);
+        m_shooter.revShooter(speed);
         m_state = State.SHOOTING;
         return false;
       }
@@ -157,7 +157,7 @@ public class Chamber extends SubsystemBase {
   }
 
   public boolean ejectNote() {
-    return (shootNote(ShooterConstants.kIdleSpeed, ShooterConstants.kIdleSpeed));
+    return (shootNote(ShooterConstants.kIdleSpeed));
   }
 
   @Override
