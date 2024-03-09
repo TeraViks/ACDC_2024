@@ -142,6 +142,12 @@ public class RobotContainer {
   }
 
   private void configureButtonBindings() {
+    new JoystickButton(m_driverController, OIConstants.kZeroGyro)
+      .debounce(OIConstants.kDebounceSeconds)
+      .onTrue(Commands.runOnce(
+        () -> m_robotDrive.zeroGyro()
+      ));
+
     new JoystickButton(m_driverController, OIConstants.kJoystickTargetNoteButton)
       .debounce(OIConstants.kDebounceSeconds)
       .whileTrue(new JoystickTargetNote(

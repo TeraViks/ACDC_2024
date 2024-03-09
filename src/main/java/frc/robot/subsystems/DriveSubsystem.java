@@ -254,7 +254,7 @@ public class DriveSubsystem extends SubsystemBase {
     return states;
   }
 
-  private void zeroGyro() {
+  public void zeroGyro() {
     m_gyro.reset();
   }
 
