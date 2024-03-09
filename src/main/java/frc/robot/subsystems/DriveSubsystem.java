@@ -225,6 +225,12 @@ public class DriveSubsystem extends SubsystemBase {
     setModuleStates(swerveModuleStates);
   }
 
+  public void stop() {
+    for (int i = 0; i < m_modules.length; i++) {
+      m_modules[i].stop();
+    }
+  }
+
   private void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
     ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(robotRelativeSpeeds, Constants.kDt);
 
