@@ -333,6 +333,8 @@ public final class Constants {
     public static final double kIdleSpeed = 15.0;
     public static final double kShootingSpeed = 25.0;
 
+    public static final double kSpinSpeed = 0.0;
+
     public static final double kShootingTolerance = 0.05;
   }
 
