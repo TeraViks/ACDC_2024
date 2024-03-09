@@ -148,6 +148,11 @@ public class SwerveModule {
     );
   }
 
+  public void stop() {
+    m_driveMotor.stopMotor();
+    m_turningMotor.stopMotor();
+  }
+
   public void setDesiredState(SwerveModuleState desiredState) {
     // Optimize the reference state to avoid spinning further than 90 degrees. Note that providing
     // m_prevAngle as the current angle is not as truthful as providing getRotation2d(), because the
