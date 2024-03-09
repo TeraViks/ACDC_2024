@@ -19,6 +19,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import frc.robot.Constants.SwerveModuleConstants;
+import frc.robot.Utilities;
 import frc.robot.ValueCache;
 
 public class SwerveModule {
@@ -89,6 +90,8 @@ public class SwerveModule {
       new ValueCache<Double>(() -> {
         return m_absoluteRotationEncoder.getAbsolutePosition().getValue();
       }, SwerveModuleConstants.kValueCacheTtlMicroseconds);
+    Utilities.burnMotor(m_driveMotor);
+
 
     m_turningMotor = new CANSparkMax(turningMotorChannel, MotorType.kBrushless);
     m_turningMotor.restoreFactoryDefaults();
@@ -121,6 +124,7 @@ public class SwerveModule {
     m_turningPidController.setP(SwerveModuleConstants.kTeleopTurningPID.p(), SwerveModuleConstants.kTeleopPIDSlotID);
     m_turningPidController.setI(SwerveModuleConstants.kTeleopTurningPID.i(), SwerveModuleConstants.kTeleopPIDSlotID);
     m_turningPidController.setD(SwerveModuleConstants.kTeleopTurningPID.d(), SwerveModuleConstants.kTeleopPIDSlotID);
+    Utilities.burnMotor(m_turningMotor);
   }
 
   public void setPIDSlotID(int slotID) {

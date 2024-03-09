@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ChamberConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.TunableConstant;
+import frc.robot.Utilities;
 
 public class Chamber extends SubsystemBase {
   private final CANSparkMax m_leftMotor;
@@ -67,6 +68,7 @@ public class Chamber extends SubsystemBase {
     m_leftPIDController.setI(ChamberConstants.kLeftPID.i(), 0);
     m_leftPIDController.setD(ChamberConstants.kLeftPID.d(), 0);
     m_leftPIDController.setFF(0);
+    Utilities.burnMotor(m_leftMotor);
 
     m_rightMotor = new CANSparkMax(ChamberConstants.kRightMotorID, MotorType.kBrushless);
     m_rightMotor.restoreFactoryDefaults();
@@ -83,6 +85,7 @@ public class Chamber extends SubsystemBase {
     m_rightPIDController.setI(ChamberConstants.kRightPID.i(), 0);
     m_rightPIDController.setD(ChamberConstants.kRightPID.d(), 0);
     m_rightPIDController.setFF(0);
+    Utilities.burnMotor(m_rightMotor);
 
     m_noteDetectedSensor = new DigitalInput(ChamberConstants.kSensorID);
 

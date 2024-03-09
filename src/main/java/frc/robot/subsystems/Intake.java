@@ -13,6 +13,7 @@ import com.revrobotics.SparkPIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.TunableConstant;
+import frc.robot.Utilities;
 
 public class Intake extends SubsystemBase {
   private final CANSparkMax m_topMotor;
@@ -38,6 +39,7 @@ public class Intake extends SubsystemBase {
     m_topPIDController.setI(IntakeConstants.kTopPID.i(), 0);
     m_topPIDController.setD(IntakeConstants.kTopPID.d(), 0);
     m_topPIDController.setFF(0);
+    Utilities.burnMotor(m_topMotor);
 
     m_bottomMotor = new CANSparkMax(IntakeConstants.kBottomMotorID, MotorType.kBrushless);
     m_bottomMotor.restoreFactoryDefaults();
@@ -51,6 +53,7 @@ public class Intake extends SubsystemBase {
     m_bottomPIDController.setI(IntakeConstants.kBottomPID.i(), 0);
     m_bottomPIDController.setD(IntakeConstants.kBottomPID.d(), 0);
     m_bottomPIDController.setFF(0);
+    Utilities.burnMotor(m_bottomMotor);
   }
 
   public void startIntake() {
