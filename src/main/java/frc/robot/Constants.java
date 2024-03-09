@@ -189,6 +189,7 @@ public final class Constants {
     public static final int kRightJoyXAxis = 4;
     public static final int kRightJoyYAxis = 5;
 
+    public static final int kZeroGyro = kStart;
     public static final int kJoystickTargetNoteButton = kA;
     public static final int kJoystickTargetSpeakerButton = kY;
     public static final int kEjectButton = kRightBumper;
