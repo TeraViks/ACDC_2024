@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.OIConstants;
@@ -119,8 +120,8 @@ public class RobotContainer {
         new RunCommand(
           () -> {
             m_climber.startClimber(
-              getLeftClimbInput(),
-              getRightClimbInput()
+              getLeftClimbInput() * ClimberConstants.kMaxSpeed,
+              getRightClimbInput() * ClimberConstants.kMaxSpeed
             );
           }, m_climber
         )
