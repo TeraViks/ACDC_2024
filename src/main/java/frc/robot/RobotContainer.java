@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.ShooterConstants;
@@ -56,9 +57,11 @@ public class RobotContainer {
   double m_reverseFactor = DriverStation.getAlliance().get() == Alliance.Blue ? 1 : -1;
 
   private static double joystickTransform(double value) {
-    double postDeadbandValue = MathUtil.applyDeadband(value, OIConstants.kJoystickDeadband);
-    double postDeadbandValueSquared = postDeadbandValue * Math.abs(postDeadbandValue);
-    return postDeadbandValueSquared;
+    double transformedValue = MathUtil.applyDeadband(value, OIConstants.kJoystickDeadband);
+    if (DriveConstants.kSquareInputs) {
+      transformedValue = transformedValue * Math.abs(transformedValue);
+    }
+    return transformedValue;
   }
 
   private double getXSpeedInput() {
