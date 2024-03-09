@@ -9,6 +9,7 @@ import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkLimitSwitch;
 import com.revrobotics.SparkPIDController;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -22,6 +23,17 @@ public class Climber extends SubsystemBase {
   private final RelativeEncoder m_rightEncoder;
   private final SparkPIDController m_leftPIDController;
   private final SparkPIDController m_rightPIDController;
+  private final SparkLimitSwitch m_leftLimitSwitch;
+  private final SparkLimitSwitch m_rightLimitSwith;
+  private double m_idealLeftSpeed;
+  private double m_idealRightSpeed;
+
+  private enum State {
+    UNINITIALIZED,
+    INITIALIZED,
+  }
+
+  private State m_state;
 
   public Climber() {
     m_leftMotor = new CANSparkMax(ClimberConstants.kLeftMotorID, MotorType.kBrushless);
@@ -31,6 +43,8 @@ public class Climber extends SubsystemBase {
     m_leftMotor.setIdleMode(IdleMode.kBrake);
 
     m_leftEncoder = m_leftMotor.getEncoder();
+    m_leftEncoder.setVelocityConversionFactor(ClimberConstants.kVelocityConversionFactor);
+    m_leftEncoder.setPositionConversionFactor(ClimberConstants.kPositionConversionFactor);
 
     m_leftPIDController = m_leftMotor.getPIDController();
     m_leftPIDController.setFeedbackDevice(m_leftEncoder);
@@ -57,11 +71,30 @@ public class Climber extends SubsystemBase {
     m_rightPIDController.setFF(0);
 
     Utilities.burnMotor(m_rightMotor);
+    m_leftLimitSwitch = m_leftMotor.getForwardLimitSwitch(SparkLimitSwitch.Type.kNormallyOpen);
+    m_rightLimitSwith = m_rightMotor.getForwardLimitSwitch(SparkLimitSwitch.Type.kNormallyOpen);
+    m_state = State.UNINITIALIZED;
+    initialize();
+  }
+
+  private void initialize() {
+    m_leftPIDController.setReference(ClimberConstants.kInitializingSpeed, ControlType.kVelocity);
+    m_rightPIDController.setReference(ClimberConstants.kInitializingSpeed, ControlType.kVelocity);
+  }
+
+  private double transformSpeed(double position, double speed) {
+    if (position >= ClimberConstants.kMaxExtendedLength - ClimberConstants.kMaxUnconstrainedPositionDifference) {
+      return (ClimberConstants.kMaxExtendedLength - position) * speed;
+    } else if (position >= ClimberConstants.kMinRetractedLength + ClimberConstants.kMaxUnconstrainedPositionDifference) {
+      return (ClimberConstants.kMinRetractedLength + position) * speed;
+    } else {
+      return speed;
+    }
   }
 
   public void startClimber(double leftSpeed, double rightSpeed) {
-    m_leftPIDController.setReference(leftSpeed, ControlType.kDutyCycle);
-    m_rightPIDController.setReference(rightSpeed, ControlType.kDutyCycle);
+    m_idealLeftSpeed = leftSpeed;
+    m_idealRightSpeed = rightSpeed;
   }
 
   public void stopClimber() {
@@ -79,6 +112,16 @@ public class Climber extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    switch (m_state) {
+      case UNINITIALIZED: {
+        if (m_leftLimitSwitch.isPressed() && m_rightLimitSwith.isPressed()) {
+          m_state = State.INITIALIZED;
+        }
+      }
+      case INITIALIZED: {
+        m_leftPIDController.setReference(transformSpeed(m_leftEncoder.getPosition(), m_idealLeftSpeed), ControlType.kVelocity);
+        m_rightPIDController.setReference(transformSpeed(m_rightEncoder.getPosition(), m_idealRightSpeed), ControlType.kVelocity);
+      }
+    }
   }
 }

@@ -346,5 +346,14 @@ public final class Constants {
     public static final boolean kLeftMotorReversed = false;
     public static final boolean kRightMotorReversed = false;
     public static final PID kPID = new PID(0.5, 0.0, 0.0);
+    public static final double kGearRatio = 3.0;
+    // With no gear reduction each motor rotation moves the climber 0.012 meters
+    public static final double kPositionConversionFactor = 0.012 / kGearRatio;
+    public static final double kVelocityConversionFactor = kPositionConversionFactor / 60.0;
+    public static final double kMinRetractedLength = 0.0;
+    public static final double kMaxExtendedLength = 0.3048;
+    public static final double kMaxSpeed = 0.33;
+    public static final double kInitializingSpeed = 0.1;
+    public static final double kMaxUnconstrainedPositionDifference = 7.62;
   }
 }
