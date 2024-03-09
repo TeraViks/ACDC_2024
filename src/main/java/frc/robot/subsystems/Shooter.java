@@ -14,6 +14,7 @@ import com.revrobotics.SparkPIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.TunableConstant;
+import frc.robot.Utilities;
 
 public class Shooter extends SubsystemBase {
   private final CANSparkMax m_leftMotor;
@@ -53,6 +54,7 @@ public class Shooter extends SubsystemBase {
     m_leftPIDController.setI(ShooterConstants.kPID.i(), 0);
     m_leftPIDController.setD(ShooterConstants.kPID.d(), 0);
     m_leftPIDController.setFF(ShooterConstants.kFF);
+    Utilities.burnMotor(m_leftMotor);
 
     m_rightMotor = new CANSparkMax(ShooterConstants.kRightMotorID, MotorType.kBrushless);
     m_rightMotor.restoreFactoryDefaults();
@@ -70,6 +72,7 @@ public class Shooter extends SubsystemBase {
     m_rightPIDController.setI(ShooterConstants.kPID.i(), 0);
     m_rightPIDController.setD(ShooterConstants.kPID.d(), 0);
     m_rightPIDController.setFF(ShooterConstants.kFF);
+    Utilities.burnMotor(m_rightMotor);
   }
 
   private void setSpeeds(double leftSpeed, double rightSpeed) {

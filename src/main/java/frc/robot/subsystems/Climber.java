@@ -13,6 +13,7 @@ import com.revrobotics.SparkPIDController;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ClimberConstants;
+import frc.robot.Utilities;
 
 public class Climber extends SubsystemBase {
   private final CANSparkMax m_leftMotor;
@@ -38,6 +39,8 @@ public class Climber extends SubsystemBase {
     m_leftPIDController.setD(ClimberConstants.kPID.d(), 0);
     m_leftPIDController.setFF(0);
 
+    Utilities.burnMotor(m_leftMotor);
+
     m_rightMotor = new CANSparkMax(ClimberConstants.kRightMotorID, MotorType.kBrushless);
     m_rightMotor.restoreFactoryDefaults();
     m_rightMotor.setSmartCurrentLimit(ClimberConstants.kCurrentLimit);
@@ -52,6 +55,8 @@ public class Climber extends SubsystemBase {
     m_rightPIDController.setI(ClimberConstants.kPID.i(), 0);
     m_rightPIDController.setD(ClimberConstants.kPID.d(), 0);
     m_rightPIDController.setFF(0);
+
+    Utilities.burnMotor(m_rightMotor);
   }
 
   public void startClimber(double leftSpeed, double rightSpeed) {
