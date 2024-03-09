@@ -54,6 +54,8 @@ public final class Constants {
     public static final Rotation2d kRearRightEncoderOffset = new Rotation2d(Units.rotationsToRadians(0.115234)); //Q3
     public static final Rotation2d kFrontRightEncoderOffset = new Rotation2d(Units.rotationsToRadians(0.056641)); //Q4
 
+    public static final boolean kSquareInputs = false;
+
     public static final double kTrackWidth = 0.629; // Distance between centers of right and left wheels on robot
     public static final double kWheelBase = 0.629; // Distance between front and back wheels on robot
 
