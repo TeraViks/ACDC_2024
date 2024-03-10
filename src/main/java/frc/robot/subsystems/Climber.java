@@ -88,13 +88,15 @@ public class Climber extends SubsystemBase {
     if (speed == 0.0) {
       return speed;
     } else if (
-        position >= ClimberConstants.kMaxExtendedLength - ClimberConstants.kConstrainRange &&
+        position >= ClimberConstants.kMaxExtendedLength - ClimberConstants.kConstrainedRange &&
         speed >= 0) {
-      return (ClimberConstants.kMaxExtendedLength - position) / speed;
+      return (ClimberConstants.kMaxExtendedLength - position) / 
+        (ClimberConstants.kMaxExtendedLength - ClimberConstants.kConstrainedRange) * speed;
     } else if (
-        position <= ClimberConstants.kMinRetractedLength + ClimberConstants.kConstrainRange &&
+        position <= ClimberConstants.kMinRetractedLength + ClimberConstants.kConstrainedRange &&
         speed <= 0) {
-      return (ClimberConstants.kMinRetractedLength + position) / speed;
+      return (ClimberConstants.kMinRetractedLength + position) / 
+        (ClimberConstants.kMinRetractedLength + ClimberConstants.kConstrainedRange) * speed;
     } else {
       return speed;
     }
