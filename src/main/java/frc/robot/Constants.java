@@ -271,7 +271,7 @@ public final class Constants {
     public static final boolean kBottomMotorReversed = true;
     public static final double kTopWheelDiameterMeters = Units.inchesToMeters(2.0);
     public static final double kBottomWheelDiameterMeters = Units.inchesToMeters(1.0);
-    public static final double kTopGearRatio = 3.0 * (15.0 / 18.0);
+    public static final double kTopGearRatio = 3.0;
     public static final double kBottomGearRatio = 3.0;
     // VelocityCoversionFactors convert between revolutions per minute and m/s
     public static final double kTopVelocityConversionFactor =
