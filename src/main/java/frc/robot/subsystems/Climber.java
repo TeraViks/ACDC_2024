@@ -96,7 +96,7 @@ public class Climber extends SubsystemBase {
     }
   }
 
-  public void startClimber(double leftSpeed, double rightSpeed) {
+  public void setSpeeds(double leftSpeed, double rightSpeed) {
     m_idealLeftSpeed = leftSpeed;
     m_idealRightSpeed = rightSpeed;
   }

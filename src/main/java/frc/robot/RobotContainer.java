@@ -119,7 +119,7 @@ public class RobotContainer {
       m_climber.setDefaultCommand(
         new RunCommand(
           () -> {
-            m_climber.startClimber(
+            m_climber.setSpeeds(
               getLeftClimbInput() * ClimberConstants.kMaxSpeed,
               getRightClimbInput() * ClimberConstants.kMaxSpeed
             );
