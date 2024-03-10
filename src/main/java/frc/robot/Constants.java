@@ -351,6 +351,6 @@ public final class Constants {
     public static final double kMaxExtendedLength = 0.304;
     public static final double kMaxSpeed = 0.330;
     public static final double kInitializingSpeed = -0.03;
-    public static final double kMaxUnconstrainedPositionDifference = 0.0762;
+    public static final double kConstrainRange = 0.0762;
   }
 }
