@@ -348,9 +348,9 @@ public final class Constants {
     public static final double kPositionConversionFactor = 0.012 / kGearRatio;
     public static final double kVelocityConversionFactor = kPositionConversionFactor / 60.0;
     public static final double kMinRetractedLength = 0.0;
-    public static final double kMaxExtendedLength = 0.3048;
-    public static final double kMaxSpeed = 0.33;
-    public static final double kInitializingSpeed = 0.1;
-    public static final double kMaxUnconstrainedPositionDifference = 7.62;
+    public static final double kMaxExtendedLength = 0.304;
+    public static final double kMaxSpeed = 0.330;
+    public static final double kInitializingSpeed = -0.03;
+    public static final double kMaxUnconstrainedPositionDifference = 0.0762;
   }
 }
