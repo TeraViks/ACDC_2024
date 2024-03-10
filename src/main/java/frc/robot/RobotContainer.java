@@ -12,6 +12,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -19,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.FieldConstants;
@@ -174,6 +176,15 @@ public class RobotContainer {
       .onTrue(Commands.runOnce(
         () -> m_chamber.chamberNote()
       ));
+
+    new Trigger(() -> m_chamber.isNoteChambered()) 
+      .onTrue(
+        Commands.sequence(
+          Commands.runOnce(() -> m_operatorController.setRumble(RumbleType.kBothRumble, 1)),
+          Commands.waitSeconds(0.5),
+          Commands.runOnce(() -> m_operatorController.setRumble(RumbleType.kBothRumble, 0))
+        )
+      );
 
     new JoystickButton(m_operatorController, OIConstants.kIntakeOff)
       .debounce(OIConstants.kDebounceSeconds)
