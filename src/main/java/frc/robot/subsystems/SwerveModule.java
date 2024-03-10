@@ -12,6 +12,7 @@ import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.REVLibError;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 
@@ -49,6 +50,9 @@ public class SwerveModule {
   private final ValueCache<Double> m_absoluteRotationCache;
   private final ValueCache<Double> m_turningCache;
   private Rotation2d m_prevAngle;
+  private double m_lastViableDrivePosition = 0.0;
+  private double m_lastViableDriveVelocity = 0.0;
+  private double m_lastViableTurningPosition = 0.0;
 
   public SwerveModule(
       int driveMotorChannel,
@@ -68,8 +72,8 @@ public class SwerveModule {
     m_driveEncoder = m_driveMotor.getEncoder();
     m_driveEncoder.setPositionConversionFactor(SwerveModuleConstants.kDrivePositionConversionFactor);
     m_driveEncoder.setVelocityConversionFactor(SwerveModuleConstants.kDriveVelocityConversionFactor);
-    m_drivePositionCache = new ValueCache<Double>(m_driveEncoder::getPosition, SwerveModuleConstants.kValueCacheTtlMicroseconds);
-    m_driveVelocityCache = new ValueCache<Double>(m_driveEncoder::getVelocity, SwerveModuleConstants.kValueCacheTtlMicroseconds);
+    m_drivePositionCache = new ValueCache<Double>(this::getPlausibleDrivePosition, SwerveModuleConstants.kValueCacheTtlMicroseconds);
+    m_driveVelocityCache = new ValueCache<Double>(this::getPlausibleDriveVelocity, SwerveModuleConstants.kValueCacheTtlMicroseconds);
 
     m_drivePidController = m_driveMotor.getPIDController();
     m_drivePidController.setFeedbackDevice(m_driveEncoder);
@@ -116,7 +120,7 @@ public class SwerveModule {
       Math.abs(m_turningEncoder.getPosition())
       > SwerveModuleConstants.kTurningEncoderStabilizeToleranceRadians
     ) {Thread.yield();}
-    m_turningCache = new ValueCache<Double>(m_turningEncoder::getPosition,
+    m_turningCache = new ValueCache<Double>(this::getPlausibleTurningPosition,
       SwerveModuleConstants.kValueCacheTtlMicroseconds);
     updateTurningEncoderOffset();
     m_prevAngle = getUnconstrainedRotation2d();
@@ -134,6 +138,30 @@ public class SwerveModule {
     m_turningPidController.setI(teleopTurningPID.i(), SwerveModuleConstants.kTeleopPIDSlotID);
     m_turningPidController.setD(teleopTurningPID.d(), SwerveModuleConstants.kTeleopPIDSlotID);
     Utilities.burnMotor(m_turningMotor);
+  }
+
+  private double getPlausibleDrivePosition() {
+    double position = m_driveEncoder.getPosition();
+    if (m_driveMotor.getLastError() == REVLibError.kOk) {
+      m_lastViableDrivePosition = position;
+    }
+    return m_lastViableDrivePosition;
+  }
+
+  private double getPlausibleDriveVelocity() {
+    double velocity = m_driveEncoder.getVelocity();
+    if (m_driveMotor.getLastError() == REVLibError.kOk) {
+      m_lastViableDriveVelocity = velocity;
+    }
+    return m_lastViableDriveVelocity;
+  }
+
+  private double getPlausibleTurningPosition() {
+    double position = m_turningEncoder.getPosition();
+    if (m_turningMotor.getLastError() == REVLibError.kOk) {
+      m_lastViableTurningPosition = position;
+    }
+    return m_lastViableTurningPosition;
   }
 
   public void setPIDSlotID(int slotID) {
