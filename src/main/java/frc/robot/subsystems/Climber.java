@@ -53,6 +53,8 @@ public class Climber extends SubsystemBase {
     m_leftPIDController.setD(ClimberConstants.kPID.d(), 0);
     m_leftPIDController.setFF(0);
 
+    m_leftLimitSwitch = m_leftMotor.getForwardLimitSwitch(SparkLimitSwitch.Type.kNormallyOpen);
+
     Utilities.burnMotor(m_leftMotor);
 
     m_rightMotor = new CANSparkMax(ClimberConstants.kRightMotorID, MotorType.kBrushless);
@@ -70,9 +72,9 @@ public class Climber extends SubsystemBase {
     m_rightPIDController.setD(ClimberConstants.kPID.d(), 0);
     m_rightPIDController.setFF(0);
 
-    Utilities.burnMotor(m_rightMotor);
-    m_leftLimitSwitch = m_leftMotor.getForwardLimitSwitch(SparkLimitSwitch.Type.kNormallyOpen);
     m_rightLimitSwith = m_rightMotor.getForwardLimitSwitch(SparkLimitSwitch.Type.kNormallyOpen);
+
+    Utilities.burnMotor(m_rightMotor);
     m_state = State.UNINITIALIZED;
     initialize();
   }
@@ -83,10 +85,12 @@ public class Climber extends SubsystemBase {
   }
 
   private double transformSpeed(double position, double speed) {
-    if (position >= ClimberConstants.kMaxExtendedLength - ClimberConstants.kMaxUnconstrainedPositionDifference) {
-      return (ClimberConstants.kMaxExtendedLength - position) * speed;
-    } else if (position >= ClimberConstants.kMinRetractedLength + ClimberConstants.kMaxUnconstrainedPositionDifference) {
-      return (ClimberConstants.kMinRetractedLength + position) * speed;
+    if (speed == 0.0) {
+      return speed;
+    } else if (position >= ClimberConstants.kMaxExtendedLength - ClimberConstants.kMaxUnconstrainedPositionDifference) {
+      return (ClimberConstants.kMaxExtendedLength - position) / speed;
+    } else if (position <= ClimberConstants.kMinRetractedLength + ClimberConstants.kMaxUnconstrainedPositionDifference) {
+      return (ClimberConstants.kMinRetractedLength + position) / speed;
     } else {
       return speed;
     }
@@ -116,11 +120,13 @@ public class Climber extends SubsystemBase {
       case UNINITIALIZED: {
         if (m_leftLimitSwitch.isPressed() && m_rightLimitSwith.isPressed()) {
           m_state = State.INITIALIZED;
+          break;
         }
       }
       case INITIALIZED: {
         m_leftPIDController.setReference(transformSpeed(m_leftEncoder.getPosition(), m_idealLeftSpeed), ControlType.kVelocity);
         m_rightPIDController.setReference(transformSpeed(m_rightEncoder.getPosition(), m_idealRightSpeed), ControlType.kVelocity);
+        break;
       }
     }
   }
