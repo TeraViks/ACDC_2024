@@ -238,7 +238,6 @@ public final class Constants {
   public static final class FieldConstants {
     private static final AprilTagFieldLayout loadTransformedAprilTagFieldLayout() {
       final AprilTagFieldLayout rawLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
-      List<AprilTag> aprilTags = List.of();
       Map<Integer, Rotation3d> rotations = Map.of(
         // In order to adjust an AprilTag's rotation, specify non-zero roll/pitch/yaw, as viewed
         // from perspective of the field XYZ axes. For example, if the blue speaker AprilTag is
@@ -250,17 +249,19 @@ public final class Constants {
         //
         //   4, new Rotation3d(0.0, Units.degreesToRadians(2.0), 0.0)
       );
-      for (AprilTag aprilTag : rawLayout.getTags()) {
-        AprilTag rotatedAprilTag;
-        if (rotations.containsKey(aprilTag.ID)) {
-          rotatedAprilTag =
-            new AprilTag(aprilTag.ID, aprilTag.pose.rotateBy(rotations.get(aprilTag.ID)));
-        } else {
-          rotatedAprilTag = aprilTag;
-        }
-        aprilTags.add(rotatedAprilTag);
-      }
-
+      List<AprilTag> aprilTags =
+        rawLayout.getTags().stream()
+        .map(aprilTag -> {
+          AprilTag rotatedAprilTag;
+          if (rotations.containsKey(aprilTag.ID)) {
+            rotatedAprilTag =
+              new AprilTag(aprilTag.ID, aprilTag.pose.rotateBy(rotations.get(aprilTag.ID)));
+          } else {
+            rotatedAprilTag = aprilTag;
+          }
+          return rotatedAprilTag;
+        })
+        .toList();
       return new AprilTagFieldLayout(
         aprilTags, rawLayout.getFieldLength(), rawLayout.getFieldWidth());
     }
