@@ -187,7 +187,10 @@ public class RobotContainer {
     new JoystickButton(m_operatorController, OIConstants.kIntakeReverse)
       .debounce(OIConstants.kDebounceSeconds)
       .onTrue(Commands.runOnce(
-        () -> m_intake.reverseIntake()
+        () -> {
+          m_chamber.cancelChambering();
+          m_intake.reverseIntake();
+        }
       ));
 
     new JoystickButton(m_operatorController, OIConstants.kEjectButton)
