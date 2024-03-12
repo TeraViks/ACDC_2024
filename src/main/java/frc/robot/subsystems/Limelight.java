@@ -12,7 +12,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.VisionConstants;
+import frc.robot.Constants.LimelightConstants;
 
 public class Limelight extends SubsystemBase {
   private NetworkTable m_table = NetworkTableInstance.getDefault().getTable("limelight");
@@ -26,7 +26,7 @@ public class Limelight extends SubsystemBase {
   private double m_filteredX = 0.0;
   private double m_filteredY = 0.0;
 
-  private Relay m_relay = new Relay(VisionConstants.kRelayPort);
+  private Relay m_relay = new Relay(LimelightConstants.kRelayPort);
 
   public Limelight() {
     lightsOff();
@@ -68,9 +68,9 @@ public class Limelight extends SubsystemBase {
 
   private double getDistance() {
     double noteOffsetAngle_Vertical = getY();
-    double angleToNoteDegrees = VisionConstants.kLimelightMountDegrees + noteOffsetAngle_Vertical;
+    double angleToNoteDegrees = LimelightConstants.kLimelightMountDegrees + noteOffsetAngle_Vertical;
     double angleToNoteRadians = Units.degreesToRadians(angleToNoteDegrees);
-    double distanceFromLightToNote = (VisionConstants.kNoteHeightInches - VisionConstants.kLimelightLensHeightInches) / Math.tan(angleToNoteRadians);
+    double distanceFromLightToNote = (LimelightConstants.kNoteHeightInches - LimelightConstants.kLimelightLensHeightInches) / Math.tan(angleToNoteRadians);
 
     return distanceFromLightToNote;
   }

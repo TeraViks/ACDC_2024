@@ -32,6 +32,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.PhotonVisionConstants;
 
 public class DriveSubsystem extends SubsystemBase {
   private final SwerveModule m_frontLeft = //Q1
@@ -163,14 +164,16 @@ public class DriveSubsystem extends SubsystemBase {
     m_odometry.update(getUncorrectedRotation2d(), getPositions());
 
     // Integrate fresh PhotonVision pose estimates into odometry.
-    ArrayList<Optional<EstimatedRobotPose>> photonRobotPoseList =
-      m_cameraSystem.getFieldRelativePoseEstimators();
-    ArrayList<EstimatedRobotPose> freshEstimates =
-      m_cameraSystem.selectFreshEstimates(m_photonRobotPoseList, photonRobotPoseList);
-    for (EstimatedRobotPose estimate : freshEstimates) {
-      m_odometry.addVisionMeasurement(estimate.estimatedPose.toPose2d(), estimate.timestampSeconds);
+    if (PhotonVisionConstants.kEnable) {
+      ArrayList<Optional<EstimatedRobotPose>> photonRobotPoseList =
+        m_cameraSystem.getFieldRelativePoseEstimators();
+      ArrayList<EstimatedRobotPose> freshEstimates =
+        m_cameraSystem.selectFreshEstimates(m_photonRobotPoseList, photonRobotPoseList);
+      for (EstimatedRobotPose estimate : freshEstimates) {
+        m_odometry.addVisionMeasurement(estimate.estimatedPose.toPose2d(), estimate.timestampSeconds);
+      }
+      m_photonRobotPoseList = photonRobotPoseList;
     }
-    m_photonRobotPoseList = photonRobotPoseList;
 
     Pose2d pose = getPose();
     m_field.setRobotPose(pose);

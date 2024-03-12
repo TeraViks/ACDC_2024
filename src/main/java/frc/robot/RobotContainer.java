@@ -21,7 +21,9 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.LimelightConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.Constants.PhotonVisionConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.JoystickTargetNote;
 import frc.robot.commands.JoystickTargetSpeaker;
@@ -42,14 +44,14 @@ import frc.robot.subsystems.Shooter;
  * (including subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  public final Limelight m_limelight = new Limelight();
+  public final Limelight m_limelight = LimelightConstants.kEnable ? new Limelight() : null;
   private final SendableChooser<Command> m_chooser = new SendableChooser<>();
-  private final CameraSubsystem m_cameraSystem = new CameraSubsystem();
+  private final CameraSubsystem m_cameraSystem = PhotonVisionConstants.kEnable ? new CameraSubsystem() : null;
   public final DriveSubsystem m_robotDrive = new DriveSubsystem(m_cameraSystem);
   private final Intake m_intake = new Intake();
   private final Shooter m_shooter = new Shooter();
   private final Chamber m_chamber = new Chamber(m_intake, m_shooter);
-  private final Climber m_climber = new Climber();
+  private final Climber m_climber = ClimberConstants.kEnable ? new Climber() : null;
   private final TunableDouble m_shootingSpeed =
     new TunableDouble("ShootingSpeed", ShooterConstants.kShootingSpeed);
   GenericHID m_driverController = new GenericHID(OIConstants.kDriverControllerPort);
@@ -115,16 +117,18 @@ public class RobotContainer {
         )
       );
 
-      m_climber.setDefaultCommand(
-        new RunCommand(
-          () -> {
-            m_climber.setSpeeds(
-              getLeftClimbInput() * ClimberConstants.kMaxSpeed,
-              getRightClimbInput() * ClimberConstants.kMaxSpeed
-            );
-          }, m_climber
-        )
-      );
+      if (ClimberConstants.kEnable) {
+        m_climber.setDefaultCommand(
+          new RunCommand(
+            () -> {
+              m_climber.setSpeeds(
+                getLeftClimbInput() * ClimberConstants.kMaxSpeed,
+                getRightClimbInput() * ClimberConstants.kMaxSpeed
+              );
+            }, m_climber
+          )
+        );
+      }
 
       m_chooser.setDefaultOption("Empty Auto", new PathPlannerAuto("Empty Auto"));
       m_chooser.addOption("Zero Note A", new PathPlannerAuto("zero note A"));
@@ -148,14 +152,16 @@ public class RobotContainer {
         () -> m_robotDrive.zeroGyro()
       ));
 
-    new JoystickButton(m_driverController, OIConstants.kJoystickTargetNoteButton)
-      .debounce(OIConstants.kDebounceSeconds)
-      .whileTrue(new JoystickTargetNote(
-        m_robotDrive,
-        m_limelight,
-        () -> getXSpeedInput(),
-        () -> getYSpeedInput()
-      ));
+    if (LimelightConstants.kEnable) {
+      new JoystickButton(m_driverController, OIConstants.kJoystickTargetNoteButton)
+        .debounce(OIConstants.kDebounceSeconds)
+        .whileTrue(new JoystickTargetNote(
+          m_robotDrive,
+          m_limelight,
+          () -> getXSpeedInput(),
+          () -> getYSpeedInput()
+        ));
+    }
 
     new JoystickButton(m_driverController, OIConstants.kJoystickTargetSpeakerButton)
       .debounce(OIConstants.kDebounceSeconds)
