@@ -8,8 +8,6 @@ import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
@@ -23,7 +21,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.JoystickTargetNote;
@@ -255,28 +252,6 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     Command selectedCommand = m_chooser.getSelected();
-    Pose2d initialPose;
-    
-    if (selectedCommand instanceof PathPlannerAuto) {
-      PathPlannerAuto selectedAuto = (PathPlannerAuto)selectedCommand;
-      Pose2d startingPose = PathPlannerAuto.getStaringPoseFromAutoFile(selectedAuto.getName());
-      initialPose = startingPose;
-    } else {
-      initialPose = new Pose2d();
-    }
-    Pose2d transformedPose = mirrorPose2d(initialPose);
-    m_robotDrive.initOdometry(transformedPose);
     return selectedCommand;
-  }
-
-  private Pose2d mirrorPose2d(Pose2d pose) {
-    if (DriverStation.getAlliance().get() == Alliance.Blue) {
-      return pose;
-    }
-    return new Pose2d(
-      FieldConstants.kMaxX - pose.getX(),
-      pose.getY(),
-      new Rotation2d(Math.PI - pose.getRotation().getRadians())
-    );
   }
 }
