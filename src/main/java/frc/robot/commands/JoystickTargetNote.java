@@ -8,7 +8,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.TargetConstants;
-import frc.robot.PID;
+import frc.robot.PIDF;
 import frc.robot.TunableDouble;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Limelight;
@@ -26,9 +26,9 @@ public class JoystickTargetNote extends Command {
   private final Supplier<Double> m_yVelocitySupplier;
 
   private ProfiledPIDController m_thetaController = new ProfiledPIDController(
-    SwerveModule.tunableTeleopTurningPID.get().p(),
-    SwerveModule.tunableTeleopTurningPID.get().i(),
-    SwerveModule.tunableTeleopTurningPID.get().i(),
+    SwerveModule.tunableTeleopTurningPIDF.get().p(),
+    SwerveModule.tunableTeleopTurningPIDF.get().i(),
+    SwerveModule.tunableTeleopTurningPIDF.get().i(),
     new TrapezoidProfile.Constraints(
       DriveConstants.kMaxAngularSpeedRadiansPerSecond,
       DriveConstants.kMaxAngularAccelerationRadiansPerSecondSquared));
@@ -64,8 +64,8 @@ public class JoystickTargetNote extends Command {
   }
 
   private void updateConstants() {
-    if (SwerveModule.tunableTeleopTurningPID.hasChanged()) {
-      PID pid = SwerveModule.tunableTeleopTurningPID.get();
+    if (SwerveModule.tunableTeleopTurningPIDF.hasChanged()) {
+      PIDF pid = SwerveModule.tunableTeleopTurningPIDF.get();
       m_thetaController.setPID(pid.p(), pid.i(), pid.d());
     }
   }
