@@ -318,13 +318,13 @@ public final class Constants {
   public static final class ChamberConstants {
     public static final int kLeftMotorID = 15;
     public static final int kRightMotorID = 16;
-    public static final int kSensorID = 3;
+    public static final int kSensorID = 5;
     public static final int kCurrentLimit = 20;
     public static final boolean kLeftMotorReversed = false;
     public static final boolean kRightMotorReversed = true;
     // Sensor sense may be reversed (false when note is detected), in which case this should be set
     // to false.
-    public static final boolean kSensorNoteDetectedValue = false;
+    public static final boolean kSensorNoteDetectedValue = true;
     public static final double kWheelDiameterMeters = Units.inchesToMeters(3.0);
     public static final double kGearRatio = 3.0 / 1.0;
     // VelocityCoversionFactors convert between revolutions per minute and m/s
