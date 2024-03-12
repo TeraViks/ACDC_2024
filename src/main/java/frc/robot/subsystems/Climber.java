@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.REVLibError;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkLimitSwitch;
 import com.revrobotics.SparkPIDController;
@@ -109,14 +110,6 @@ public class Climber extends SubsystemBase {
     m_rightMotor.stopMotor();
   }
 
-  public double getLeftClimberSpeed() {
-    return m_leftEncoder.getVelocity();
-  }
-
-  public double getRightClimberSpeed() {
-    return m_rightEncoder.getVelocity();
-  }
-
   @Override
   public void periodic() {
     switch (m_state) {
@@ -127,8 +120,12 @@ public class Climber extends SubsystemBase {
         }
       }
       case INITIALIZED: {
-        m_leftPIDController.setReference(transformSpeed(m_leftEncoder.getPosition(), m_idealLeftSpeed), ControlType.kVelocity);
-        m_rightPIDController.setReference(transformSpeed(m_rightEncoder.getPosition(), m_idealRightSpeed), ControlType.kVelocity);
+        double leftPosition = m_leftEncoder.getPosition();
+        double rightPosition = m_rightEncoder.getPosition();
+        double leftSpeed = (m_leftMotor.getLastError() == REVLibError.kOk) ? m_idealLeftSpeed : 0.0;
+        double rightSpeed = (m_rightMotor.getLastError() == REVLibError.kOk) ? m_idealRightSpeed : 0.0;
+        m_leftPIDController.setReference(transformSpeed(leftPosition, leftSpeed), ControlType.kVelocity);
+        m_rightPIDController.setReference(transformSpeed(rightPosition, rightSpeed), ControlType.kVelocity);
         break;
       }
     }
