@@ -295,11 +295,11 @@ public final class Constants {
   }
 
   public static final class IntakeConstants {
-    public static final int kTopMotorID = 14;
-    public static final int kBottomMotorID = 13;
+    public static final int kTopMotorID = 13;
+    public static final int kBottomMotorID = 14;
     public static final int kCurrentLimit = 20;
-    public static final boolean kTopMotorReversed = true;
-    public static final boolean kBottomMotorReversed = true;
+    public static final boolean kTopMotorReversed = false;
+    public static final boolean kBottomMotorReversed = false;
     public static final double kTopWheelDiameterMeters = Units.inchesToMeters(2.0);
     public static final double kBottomWheelDiameterMeters = Units.inchesToMeters(1.0);
     public static final double kTopGearRatio = 3.0;
