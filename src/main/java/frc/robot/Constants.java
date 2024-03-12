@@ -218,7 +218,8 @@ public final class Constants {
     public static final double kDriveBaseRadius = 0.4;
   }
   
-  public static final class VisionConstants {
+  public static final class LimelightConstants {
+    public static final boolean kEnable = true;
     public static final double kLimelightMountDegrees = -20.0;
     public static final double kLimelightLensHeightInches = 16.25;
     public static final double kNoteHeightInches = 2.0;
@@ -284,6 +285,7 @@ public final class Constants {
   }
 
   public static final class PhotonVisionConstants {
+    public static final boolean kEnable = true;
     public static final String kCameraName1 = "camera1";
     public static final String kCameraName2 = "camera2";
     public static final Transform3d kRobotToCamera1Transform = new Transform3d(
@@ -370,6 +372,7 @@ public final class Constants {
   }
 
   public static final class ClimberConstants {
+    public static final boolean kEnable = false;
     public static final int kLeftMotorID = 19;
     public static final int kRightMotorID = 20;
     public static final int kCurrentLimit = 40;
