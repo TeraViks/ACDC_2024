@@ -125,8 +125,8 @@ public class DriveSubsystem extends SubsystemBase {
         this::getSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
         this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
         new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-            AutoConstants.KTranslationHolonomicPID, // Translation PID constants
-            AutoConstants.KRotationHolonomicPID, // Rotation PID constants
+            AutoConstants.kTranslationHolonomicPID, // Translation PID constants
+            AutoConstants.kRotationHolonomicPID, // Rotation PID constants
             AutoConstants.kMaxSpeedMetersPerSecond, // Max module speed, in m/s
             AutoConstants.kDriveBaseRadius, // Drive base radius in meters. Distance from robot center to furthest module.
             new ReplanningConfig() // Default path replanning config. See the API for the options here

@@ -35,10 +35,7 @@ public class Intake extends SubsystemBase {
     m_topEncoder.setVelocityConversionFactor(IntakeConstants.kTopVelocityConversionFactor);
     m_topPIDController = m_topMotor.getPIDController();
     m_topPIDController.setFeedbackDevice(m_topEncoder);
-    m_topPIDController.setP(IntakeConstants.kTopPID.p(), 0);
-    m_topPIDController.setI(IntakeConstants.kTopPID.i(), 0);
-    m_topPIDController.setD(IntakeConstants.kTopPID.d(), 0);
-    m_topPIDController.setFF(0);
+    IntakeConstants.kTopPIDF.controllerSet(m_topPIDController);
     Utilities.burnMotor(m_topMotor);
 
     m_bottomMotor = new CANSparkMax(IntakeConstants.kBottomMotorID, MotorType.kBrushless);
@@ -49,10 +46,7 @@ public class Intake extends SubsystemBase {
     m_bottomEncoder.setVelocityConversionFactor(IntakeConstants.kBottomVelocityConversionFactor);
     m_bottomPIDController = m_bottomMotor.getPIDController();
     m_bottomPIDController.setFeedbackDevice(m_bottomEncoder);
-    m_bottomPIDController.setP(IntakeConstants.kBottomPID.p(), 0);
-    m_bottomPIDController.setI(IntakeConstants.kBottomPID.i(), 0);
-    m_bottomPIDController.setD(IntakeConstants.kBottomPID.d(), 0);
-    m_bottomPIDController.setFF(0);
+    IntakeConstants.kBottomPIDF.controllerSet(m_bottomPIDController);
     Utilities.burnMotor(m_bottomMotor);
   }
 

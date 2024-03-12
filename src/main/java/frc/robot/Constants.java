@@ -113,9 +113,9 @@ public final class Constants {
   }
 
   public static final class SwerveModuleConstants {
-    public static final int kAutoPIDSlotID = 0;
-    public static final int kTeleopPIDSlotID = 1;
-    public static final int kDefaultPIDSlotID = kAutoPIDSlotID;
+    public static final int kAutoPIDFSlotID = 0;
+    public static final int kTeleopPIDFSlotID = 1;
+    public static final int kDefaultPIDFSlotID = kAutoPIDFSlotID;
 
     public static final double kMaxSpeedMetersPerSecond = DriveConstants.kMaxSpeedMetersPerSecond * 2.0;
 
@@ -151,12 +151,12 @@ public final class Constants {
     public static final double kTurningEncoderStabilizeToleranceRadians =
       Units.degreesToRadians(1.0);
 
-    public static final PID kAutoDrivePID = new PID(0.5, 0.002, 0.0);
-    public static final PID kAutoTurningPID = new PID(0.5, 0.0, 0.0);
+    public static final PIDF kAutoDrivePIDF = new PIDF(0.5, 0.002, 0.0);
+    public static final PIDF kAutoTurningPIDF = new PIDF(0.5, 0.0, 0.0);
 
-    public static final PID kTeleopDrivePID = new PID(0.375, 0.0, 0.0);
-    // Use SwerveModule.tunableTeleopTurningPID rather than directly using this field.
-    public static final PID kTeleopTurningPID = new PID(0.375, 0.0, 0.0);
+    public static final PIDF kTeleopDrivePIDF = new PIDF(0.375, 0.0, 0.0);
+    // Use SwerveModule.tunableTeleopTurningPIDF rather than directly using this field.
+    public static final PIDF kTeleopTurningPIDF = new PIDF(0.375, 0.0, 0.0);
 
     public static final int kDriveMotorCurrentLimit = 40;
     public static final int kTurningMotorCurrentLimit = 20;
@@ -212,8 +212,8 @@ public final class Constants {
     public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 
-    public static final PIDConstants KTranslationHolonomicPID= new PIDConstants(5.0, 0.0, 0.0);
-    public static final PIDConstants KRotationHolonomicPID= new PIDConstants(5.0, 0.0, 0.0);
+    public static final PIDConstants kTranslationHolonomicPID= new PIDConstants(5.0, 0.0, 0.0);
+    public static final PIDConstants kRotationHolonomicPID= new PIDConstants(5.0, 0.0, 0.0);
 
     public static final double kDriveBaseRadius = 0.4;
   }
@@ -311,8 +311,8 @@ public final class Constants {
     public static final double kBottomVelocityConversionFactor =
       (kBottomWheelDiameterMeters * Math.PI)
       / (kBottomGearRatio * 60.0);
-    public static final PID kTopPID = new PID(0.5, 0.0, 0.0);
-    public static final PID kBottomPID = new PID(0.5, 0.0, 0.0);
+    public static final PIDF kTopPIDF = new PIDF(0.5, 0.0, 0.0);
+    public static final PIDF kBottomPIDF = new PIDF(0.5, 0.0, 0.0);
     public static final double kSpeed = 5.0;
   }
 
@@ -332,8 +332,8 @@ public final class Constants {
     public static final double kChamberVelocityConversionFactor =
       (kWheelDiameterMeters * Math.PI)
       / kGearRatio / 60.0;
-    public static final PID kLeftPID = new PID(0.43, 0.0, 0.0);
-    public static final PID kRightPID = new PID(0.43, 0.0, 0.0);
+    public static final PIDF kLeftPIDF = new PIDF(0.43, 0.0, 0.0);
+    public static final PIDF kRightPIDF = new PIDF(0.43, 0.0, 0.0);
     public static final double kIntakingSpeed = 2.0;
     public static final double kShootingSpeed = 10.0;
     public static final double kClearingTimeSeconds = 1.0;
@@ -359,9 +359,8 @@ public final class Constants {
     public static final double kVelocityConversionFactor =
       kPositionConversionFactor
       / 60.0 /* s */;
-    
-    public static final PID kPID = new PID(0.08, 0.0, 3);
-    public static final double kFF = 0.1;
+
+    public static final PIDF kPIDF = new PIDF(0.08, 0.0, 3, 0.1);
     public static final double kIdleSpeed = 15.0;
     public static final double kShootingSpeed = 25.0;
 
@@ -376,7 +375,7 @@ public final class Constants {
     public static final int kCurrentLimit = 40;
     public static final boolean kLeftMotorReversed = false;
     public static final boolean kRightMotorReversed = false;
-    public static final PID kPID = new PID(0.5, 0.0, 0.0);
+    public static final PIDF kPIDF = new PIDF(0.5, 0.0, 0.0);
     public static final double kGearRatio = 3.0;
     // With no gear reduction each motor rotation moves the climber 0.012 meters
     public static final double kPositionConversionFactor = 0.012 / kGearRatio;

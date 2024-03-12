@@ -21,22 +21,21 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import frc.robot.Constants.SwerveModuleConstants;
-import frc.robot.PID;
-import frc.robot.TunablePID;
+import frc.robot.TunablePIDF;
 import frc.robot.Utilities;
 import frc.robot.ValueCache;
 
 public class SwerveModule {
-  public static TunablePID tunableTeleopTurningPID =
-    new TunablePID("TeleopTurning", SwerveModuleConstants.kTeleopTurningPID);
+  public static TunablePIDF tunableTeleopTurningPIDF =
+    new TunablePIDF("TeleopTurning", SwerveModuleConstants.kTeleopTurningPIDF);
 
   private final CANSparkMax m_driveMotor;
   private final CANSparkMax m_turningMotor;
 
-  private int m_PIDSlotID = SwerveModuleConstants.kDefaultPIDSlotID;
+  private int m_PIDFSlotID = SwerveModuleConstants.kDefaultPIDFSlotID;
 
-  private final SparkPIDController m_drivePidController;
-  private final SparkPIDController m_turningPidController;
+  private final SparkPIDController m_drivePIDController;
+  private final SparkPIDController m_turningPIDController;
 
   private final RelativeEncoder m_driveEncoder;
   private final CANcoder m_absoluteRotationEncoder;
@@ -75,17 +74,12 @@ public class SwerveModule {
     m_drivePositionCache = new ValueCache<Double>(this::getPlausibleDrivePosition, SwerveModuleConstants.kValueCacheTtlMicroseconds);
     m_driveVelocityCache = new ValueCache<Double>(this::getPlausibleDriveVelocity, SwerveModuleConstants.kValueCacheTtlMicroseconds);
 
-    m_drivePidController = m_driveMotor.getPIDController();
-    m_drivePidController.setFeedbackDevice(m_driveEncoder);
-    m_drivePidController.setFF(0);
-    // Auto drive PID
-    m_drivePidController.setP(SwerveModuleConstants.kAutoDrivePID.p(), SwerveModuleConstants.kAutoPIDSlotID);
-    m_drivePidController.setI(SwerveModuleConstants.kAutoDrivePID.i(), SwerveModuleConstants.kAutoPIDSlotID);
-    m_drivePidController.setD(SwerveModuleConstants.kAutoDrivePID.d(), SwerveModuleConstants.kAutoPIDSlotID);
-    // Teleop drive PID
-    m_drivePidController.setP(SwerveModuleConstants.kTeleopDrivePID.p(), SwerveModuleConstants.kTeleopPIDSlotID);
-    m_drivePidController.setI(SwerveModuleConstants.kTeleopDrivePID.i(), SwerveModuleConstants.kTeleopPIDSlotID);
-    m_drivePidController.setD(SwerveModuleConstants.kTeleopDrivePID.d(), SwerveModuleConstants.kTeleopPIDSlotID);
+    m_drivePIDController = m_driveMotor.getPIDController();
+    m_drivePIDController.setFeedbackDevice(m_driveEncoder);
+    SwerveModuleConstants.kAutoDrivePIDF.controllerSet(
+      m_drivePIDController, SwerveModuleConstants.kAutoPIDFSlotID);
+    SwerveModuleConstants.kTeleopDrivePIDF.controllerSet(
+      m_drivePIDController, SwerveModuleConstants.kTeleopPIDFSlotID);
 
     m_absoluteRotationEncoderOffset = encoderOffset;
 
@@ -102,7 +96,6 @@ public class SwerveModule {
         return m_absoluteRotationEncoder.getAbsolutePosition().getValue();
       }, SwerveModuleConstants.kValueCacheTtlMicroseconds);
     Utilities.burnMotor(m_driveMotor);
-
 
     m_turningMotor = new CANSparkMax(turningMotorChannel, MotorType.kBrushless);
     m_turningMotor.restoreFactoryDefaults();
@@ -125,18 +118,12 @@ public class SwerveModule {
     updateTurningEncoderOffset();
     m_prevAngle = getUnconstrainedRotation2d();
 
-    m_turningPidController = m_turningMotor.getPIDController();
-    m_turningPidController.setFeedbackDevice(m_turningEncoder);
-    m_turningPidController.setFF(0);
-    // Auto turning PID
-    m_turningPidController.setP(SwerveModuleConstants.kAutoTurningPID.p(), SwerveModuleConstants.kAutoPIDSlotID);
-    m_turningPidController.setI(SwerveModuleConstants.kAutoTurningPID.i(), SwerveModuleConstants.kAutoPIDSlotID);
-    m_turningPidController.setD(SwerveModuleConstants.kAutoTurningPID.d(), SwerveModuleConstants.kAutoPIDSlotID);
-    // Teleop turning PID
-    PID teleopTurningPID = tunableTeleopTurningPID.get();
-    m_turningPidController.setP(teleopTurningPID.p(), SwerveModuleConstants.kTeleopPIDSlotID);
-    m_turningPidController.setI(teleopTurningPID.i(), SwerveModuleConstants.kTeleopPIDSlotID);
-    m_turningPidController.setD(teleopTurningPID.d(), SwerveModuleConstants.kTeleopPIDSlotID);
+    m_turningPIDController = m_turningMotor.getPIDController();
+    m_turningPIDController.setFeedbackDevice(m_turningEncoder);
+    SwerveModuleConstants.kAutoTurningPIDF.controllerSet(
+      m_turningPIDController, SwerveModuleConstants.kAutoPIDFSlotID);
+    SwerveModuleConstants.kTeleopTurningPIDF.controllerSet(
+      m_turningPIDController, SwerveModuleConstants.kTeleopPIDFSlotID);
     Utilities.burnMotor(m_turningMotor);
   }
 
@@ -165,7 +152,7 @@ public class SwerveModule {
   }
 
   public void setPIDSlotID(int slotID) {
-    m_PIDSlotID = slotID;
+    m_PIDFSlotID = slotID;
   }
 
   public SwerveModuleState getState() {
@@ -195,7 +182,7 @@ public class SwerveModule {
     // commanding a position and reading current position are both asynchronous.
     SwerveModuleState state = SwerveModuleState.optimize(desiredState, m_prevAngle);
 
-    m_drivePidController.setReference(state.speedMetersPerSecond, ControlType.kVelocity, m_PIDSlotID);
+    m_drivePIDController.setReference(state.speedMetersPerSecond, ControlType.kVelocity, m_PIDFSlotID);
 
     if (!state.angle.equals(m_prevAngle)) {
       // deltaAngle is in [-pi..pi], which is added (intentionally unconstrained) to m_prevAngle.
@@ -204,8 +191,8 @@ public class SwerveModule {
       // Avoid Rotation2d.plus() here, since it constrains the result to [-pi..pi].
       Rotation2d angle = Rotation2d.fromRadians(m_prevAngle.getRadians() + deltaAngle.getRadians());
       // Take care to cancel out the encoder offset when setting the position.
-      m_turningPidController.setReference(angle.getRadians() + m_turningEncoderOffset.getRadians(),
-        ControlType.kPosition, m_PIDSlotID);
+      m_turningPIDController.setReference(angle.getRadians() + m_turningEncoderOffset.getRadians(),
+        ControlType.kPosition, m_PIDFSlotID);
       m_prevAngle = angle;
     }
   }

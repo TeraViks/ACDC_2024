@@ -64,10 +64,7 @@ public class Chamber extends SubsystemBase {
 
     m_leftPIDController = m_leftMotor.getPIDController();
     m_leftPIDController.setFeedbackDevice(m_leftEncoder);
-    m_leftPIDController.setP(ChamberConstants.kLeftPID.p(), 0);
-    m_leftPIDController.setI(ChamberConstants.kLeftPID.i(), 0);
-    m_leftPIDController.setD(ChamberConstants.kLeftPID.d(), 0);
-    m_leftPIDController.setFF(0);
+    ChamberConstants.kLeftPIDF.controllerSet(m_leftPIDController);
     Utilities.burnMotor(m_leftMotor);
 
     m_rightMotor = new CANSparkMax(ChamberConstants.kRightMotorID, MotorType.kBrushless);
@@ -81,10 +78,7 @@ public class Chamber extends SubsystemBase {
 
     m_rightPIDController = m_rightMotor.getPIDController();
     m_rightPIDController.setFeedbackDevice(m_rightEncoder);
-    m_rightPIDController.setP(ChamberConstants.kRightPID.p(), 0);
-    m_rightPIDController.setI(ChamberConstants.kRightPID.i(), 0);
-    m_rightPIDController.setD(ChamberConstants.kRightPID.d(), 0);
-    m_rightPIDController.setFF(0);
+    ChamberConstants.kRightPIDF.controllerSet(m_rightPIDController);
     Utilities.burnMotor(m_rightMotor);
 
     m_noteDetectedSensor = new DigitalInput(ChamberConstants.kSensorID);
