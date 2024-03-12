@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.REVLibError;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 
@@ -107,7 +108,13 @@ public class Shooter extends SubsystemBase {
         if (true) return true;
         //TODO: Fix the ideal speed
         double rightMotorVelocity = m_rightEncoder.getVelocity();
+        if (m_rightMotor.getLastError() != REVLibError.kOk) {
+          return false;
+        }
         double leftMotorVelocity = m_leftEncoder.getVelocity();
+        if (m_leftMotor.getLastError() != REVLibError.kOk) {
+          return false;
+        }
         return (
           rightMotorVelocity >= m_idealRightSpeed * (1.0 - ShooterConstants.kShootingTolerance) &&
           rightMotorVelocity <= m_idealRightSpeed * (1.0 + ShooterConstants.kShootingTolerance) &&
