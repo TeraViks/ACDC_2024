@@ -224,6 +224,7 @@ public final class Constants {
     public static final double kLimelightLensHeightInches = 16.25;
     public static final double kNoteHeightInches = 2.0;
     public static final int kRelayPort = 3;
+    public static final int kFilterSize = 7;
   }
 
   public static final class TargetConstants {
@@ -232,8 +233,11 @@ public final class Constants {
     public static final double kMaxGoodShootingDistance = 3.56;
     public static final double kMaxPossibleShootingDistance = 4.01;
 
-    public static final double kAngularTolerance = Units.degreesToRadians(3.0);
-    public static final double kAngularVelocityCoefficient = 30.0;
+    public static final double kAngularTolerance = Units.degreesToRadians(5.0);
+    // Changing the angular velocity coefficient requires re-tuning the PIDF.
+    public static final double kAngularVelocityCoefficient = 360.0;
+    // Use JoystickTargetNote.targetTurningPIDF rather than directly using this field.
+    public static final PIDF kTurningPIDF = new PIDF(0.015, 0.0, 0.0);
   }
 
   public static final class FieldConstants {

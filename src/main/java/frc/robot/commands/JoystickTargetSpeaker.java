@@ -21,7 +21,6 @@ import frc.robot.subsystems.Chamber;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.ShooterInterp;
-import frc.robot.subsystems.SwerveModule;
 
 public class JoystickTargetSpeaker extends Command {
   private final DriveSubsystem m_drive;
@@ -33,9 +32,9 @@ public class JoystickTargetSpeaker extends Command {
   private final Translation2d m_speaker;
 
   private ProfiledPIDController m_thetaController = new ProfiledPIDController(
-    SwerveModule.tunableTeleopTurningPIDF.get().p(),
-    SwerveModule.tunableTeleopTurningPIDF.get().i(),
-    SwerveModule.tunableTeleopTurningPIDF.get().i(),
+    JoystickTargetNote.targetTurningPIDF.get().p(),
+    JoystickTargetNote.targetTurningPIDF.get().i(),
+    JoystickTargetNote.targetTurningPIDF.get().d(),
     new TrapezoidProfile.Constraints(
       DriveConstants.kMaxAngularSpeedRadiansPerSecond,
       DriveConstants.kMaxAngularAccelerationRadiansPerSecondSquared));
@@ -133,9 +132,9 @@ public class JoystickTargetSpeaker extends Command {
   }
 
   private void updateConstants() {
-    if (SwerveModule.tunableTeleopTurningPIDF.hasChanged()) {
-      PIDF pid = SwerveModule.tunableTeleopTurningPIDF.get();
-      m_thetaController.setPID(pid.p(), pid.i(), pid.d());
+    if (JoystickTargetNote.targetTurningPIDF.hasChanged()) {
+      PIDF pidf = JoystickTargetNote.targetTurningPIDF.get();
+      m_thetaController.setPID(pidf.p(), pidf.i(), pidf.d());
     }
   }
 

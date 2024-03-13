@@ -10,15 +10,17 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.TargetConstants;
 import frc.robot.PIDF;
 import frc.robot.TunableDouble;
+import frc.robot.TunablePIDF;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Limelight;
-import frc.robot.subsystems.SwerveModule;
 
 public class JoystickTargetNote extends Command {
   // Also used by JoystickTargetSpeaker.
   public static TunableDouble targetAngularVelocityCoefficient =
     new TunableDouble("Target.angularVelocityCoefficient",
       TargetConstants.kAngularVelocityCoefficient);
+  public static TunablePIDF targetTurningPIDF =
+    new TunablePIDF("Target.turningPIDF", TargetConstants.kTurningPIDF);
 
   private final DriveSubsystem m_drive;
   private final Limelight m_limelight;
@@ -26,9 +28,9 @@ public class JoystickTargetNote extends Command {
   private final Supplier<Double> m_yVelocitySupplier;
 
   private ProfiledPIDController m_thetaController = new ProfiledPIDController(
-    SwerveModule.tunableTeleopTurningPIDF.get().p(),
-    SwerveModule.tunableTeleopTurningPIDF.get().i(),
-    SwerveModule.tunableTeleopTurningPIDF.get().i(),
+    targetTurningPIDF.get().p(),
+    targetTurningPIDF.get().i(),
+    targetTurningPIDF.get().d(),
     new TrapezoidProfile.Constraints(
       DriveConstants.kMaxAngularSpeedRadiansPerSecond,
       DriveConstants.kMaxAngularAccelerationRadiansPerSecondSquared));
@@ -64,9 +66,9 @@ public class JoystickTargetNote extends Command {
   }
 
   private void updateConstants() {
-    if (SwerveModule.tunableTeleopTurningPIDF.hasChanged()) {
-      PIDF pid = SwerveModule.tunableTeleopTurningPIDF.get();
-      m_thetaController.setPID(pid.p(), pid.i(), pid.d());
+    if (targetTurningPIDF.hasChanged()) {
+      PIDF pidf = targetTurningPIDF.get();
+      m_thetaController.setPID(pidf.p(), pidf.i(), pidf.d());
     }
   }
 
