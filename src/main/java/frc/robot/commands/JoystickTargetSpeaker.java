@@ -9,8 +9,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.DriveConstants;
@@ -69,21 +69,18 @@ public class JoystickTargetSpeaker extends Command {
   @Override
   public void initialize() {}
 
-  private Translation2d computeSpeakerTranslation(Pose2d robotPose) {
-    return robotPose.getTranslation().minus(m_speaker);
-  }
-
   @Override
   public void execute() {
     Pose2d robotPose = m_drive.getPose();
-    Translation2d speakerTranslation = computeSpeakerTranslation(robotPose);
-    double speakerDistance = speakerTranslation.getNorm();
-    Rotation2d speakerAngle = speakerTranslation.getAngle();
+    Translation2d robotToSpeaker = m_speaker.minus(robotPose.getTranslation());
+    Rotation2d currentRotation = robotPose.getRotation();
+    Rotation2d desiredRotation = robotToSpeaker.getAngle();
+    Rotation2d rotationError = desiredRotation.minus(currentRotation);
 
     // Turn toward speaker.
     updateConstants();
     double thetaVelocity =
-      m_thetaController.calculate(speakerAngle.getRadians() *
+      m_thetaController.calculate(rotationError.getRadians() *
         JoystickTargetNote.targetAngularVelocityCoefficient.get());
     m_drive.drive(
       m_xVelocitySupplier.get(),
@@ -92,6 +89,7 @@ public class JoystickTargetSpeaker extends Command {
       true
     );
 
+    double speakerDistance = robotToSpeaker.getNorm();
     revShooter(speakerDistance);
     rumbleDriverController(speakerDistance);
   }
