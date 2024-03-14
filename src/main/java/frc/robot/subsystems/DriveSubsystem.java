@@ -270,4 +270,9 @@ public class DriveSubsystem extends SubsystemBase {
   private Rotation2d getEstimatedRotation2d() {
     return m_odometry.getEstimatedPosition().getRotation();
   }
+
+  /** Return ideal angular velocity of robot in radians/sec. */
+  public double getAngularVelocity() {
+    return m_idealAngularVelocity;
+  }
 }

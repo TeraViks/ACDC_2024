@@ -229,10 +229,20 @@ public final class Constants {
   
   public static final class NoteConstants {
     public static final double kAngularTolerance = Units.degreesToRadians(5.0);
-    // Changing the angular velocity coefficient requires re-tuning the PIDF.
-    public static final double kAngularVelocityCoefficient = 360.0;
     // Use JoystickTargetNote.targetTurningPIDF rather than directly using this field.
-    public static final PIDF kTurningPIDF = new PIDF(0.015, 0.0, 0.0);
+    public static final PIDF kTurningPIDF = new PIDF(3.0, 0.0, 0.0, 0.2);
+  }
+
+  public static final class PhotonVisionConstants {
+    public static final boolean kEnable = true;
+    public static final String kCameraName1 = "camera1";
+    public static final String kCameraName2 = "camera2";
+    public static final Transform3d kRobotToCamera1Transform = new Transform3d(
+      0.196, -0.238, 0.26,
+      new Rotation3d(0.0, Units.degreesToRadians(-21.0), 0.0));
+    public static final Transform3d kRobotToCamera2Transform = new Transform3d(
+      0.196, 0.238, 0.26,
+      new Rotation3d(0.0, Units.degreesToRadians(-20.5), 0.0));
   }
 
   public static final class SpeakerConstants {
@@ -241,11 +251,9 @@ public final class Constants {
     public static final double kMaxGoodShootingDistance = 3.56;
     public static final double kMaxPossibleShootingDistance = 4.01;
 
-    public static final double kAngularTolerance = Units.degreesToRadians(5.0);
-    // Changing the angular velocity coefficient requires re-tuning the PIDF.
-    public static final double kAngularVelocityCoefficient = 360.0;
-    // Use JoystickTargetNote.targetTurningPIDF rather than directly using this field.
-    public static final PIDF kTurningPIDF = new PIDF(0.015, 0.0, 0.0);
+    public static final double kAngularTolerance = Units.degreesToRadians(1.0);
+    // Use JoystickTargetSpeaker.targetTurningPIDF rather than directly using this field.
+    public static final PIDF kTurningPIDF = NoteConstants.kTurningPIDF;
   }
 
   public static final class FieldConstants {
@@ -294,18 +302,6 @@ public final class Constants {
     }
     public static final Translation2d kBlueSpeaker = getAprilTagTranslation(kAprilTagFieldLayout, 7);
     public static final Translation2d kRedSpeaker = getAprilTagTranslation(kAprilTagFieldLayout, 4);
-  }
-
-  public static final class PhotonVisionConstants {
-    public static final boolean kEnable = true;
-    public static final String kCameraName1 = "camera1";
-    public static final String kCameraName2 = "camera2";
-    public static final Transform3d kRobotToCamera1Transform = new Transform3d(
-      0.196, -0.238, 0.26,
-      new Rotation3d(0.0, Units.degreesToRadians(-21.0), 0.0));
-    public static final Transform3d kRobotToCamera2Transform = new Transform3d(
-      0.196, 0.238, 0.26,
-      new Rotation3d(0.0, Units.degreesToRadians(-20.5), 0.0));
   }
 
   public static final class IntakeConstants {
