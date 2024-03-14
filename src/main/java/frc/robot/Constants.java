@@ -226,8 +226,16 @@ public final class Constants {
     public static final int kRelayPort = 3;
     public static final int kFilterSize = 7;
   }
+  
+  public static final class NoteConstants {
+    public static final double kAngularTolerance = Units.degreesToRadians(5.0);
+    // Changing the angular velocity coefficient requires re-tuning the PIDF.
+    public static final double kAngularVelocityCoefficient = 360.0;
+    // Use JoystickTargetNote.targetTurningPIDF rather than directly using this field.
+    public static final PIDF kTurningPIDF = new PIDF(0.015, 0.0, 0.0);
+  }
 
-  public static final class TargetConstants {
+  public static final class SpeakerConstants {
     public static final double kMinPossibleShootingDistance = 2.39;
     public static final double kMinGoodShootingDistance = 2.54;
     public static final double kMaxGoodShootingDistance = 3.56;
