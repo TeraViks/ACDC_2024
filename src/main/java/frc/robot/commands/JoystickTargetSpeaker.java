@@ -15,14 +15,21 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.FieldConstants;
-import frc.robot.Constants.TargetConstants;
+import frc.robot.Constants.SpeakerConstants;
 import frc.robot.PIDF;
+import frc.robot.TunableDouble;
+import frc.robot.TunablePIDF;
 import frc.robot.subsystems.Chamber;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.ShooterInterp;
 
 public class JoystickTargetSpeaker extends Command {
+  public static TunableDouble targetAngularVelocityCoefficient =
+    new TunableDouble("Speaker.angularVelocityCoefficient",
+      SpeakerConstants.kAngularVelocityCoefficient);
+  public static TunablePIDF targetTurningPIDF =
+    new TunablePIDF("Speaker.turningPIDF", SpeakerConstants.kTurningPIDF);
   private final DriveSubsystem m_drive;
   private final Chamber m_chamber;
   private final Shooter m_shooter;
@@ -32,9 +39,9 @@ public class JoystickTargetSpeaker extends Command {
   private final Translation2d m_speaker;
 
   private ProfiledPIDController m_thetaController = new ProfiledPIDController(
-    JoystickTargetNote.targetTurningPIDF.get().p(),
-    JoystickTargetNote.targetTurningPIDF.get().i(),
-    JoystickTargetNote.targetTurningPIDF.get().d(),
+    JoystickTargetSpeaker.targetTurningPIDF.get().p(),
+    JoystickTargetSpeaker.targetTurningPIDF.get().i(),
+    JoystickTargetSpeaker.targetTurningPIDF.get().d(),
     new TrapezoidProfile.Constraints(
       DriveConstants.kMaxAngularSpeedRadiansPerSecond,
       DriveConstants.kMaxAngularAccelerationRadiansPerSecondSquared));
@@ -81,7 +88,7 @@ public class JoystickTargetSpeaker extends Command {
     updateConstants();
     double thetaVelocity =
       m_thetaController.calculate(rotationError.getRadians() *
-        JoystickTargetNote.targetAngularVelocityCoefficient.get());
+        JoystickTargetSpeaker.targetAngularVelocityCoefficient.get());
     m_drive.drive(
       m_xVelocitySupplier.get(),
       m_yVelocitySupplier.get(),
@@ -105,9 +112,9 @@ public class JoystickTargetSpeaker extends Command {
     // There are five cases, which in the worst case requires three conditional branches to
     // determine (ceiling of log_2(5)). Structure conditionals such that the common case of
     // approaching from afar requires only two branches to select.
-    if (speakerDistance <= TargetConstants.kMaxGoodShootingDistance) {
-      if (speakerDistance < TargetConstants.kMinGoodShootingDistance) {
-        if (speakerDistance < TargetConstants.kMinPossibleShootingDistance) {
+    if (speakerDistance <= SpeakerConstants.kMaxGoodShootingDistance) {
+      if (speakerDistance < SpeakerConstants.kMinGoodShootingDistance) {
+        if (speakerDistance < SpeakerConstants.kMinPossibleShootingDistance) {
           // Too near.
           m_driverController.setRumble(RumbleType.kBothRumble, 0);
         } else {
@@ -119,7 +126,7 @@ public class JoystickTargetSpeaker extends Command {
         // Ideal distance.
         m_driverController.setRumble(RumbleType.kBothRumble, 1);
       }
-    } else if (speakerDistance <= TargetConstants.kMaxPossibleShootingDistance) {
+    } else if (speakerDistance <= SpeakerConstants.kMaxPossibleShootingDistance) {
       // Farther than ideal.
       m_driverController.setRumble(RumbleType.kLeftRumble, 0);
       m_driverController.setRumble(RumbleType.kRightRumble, 1);
@@ -130,8 +137,8 @@ public class JoystickTargetSpeaker extends Command {
   }
 
   private void updateConstants() {
-    if (JoystickTargetNote.targetTurningPIDF.hasChanged()) {
-      PIDF pidf = JoystickTargetNote.targetTurningPIDF.get();
+    if (JoystickTargetSpeaker.targetTurningPIDF.hasChanged()) {
+      PIDF pidf = JoystickTargetSpeaker.targetTurningPIDF.get();
       m_thetaController.setPID(pidf.p(), pidf.i(), pidf.d());
     }
   }

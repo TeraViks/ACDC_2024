@@ -7,7 +7,8 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.Constants.TargetConstants;
+import frc.robot.Constants.LimelightConstants;
+import frc.robot.Constants.NoteConstants;
 import frc.robot.PIDF;
 import frc.robot.TunableDouble;
 import frc.robot.TunablePIDF;
@@ -15,12 +16,11 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Limelight;
 
 public class JoystickTargetNote extends Command {
-  // Also used by JoystickTargetSpeaker.
   public static TunableDouble targetAngularVelocityCoefficient =
-    new TunableDouble("Target.angularVelocityCoefficient",
-      TargetConstants.kAngularVelocityCoefficient);
+    new TunableDouble("Note.angularVelocityCoefficient",
+      NoteConstants.kAngularVelocityCoefficient);
   public static TunablePIDF targetTurningPIDF =
-    new TunablePIDF("Target.turningPIDF", TargetConstants.kTurningPIDF);
+    new TunablePIDF("Note.turningPIDF", NoteConstants.kTurningPIDF);
 
   private final DriveSubsystem m_drive;
   private final Limelight m_limelight;
@@ -47,7 +47,7 @@ public class JoystickTargetNote extends Command {
   @Override
   public void initialize() {
     m_thetaController.reset(0);
-    m_thetaController.setTolerance(TargetConstants.kAngularTolerance);
+    m_thetaController.setTolerance(NoteConstants.kAngularTolerance);
     m_limelight.lightsOn();
   }
 
