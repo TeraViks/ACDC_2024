@@ -6,19 +6,15 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.Constants.LimelightConstants;
 import frc.robot.Constants.NoteConstants;
 import frc.robot.PIDF;
-import frc.robot.TunableDouble;
 import frc.robot.TunablePIDF;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Limelight;
 
 public class JoystickTargetNote extends Command {
-  public static TunableDouble targetAngularVelocityCoefficient =
-    new TunableDouble("Note.angularVelocityCoefficient",
-      NoteConstants.kAngularVelocityCoefficient);
   public static TunablePIDF targetTurningPIDF =
     new TunablePIDF("Note.turningPIDF", NoteConstants.kTurningPIDF);
 
@@ -33,7 +29,8 @@ public class JoystickTargetNote extends Command {
     targetTurningPIDF.get().d(),
     new TrapezoidProfile.Constraints(
       DriveConstants.kMaxAngularSpeedRadiansPerSecond,
-      DriveConstants.kMaxAngularAccelerationRadiansPerSecondSquared));
+      DriveConstants.kMaxAngularAccelerationRadiansPerSecondSquared),
+    Constants.kDt);
 
   public JoystickTargetNote(DriveSubsystem drive, Limelight limelight,
       Supplier<Double> xVelocitySupplier, Supplier<Double> yVelocitySupplier) {
@@ -41,22 +38,27 @@ public class JoystickTargetNote extends Command {
     m_limelight = limelight;
     m_xVelocitySupplier = xVelocitySupplier;
     m_yVelocitySupplier = yVelocitySupplier;
+
+    m_thetaController.enableContinuousInput(-Math.PI, Math.PI);
+    m_thetaController.setTolerance(NoteConstants.kAngularTolerance);
+
     addRequirements(drive, limelight);
+  }
+
+  private double getX() {
+    return Units.degreesToRadians(m_limelight.getX());
   }
 
   @Override
   public void initialize() {
-    m_thetaController.reset(0);
-    m_thetaController.setTolerance(NoteConstants.kAngularTolerance);
+    m_thetaController.reset(getX(), m_drive.getAngularVelocity());
     m_limelight.lightsOn();
   }
 
   @Override
   public void execute() {
     updateConstants();
-    double x = m_limelight.getX();
-    double thetaVelocity =
-      m_thetaController.calculate(Units.degreesToRadians(x)) * targetAngularVelocityCoefficient.get();
+    double thetaVelocity = m_thetaController.calculate(getX());
     m_drive.drive(
       m_xVelocitySupplier.get(),
       m_yVelocitySupplier.get(),

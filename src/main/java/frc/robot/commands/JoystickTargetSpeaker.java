@@ -13,11 +13,11 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.SpeakerConstants;
 import frc.robot.PIDF;
-import frc.robot.TunableDouble;
 import frc.robot.TunablePIDF;
 import frc.robot.subsystems.Chamber;
 import frc.robot.subsystems.DriveSubsystem;
@@ -25,9 +25,6 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.ShooterInterp;
 
 public class JoystickTargetSpeaker extends Command {
-  public static TunableDouble targetAngularVelocityCoefficient =
-    new TunableDouble("Speaker.angularVelocityCoefficient",
-      SpeakerConstants.kAngularVelocityCoefficient);
   public static TunablePIDF targetTurningPIDF =
     new TunablePIDF("Speaker.turningPIDF", SpeakerConstants.kTurningPIDF);
   private final DriveSubsystem m_drive;
@@ -44,7 +41,8 @@ public class JoystickTargetSpeaker extends Command {
     JoystickTargetSpeaker.targetTurningPIDF.get().d(),
     new TrapezoidProfile.Constraints(
       DriveConstants.kMaxAngularSpeedRadiansPerSecond,
-      DriveConstants.kMaxAngularAccelerationRadiansPerSecondSquared));
+      DriveConstants.kMaxAngularAccelerationRadiansPerSecondSquared),
+    Constants.kDt);
 
   public JoystickTargetSpeaker(DriveSubsystem drive, Chamber chamber, Shooter shooter,
       GenericHID driverController,
@@ -70,25 +68,47 @@ public class JoystickTargetSpeaker extends Command {
       }
     }
 
+    m_thetaController.setTolerance(SpeakerConstants.kAngularTolerance);
+    m_thetaController.enableContinuousInput(-Math.PI, Math.PI);
+
     addRequirements(drive, chamber, shooter);
   }
 
+  private Translation2d getRobotToSpeaker(Pose2d robotPose) {
+    Translation2d robotToSpeaker = m_speaker.minus(robotPose.getTranslation());
+    return robotToSpeaker;
+  }
+
+  private Rotation2d getRotationDeviation(Pose2d robotPose, Translation2d robotToSpeaker) {
+    Rotation2d currentRotation = robotPose.getRotation();
+    Rotation2d desiredRotation = robotToSpeaker.getAngle();
+    Rotation2d rotationDeviation = currentRotation.minus(desiredRotation);
+    return rotationDeviation;
+  }
+
+  private double getSpeakerDistance(Translation2d robotToSpeaker) {
+    double speakerDistance = robotToSpeaker.getNorm();
+    return speakerDistance;
+  }
+
   @Override
-  public void initialize() {}
+  public void initialize() {
+    Pose2d robotPose = m_drive.getPose();
+    Translation2d robotToSpeaker = getRobotToSpeaker(robotPose);
+    m_thetaController.reset(
+      getRotationDeviation(robotPose, robotToSpeaker).getRadians(),
+      m_drive.getAngularVelocity());
+  }
 
   @Override
   public void execute() {
     Pose2d robotPose = m_drive.getPose();
-    Translation2d robotToSpeaker = m_speaker.minus(robotPose.getTranslation());
-    Rotation2d currentRotation = robotPose.getRotation();
-    Rotation2d desiredRotation = robotToSpeaker.getAngle();
-    Rotation2d rotationError = desiredRotation.minus(currentRotation);
+    Translation2d robotToSpeaker = getRobotToSpeaker(robotPose);
+    Rotation2d rotationDeviation = getRotationDeviation(robotPose, robotToSpeaker);
 
     // Turn toward speaker.
     updateConstants();
-    double thetaVelocity =
-      m_thetaController.calculate(rotationError.getRadians() *
-        JoystickTargetSpeaker.targetAngularVelocityCoefficient.get());
+    double thetaVelocity = m_thetaController.calculate(rotationDeviation.getRadians());
     m_drive.drive(
       m_xVelocitySupplier.get(),
       m_yVelocitySupplier.get(),
@@ -96,7 +116,7 @@ public class JoystickTargetSpeaker extends Command {
       true
     );
 
-    double speakerDistance = robotToSpeaker.getNorm();
+    double speakerDistance = getSpeakerDistance(robotToSpeaker);
     revShooter(speakerDistance);
     rumbleDriverController(speakerDistance);
   }
@@ -137,8 +157,8 @@ public class JoystickTargetSpeaker extends Command {
   }
 
   private void updateConstants() {
-    if (JoystickTargetSpeaker.targetTurningPIDF.hasChanged()) {
-      PIDF pidf = JoystickTargetSpeaker.targetTurningPIDF.get();
+    if (targetTurningPIDF.hasChanged()) {
+      PIDF pidf = targetTurningPIDF.get();
       m_thetaController.setPID(pidf.p(), pidf.i(), pidf.d());
     }
   }
