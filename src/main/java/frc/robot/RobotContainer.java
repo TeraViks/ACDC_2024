@@ -183,8 +183,10 @@ public class RobotContainer {
     new Trigger(() -> m_chamber.isNoteChambered()) 
       .onTrue(
         Commands.sequence(
+          Commands.runOnce(() -> m_driverController.setRumble(RumbleType.kBothRumble, 1)),
           Commands.runOnce(() -> m_operatorController.setRumble(RumbleType.kBothRumble, 1)),
           Commands.waitSeconds(0.5),
+          Commands.runOnce(() -> m_driverController.setRumble(RumbleType.kBothRumble, 0)),
           Commands.runOnce(() -> m_operatorController.setRumble(RumbleType.kBothRumble, 0))
         )
       );
