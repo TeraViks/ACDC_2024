@@ -370,9 +370,10 @@ public final class Constants {
       kPositionConversionFactor
       / 60.0 /* s */;
 
-    public static final PIDF kPIDF = new PIDF(0.08, 0.0, 3, 0.1);
+    public static final PIDF kLeftPIDF = new PIDF(0.05, 0.0, 0.0, 0.04);
+    public static final PIDF kRightPIDF = new PIDF(0.05, 0.0, 0.0, 0.039);
     public static final double kIdleSpeed = 15.0;
-    public static final double kShootingSpeed = 25.0;
+    public static final double kShootingSpeed = 22.0;
 
     public static final double kSpinSpeed = 0.0;
 
