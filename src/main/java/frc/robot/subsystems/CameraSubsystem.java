@@ -5,7 +5,6 @@
 package frc.robot.subsystems;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Optional;
 
 import org.photonvision.EstimatedRobotPose;
@@ -58,49 +57,6 @@ public class CameraSubsystem extends SubsystemBase {
     estimatorList.add(m_photonPoseEstimatorCam1.update(m_resultCam1));
     estimatorList.add(m_photonPoseEstimatorCam2.update(m_resultCam2));
     return estimatorList;
-  }
-
-  /* Given previous and current results from getFieldRelativePoseEstimators(), exclude stale
-   * estimates, i.e. those present in previous results, selecting only fresh estimates, if any. */
-  public ArrayList<EstimatedRobotPose> selectFreshEstimates(
-      ArrayList<Optional<EstimatedRobotPose>> prev,
-      ArrayList<Optional<EstimatedRobotPose>> cur) {
-    ArrayList<EstimatedRobotPose> freshEstimates = new ArrayList<>();
-
-    if (prev.size() == 0) {
-      // No prev estimates, therefore all cur estimates are fresh.
-      for (Optional<EstimatedRobotPose> curEstimateOpt : cur) {
-        if (curEstimateOpt.isPresent()) {
-          freshEstimates.add(curEstimateOpt.get());
-        }
-      }
-    } else {
-      assert(prev.size() == cur.size());
-      Iterator<Optional<EstimatedRobotPose>> prevIterator = prev.iterator();
-      Iterator<Optional<EstimatedRobotPose>> curIterator = cur.iterator();
-
-      // Iterate over prev and cur in lockstep.
-      while (prevIterator.hasNext() && curIterator.hasNext()) {
-        Optional<EstimatedRobotPose> prevEstimateOpt = prevIterator.next();
-        Optional<EstimatedRobotPose> curEstimateOpt = curIterator.next();
-
-        if (curEstimateOpt.isPresent()) {
-          EstimatedRobotPose curEstimate = curEstimateOpt.get();
-          if (prevEstimateOpt.isPresent()) {
-            EstimatedRobotPose prevEstimate = prevEstimateOpt.get();
-            if (curEstimate.timestampSeconds > prevEstimate.timestampSeconds) {
-              // Newer timestamp, therefore fresh.
-              freshEstimates.add(curEstimate);
-            }
-          } else {
-            // Missing in prev, therefore fresh.
-            freshEstimates.add(curEstimate);
-          }
-        }
-      }
-    }
-
-    return freshEstimates;
   }
 
   @Override
