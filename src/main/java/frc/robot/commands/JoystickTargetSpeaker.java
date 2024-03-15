@@ -18,11 +18,11 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.SpeakerConstants;
 import frc.robot.PIDF;
+import frc.robot.ShooterInterp;
 import frc.robot.TunablePIDF;
 import frc.robot.subsystems.Chamber;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.ShooterInterp;
 
 public class JoystickTargetSpeaker extends Command {
   public static TunablePIDF targetTurningPIDF =
