@@ -321,9 +321,9 @@ public final class Constants {
     public static final double kBottomVelocityConversionFactor =
       (kBottomWheelDiameterMeters * Math.PI)
       / (kBottomGearRatio * 60.0);
-    public static final PIDF kTopPIDF = new PIDF(0.5, 0.0, 0.0);
-    public static final PIDF kBottomPIDF = new PIDF(0.5, 0.0, 0.0);
-    public static final double kSpeed = 5.0;
+    public static final PIDF kTopPIDF = new PIDF(0.1, 0.0, 0.0, 0.2075);
+    public static final PIDF kBottomPIDF = new PIDF(0.2, 0.0, 0.0, 0.405);
+    public static final double kSpeed = 2.5;
   }
 
   public static final class ChamberConstants {
