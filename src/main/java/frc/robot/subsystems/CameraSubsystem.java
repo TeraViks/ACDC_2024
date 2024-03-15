@@ -105,7 +105,11 @@ public class CameraSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    m_resultCam1 = m_camera1.getLatestResult();
-    m_resultCam2 = m_camera2.getLatestResult();
+    if (m_camera1.isConnected()) {
+      m_resultCam1 = m_camera1.getLatestResult();
+    }
+    if (m_camera2.isConnected()) {
+      m_resultCam2 = m_camera2.getLatestResult();
+    }
   }
 }
