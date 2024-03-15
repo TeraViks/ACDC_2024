@@ -342,10 +342,10 @@ public final class Constants {
     public static final double kChamberVelocityConversionFactor =
       (kWheelDiameterMeters * Math.PI)
       / kGearRatio / 60.0;
-    public static final PIDF kLeftPIDF = new PIDF(0.43, 0.0, 0.0);
-    public static final PIDF kRightPIDF = new PIDF(0.43, 0.0, 0.0);
-    public static final double kIntakingSpeed = 2.0;
-    public static final double kShootingSpeed = 10.0;
+    public static final PIDF kLeftPIDF = new PIDF(0.1, 0.0, 0.0, 0.1525);
+    public static final PIDF kRightPIDF = new PIDF(0.1, 0.0, 0.0, 0.15);
+    public static final double kIntakingSpeed = IntakeConstants.kSpeed;
+    public static final double kShootingSpeed = 6.5;
     public static final double kClearingTimeSeconds = 1.0;
     public static final double kAligningSpeed = -1.0;
   }
