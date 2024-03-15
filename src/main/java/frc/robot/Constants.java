@@ -154,7 +154,7 @@ public final class Constants {
     public static final PIDF kAutoDrivePIDF = new PIDF(0.5, 0.002, 0.0);
     public static final PIDF kAutoTurningPIDF = new PIDF(0.5, 0.0, 0.0);
 
-    public static final PIDF kTeleopDrivePIDF = new PIDF(0.375, 0.0, 0.0);
+    public static final PIDF kTeleopDrivePIDF = new PIDF(0.375, 0.0, 0.0, 0.25);
     // Use SwerveModule.tunableTeleopTurningPIDF rather than directly using this field.
     public static final PIDF kTeleopTurningPIDF = new PIDF(0.375, 0.0, 0.0);
 
