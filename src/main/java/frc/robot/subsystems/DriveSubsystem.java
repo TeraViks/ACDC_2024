@@ -89,7 +89,6 @@ public class DriveSubsystem extends SubsystemBase {
   private final AHRS m_gyro = new AHRS(SPI.Port.kMXP);
   private Pose2d m_initialPose = new Pose2d();
   private CameraSubsystem m_cameraSystem;
-  private ArrayList<Optional<EstimatedRobotPose>> m_photonRobotPoseList = new ArrayList<>();
 
   private Field2d m_field;
 
@@ -163,16 +162,17 @@ public class DriveSubsystem extends SubsystemBase {
     // Integrate swerve state into odometry.
     m_odometry.update(getUncorrectedRotation2d(), getPositions());
 
-    // Integrate fresh PhotonVision pose estimates into odometry.
+    // Integrate PhotonVision pose estimates into odometry.
     if (PhotonVisionConstants.kEnable) {
       ArrayList<Optional<EstimatedRobotPose>> photonRobotPoseList =
         m_cameraSystem.getFieldRelativePoseEstimators();
-      ArrayList<EstimatedRobotPose> freshEstimates =
-        m_cameraSystem.selectFreshEstimates(m_photonRobotPoseList, photonRobotPoseList);
-      for (EstimatedRobotPose estimate : freshEstimates) {
-        m_odometry.addVisionMeasurement(estimate.estimatedPose.toPose2d(), estimate.timestampSeconds);
+      for (Optional<EstimatedRobotPose> estimateOpt : photonRobotPoseList) {
+        if (estimateOpt.isPresent()) {
+          EstimatedRobotPose estimate = estimateOpt.get();
+          m_odometry.addVisionMeasurement(estimate.estimatedPose.toPose2d(),
+            estimate.timestampSeconds);
+        }
       }
-      m_photonRobotPoseList = photonRobotPoseList;
     }
 
     Pose2d pose = getPose();
