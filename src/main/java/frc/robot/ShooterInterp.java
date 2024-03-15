@@ -1,18 +1,10 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
-package frc.robot.subsystems;
+package frc.robot;
 
 import java.util.Arrays;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-public class ShooterInterp extends SubsystemBase {
+public final class ShooterInterp {
   static class PosEntry{double distance; double speed; public PosEntry(double dist, double pow) {distance = dist; speed = pow;}}
   static final PosEntry[] posTable = {};
-
-  public ShooterInterp() {}
 
   public static double getMaxDistance() {
     return posTable[posTable.length-1].distance;
@@ -49,8 +41,4 @@ public class ShooterInterp extends SubsystemBase {
       return s0 + scaler*speedRange;
     }
   }
-
-
-  @Override
-  public void periodic() {}
 }
