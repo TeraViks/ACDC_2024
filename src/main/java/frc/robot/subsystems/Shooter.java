@@ -12,6 +12,7 @@ import com.revrobotics.REVLibError;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.TunableDouble;
@@ -24,6 +25,8 @@ public class Shooter extends SubsystemBase {
   private final RelativeEncoder m_rightEncoder;
   private final SparkPIDController m_leftPIDController;
   private final SparkPIDController m_rightPIDController;
+
+  private double m_startTime = -1.0;
 
   private final TunableDouble m_idleSpeed =
     new TunableDouble("Shooter.idleSpeed", ShooterConstants.kIdleSpeed);
@@ -107,12 +110,25 @@ public class Shooter extends SubsystemBase {
         if (m_leftMotor.getLastError() != REVLibError.kOk) {
           return false;
         }
-        return (
+        if (
           rightMotorVelocity >= m_idealRightSpeed * (1.0 - ShooterConstants.kShootingTolerance) &&
           rightMotorVelocity <= m_idealRightSpeed * (1.0 + ShooterConstants.kShootingTolerance) &&
           leftMotorVelocity >= m_idealLeftSpeed * (1.0 - ShooterConstants.kShootingTolerance) &&
           leftMotorVelocity <= m_idealLeftSpeed * (1.0 + ShooterConstants.kShootingTolerance)
-        );
+        ) {
+          double currentTime = ((double)RobotController.getFPGATime()) / 1000000.0;
+          if (m_startTime == -1.0) {
+            m_startTime = currentTime;
+            return false;
+          } 
+          if (currentTime >= m_startTime + ShooterConstants.kstabilizingTimeSeconds) {
+            return true;
+          }
+          return false;
+        } else {
+          m_startTime = -1.0;
+          return false;
+        }
       }
       default: return false;
     }

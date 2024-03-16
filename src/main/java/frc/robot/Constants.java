@@ -370,14 +370,16 @@ public final class Constants {
       kPositionConversionFactor
       / 60.0 /* s */;
 
-    public static final PIDF kLeftPIDF = new PIDF(0.05, 0.0, 0.0, 0.035);
-    public static final PIDF kRightPIDF = new PIDF(0.05, 0.0, 0.0, 0.034);
+    public static final PIDF kLeftPIDF = new PIDF(0.025, 0.0, 0.0, 0.037);
+    public static final PIDF kRightPIDF = new PIDF(0.025, 0.0, 0.0, 0.036);
     public static final double kIdleSpeed = 15.0;
-    public static final double kShootingSpeed = 22.0;
+    public static final double kShootingSpeed = 18.0;
 
     public static final double kSpinSpeed = 0.0;
 
-    public static final double kShootingTolerance = 0.015;
+    public static final double kShootingTolerance = 0.02;
+
+    public static final double kstabilizingTimeSeconds = 0.1;
   }
 
   public static final class ClimberConstants {
