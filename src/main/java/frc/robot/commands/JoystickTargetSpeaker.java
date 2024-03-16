@@ -16,6 +16,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.FieldConstants;
+import frc.robot.Constants.NoteConstants;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.SpeakerConstants;
 import frc.robot.PIDF;
 import frc.robot.ShooterInterp;
@@ -161,6 +163,13 @@ public class JoystickTargetSpeaker extends Command {
       PIDF pidf = targetTurningPIDF.get();
       m_thetaController.setPID(pidf.p(), pidf.i(), pidf.d());
     }
+  }
+
+  public boolean isFacingSpeaker() {
+    Pose2d robotPose = m_drive.getPose();
+    Translation2d robotToSpeaker = getRobotToSpeaker(robotPose);
+    Rotation2d rotationDeviation = getRotationDeviation(robotPose, robotToSpeaker);
+    return (Math.abs(rotationDeviation.getDegrees()) <= NoteConstants.kAngularTolerance);
   }
 
   @Override
