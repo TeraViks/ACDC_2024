@@ -28,7 +28,7 @@ import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.JoystickTargetNote;
 import frc.robot.commands.JoystickTargetSpeaker;
 import frc.robot.commands.PickupCommand;
-import frc.robot.commands.ShooterCommand;
+import frc.robot.commands.Shoot;
 import frc.robot.subsystems.CameraSubsystem;
 import frc.robot.subsystems.Chamber;
 import frc.robot.subsystems.Climber;
@@ -99,7 +99,7 @@ public class RobotContainer {
   }
 
   public RobotContainer() {
-    NamedCommands.registerCommand("ShooterCommand", new ShooterCommand());
+    NamedCommands.registerCommand("ShooterCommand", new Shoot());
     NamedCommands.registerCommand("PickupCommand", new PickupCommand());
     configureButtonBindings();
 
