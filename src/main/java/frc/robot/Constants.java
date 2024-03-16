@@ -151,8 +151,8 @@ public final class Constants {
     public static final double kTurningEncoderStabilizeToleranceRadians =
       Units.degreesToRadians(1.0);
 
-    public static final PIDF kAutoDrivePIDF = new PIDF(0.5, 0.002, 0.0);
-    public static final PIDF kAutoTurningPIDF = new PIDF(0.5, 0.0, 0.0);
+    public static final PIDF kAutoDrivePIDF = new PIDF(0.375, 0.0, 0.0, 0.25);
+    public static final PIDF kAutoTurningPIDF = new PIDF(0.375, 0.0, 0.0);
 
     public static final PIDF kTeleopDrivePIDF = new PIDF(0.375, 0.0, 0.0, 0.25);
     // Use SwerveModule.tunableTeleopTurningPIDF rather than directly using this field.
