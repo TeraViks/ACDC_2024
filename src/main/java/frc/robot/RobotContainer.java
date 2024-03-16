@@ -99,7 +99,7 @@ public class RobotContainer {
   }
 
   public RobotContainer() {
-    NamedCommands.registerCommand("ShooterCommand", new Shoot());
+    NamedCommands.registerCommand("ShooterCommand", new Shoot(m_robotDrive, m_chamber, m_shooter, m_driverController));
     NamedCommands.registerCommand("PickupCommand", new PickupCommand());
     configureButtonBindings();
 
@@ -217,13 +217,9 @@ public class RobotContainer {
 
     new JoystickButton(m_driverController, OIConstants.kShootButton)
       .debounce(OIConstants.kDebounceSeconds)
-      .onTrue(Commands.runOnce(
-        () -> {
-          double speed = m_shootingSpeed.get();
-          m_chamber.shootNote(speed);
-        },
-        m_chamber, m_shooter
-      ));
+      .whileTrue(
+        new Shoot(m_robotDrive, m_chamber, m_shooter, m_driverController)
+      );
 
     // temporary, manual commands for tuning motor speeds
     if (false) {
