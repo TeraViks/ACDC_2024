@@ -3,38 +3,32 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.6597537983808364,
-        "y": 4.81
+        "x": 3.226164198807271,
+        "y": 2.84723837053308
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.76988984963903,
-        "y": 0.9538971190568607
+        "x": 3.7911234319785283,
+        "y": 1.7475961964446294
       },
       "isLocked": false,
-      "linkedName": "start of right"
+      "linkedName": "Initial Shoot"
     },
     {
       "anchor": {
-        "x": 2.7492156392765246,
-        "y": 4.350348982383123
+        "x": 8.12339971728244,
+        "y": 0.9545693509991673
       },
       "prevControl": {
-        "x": -0.49140154618319865,
-        "y": 3.7866825029325044
+        "x": 7.123399717282441,
+        "y": 0.9545693509991673
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "get right note"
+      "linkedName": null
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 1,
-      "rotationDegrees": 154.0,
-      "rotateFast": false
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
@@ -45,14 +39,14 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 151.0,
-    "rotateFast": false
+    "rotation": 160.0,
+    "rotateFast": true
   },
   "reversed": false,
-  "folder": "C two note",
+  "folder": "GH three note ",
   "previewStartingState": {
-    "rotation": 180.0,
+    "rotation": 0,
     "velocity": 0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

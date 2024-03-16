@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.6597537983808364,
-        "y": 4.81
+        "x": 0.8099299203965142,
+        "y": 3.4951923928892588
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.510721865808669,
-        "y": 6.667299774671107
+        "x": 1.995074825897593,
+        "y": 2.8881669534862673
       },
       "isLocked": false,
-      "linkedName": "start of right"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 8.328999269805339,
-        "y": 0.7930268454454622
+        "x": 3.226164198807271,
+        "y": 2.84723837053308
       },
       "prevControl": {
-        "x": 7.609400835975197,
-        "y": 2.1881666661365524
+        "x": 2.778121612581254,
+        "y": 2.283571891087445
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Initial Shoot"
     }
   ],
   "rotationTargets": [],
@@ -39,8 +39,8 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 110.0,
-    "rotateFast": true
+    "rotation": 140.0,
+    "rotateFast": false
   },
   "reversed": false,
   "folder": "GH three note ",
