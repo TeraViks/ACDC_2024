@@ -347,7 +347,7 @@ public final class Constants {
     public static final double kIntakingSpeed = IntakeConstants.kSpeed;
     public static final double kShootingSpeed = 6.5;
     public static final double kClearingTimeSeconds = 1.0;
-    public static final double kAligningSpeed = -1.0;
+    public static final double kAligningSpeed = -0.05;
   }
 
   public static final class ShooterConstants {
