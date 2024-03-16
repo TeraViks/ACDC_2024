@@ -18,11 +18,10 @@ public class Shoot extends SequentialCommandGroup {
   public Shoot(DriveSubsystem drive, Chamber chamber, Shooter shooter,
       GenericHID driverController) {
     TargetSpeaker targetSpeaker = new TargetSpeaker();
-    JoystickTargetSpeaker joytickTargetSpeaker =
-      new JoystickTargetSpeaker(drive, chamber, shooter, driverController, () -> 0.0, () -> 0.0,
-        targetSpeaker);
+    JoystickTargetSpeaker joystickTargetSpeaker =
+      new JoystickTargetSpeaker(drive, chamber, shooter, driverController, () -> 0.0, () -> 0.0, targetSpeaker);
     addCommands(
-      joytickTargetSpeaker.until(joytickTargetSpeaker::isFacingSpeaker),
+      joystickTargetSpeaker.until(joystickTargetSpeaker::isFacingSpeaker),
       Commands.runOnce(
         () -> {
           Pose2d robotPose = drive.getPose();
