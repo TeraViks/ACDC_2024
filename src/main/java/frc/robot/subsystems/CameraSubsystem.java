@@ -54,8 +54,12 @@ public class CameraSubsystem extends SubsystemBase {
 
   public ArrayList<Optional<EstimatedRobotPose>> getFieldRelativePoseEstimators() {
     ArrayList<Optional<EstimatedRobotPose>> estimatorList = new ArrayList<Optional<EstimatedRobotPose>>();
-    estimatorList.add(m_photonPoseEstimatorCam1.update(m_resultCam1));
-    estimatorList.add(m_photonPoseEstimatorCam2.update(m_resultCam2));
+    if (m_resultCam1 != null) {
+      estimatorList.add(m_photonPoseEstimatorCam1.update(m_resultCam1));
+    }
+    if (m_resultCam2 != null) {
+      estimatorList.add(m_photonPoseEstimatorCam2.update(m_resultCam2));
+    }
     return estimatorList;
   }
 
