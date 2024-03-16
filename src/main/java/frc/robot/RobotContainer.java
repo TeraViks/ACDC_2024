@@ -27,7 +27,7 @@ import frc.robot.Constants.PhotonVisionConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.JoystickTargetNote;
 import frc.robot.commands.JoystickTargetSpeaker;
-import frc.robot.commands.PickupCommand;
+import frc.robot.commands.Pickup;
 import frc.robot.commands.Shoot;
 import frc.robot.subsystems.CameraSubsystem;
 import frc.robot.subsystems.Chamber;
@@ -99,7 +99,7 @@ public class RobotContainer {
 
   public RobotContainer() {
     NamedCommands.registerCommand("ShooterCommand", new Shoot(m_robotDrive, m_chamber, m_shooter, m_driverController));
-    NamedCommands.registerCommand("PickupCommand", new PickupCommand());
+    NamedCommands.registerCommand("PickupCommand", new Pickup(m_robotDrive, m_limelight, m_chamber));
     configureButtonBindings();
 
     m_robotDrive.setDefaultCommand(
@@ -220,6 +220,12 @@ public class RobotContainer {
       .whileTrue(
         new Shoot(m_robotDrive, m_chamber, m_shooter, m_driverController)
       );
+
+    new JoystickButton(m_driverController, OIConstants.kPickupButton)
+        .debounce(OIConstants.kDebounceSeconds)
+        .whileTrue(
+          new Pickup(m_robotDrive, m_limelight, m_chamber)
+        );
 
     // temporary, manual commands for tuning motor speeds
     if (false) {

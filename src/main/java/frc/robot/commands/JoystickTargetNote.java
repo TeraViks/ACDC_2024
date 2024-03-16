@@ -74,6 +74,10 @@ public class JoystickTargetNote extends Command {
     }
   }
 
+  public boolean isFacingNote() {
+    return Math.abs(getX()) <= NoteConstants.kAngularTolerance;
+  }
+
   @Override
   public void end(boolean isInterrupted) {
     m_limelight.lightsOff();
