@@ -198,6 +198,8 @@ public final class Constants {
     public static final int kJoystickTargetSpeakerButton = kY;
     public static final int kEjectButton = kRightBumper;
     public static final int kShootButton = kRightBumper;
+    public static final int kPickupButton = kLeftBumper;
+
 
     public static final int kIntakeOn = kX;
     public static final int kIntakeOff = kB;
@@ -233,6 +235,9 @@ public final class Constants {
     public static final double kAngularTolerance = Units.degreesToRadians(5.0);
     // Use JoystickTargetNote.targetTurningPIDF rather than directly using this field.
     public static final PIDF kTurningPIDF = new PIDF(3.0, 0.0, 0.0, 0.2);
+
+    public static final double kPickupSpeed = -1.5;
+    public static final double kTimeout = 1.5;
   }
 
   public static final class PhotonVisionConstants {
