@@ -42,7 +42,8 @@ public class JoystickTargetSpeaker extends Command {
 
   public JoystickTargetSpeaker(DriveSubsystem drive, Chamber chamber, Shooter shooter,
       GenericHID driverController,
-      Supplier<Double> xVelocitySupplier, Supplier<Double> yVelocitySupplier) {
+      Supplier<Double> xVelocitySupplier, Supplier<Double> yVelocitySupplier,
+      TargetSpeaker targetSpeaker) {
     m_drive = drive;
     m_chamber = chamber;
     m_shooter = shooter;
@@ -50,7 +51,7 @@ public class JoystickTargetSpeaker extends Command {
     m_xVelocitySupplier = xVelocitySupplier;
     m_yVelocitySupplier = yVelocitySupplier;
 
-    m_targetSpeaker = new TargetSpeaker();
+    m_targetSpeaker = targetSpeaker;
 
     m_thetaController.setTolerance(SpeakerConstants.kAngularTolerance);
     m_thetaController.enableContinuousInput(-Math.PI, Math.PI);
