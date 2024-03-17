@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.Constants.NoteConstants;
 import frc.robot.Constants.SpeakerConstants;
 import frc.robot.PIDF;
 import frc.robot.ShooterInterp;
@@ -132,7 +131,7 @@ public class JoystickTargetSpeaker extends Command {
   public boolean isFacingSpeaker() {
     Pose2d robotPose = m_drive.getPose();
     Rotation2d rotationDeviation = m_targetSpeaker.getRotationDeviation(robotPose);
-    return (Math.abs(rotationDeviation.getDegrees()) <= NoteConstants.kAngularTolerance);
+    return (Math.abs(rotationDeviation.getRadians()) <= SpeakerConstants.kAngularTolerance);
   }
 
   @Override
