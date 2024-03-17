@@ -4,7 +4,12 @@ import java.util.Arrays;
 
 public final class ShooterInterp {
   static class PosEntry{double distance; double speed; public PosEntry(double dist, double pow) {distance = dist; speed = pow;}}
-  static final PosEntry[] posTable = {};
+  static final PosEntry[] posTable = {
+    new PosEntry(2.9, 20.7),
+    new PosEntry(3.15, 21),
+    new PosEntry(3.45, 20.5),
+    new PosEntry(3.52, 21.3)
+  };
 
   public static double getMaxDistance() {
     return posTable[posTable.length-1].distance;
