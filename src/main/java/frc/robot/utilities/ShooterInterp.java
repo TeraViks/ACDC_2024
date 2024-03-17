@@ -2,6 +2,9 @@ package frc.robot.utilities;
 
 import java.util.Arrays;
 
+import frc.robot.Constants.ShooterConstants;
+import frc.robot.subsystems.Shooter;
+
 public final class ShooterInterp {
   static class PosEntry{double distance; double speed; public PosEntry(double dist, double pow) {distance = dist; speed = pow;}}
   static final PosEntry[] posTable = {
@@ -27,6 +30,9 @@ public final class ShooterInterp {
   }
 
   public static double distanceToSpeed(double distance) {
+    if (ShooterConstants.kEnableManualSpeed) {
+      return Shooter.manualSpeed.get();
+    }
     int index = distanceIndex(distance);
     if (index == 0) {
       return posTable[index].speed;

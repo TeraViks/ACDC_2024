@@ -375,7 +375,9 @@ public final class Constants {
     public static final PIDF kLeftPIDF = new PIDF(0.025, 0.0, 0.0, 0.037);
     public static final PIDF kRightPIDF = new PIDF(0.025, 0.0, 0.0, 0.036);
     public static final double kIdleSpeed = 15.0;
-    public static final double kShootingSpeed = 18.0;
+
+    public static final boolean kEnableManualSpeed = false; // Bypasses interpolation.
+    public static final double kDefaultManualSpeed = 18.0;
 
     public static final double kSpinSpeed = 0.0;
 

@@ -19,6 +19,11 @@ import frc.robot.utilities.TunableDouble;
 import frc.robot.utilities.Utilities;
 
 public class Shooter extends SubsystemBase {
+  public static final TunableDouble manualSpeed =
+    new TunableDouble("Shooter.manualSpeed", ShooterConstants.kDefaultManualSpeed);
+  private final TunableDouble m_idleSpeed =
+    new TunableDouble("Shooter.idleSpeed", ShooterConstants.kIdleSpeed);
+
   private final CANSparkMax m_leftMotor;
   private final CANSparkMax m_rightMotor;
   private final RelativeEncoder m_leftEncoder;
@@ -27,9 +32,6 @@ public class Shooter extends SubsystemBase {
   private final SparkPIDController m_rightPIDController;
 
   private double m_startTime = -1.0;
-
-  private final TunableDouble m_idleSpeed =
-    new TunableDouble("Shooter.idleSpeed", ShooterConstants.kIdleSpeed);
 
   private double m_idealLeftSpeed;
   private double m_idealRightSpeed;
