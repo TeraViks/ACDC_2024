@@ -26,7 +26,7 @@ import frc.robot.Utilities;
 import frc.robot.ValueCache;
 
 public class SwerveModule {
-  public static TunablePIDF tunableTeleopTurningPIDF =
+  public static final TunablePIDF tunableTeleopTurningPIDF =
     new TunablePIDF("TeleopTurning", SwerveModuleConstants.kTeleopTurningPIDF);
 
   private final CANSparkMax m_driveMotor;
