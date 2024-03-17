@@ -90,8 +90,6 @@ public class DriveSubsystem extends SubsystemBase {
   private Pose2d m_initialPose = new Pose2d();
   private CameraSubsystem m_cameraSystem;
 
-  private Field2d m_field;
-
   private SwerveModulePosition[] getPositions() {
     SwerveModulePosition[] positions = Arrays.stream(m_modules)
       .map(module -> module.getPosition())
@@ -109,7 +107,7 @@ public class DriveSubsystem extends SubsystemBase {
         DriveConstants.stateStdDeviations,
         DriveConstants.visionStdDeviations);
 
-  // private final Field2d m_field = new Field2d();
+  private final Field2d m_field = new Field2d();
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem(CameraSubsystem cameraSystem) {
@@ -136,8 +134,6 @@ public class DriveSubsystem extends SubsystemBase {
         },
         this // Reference to this subsystem to set requirements
     );
-
-    m_field = new Field2d();
   }
 
   public void setPIDSlotID(int slotID) {
