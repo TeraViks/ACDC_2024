@@ -17,7 +17,6 @@ import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.NoteConstants;
-import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.SpeakerConstants;
 import frc.robot.PIDF;
 import frc.robot.ShooterInterp;
