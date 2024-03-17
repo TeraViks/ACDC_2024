@@ -3,47 +3,50 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.40792208954589,
-        "y": 5.4483881418521065
+        "x": 0.9859512676771837,
+        "y": 4.104648209296419
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.9499187334689525,
-        "y": 7.768725948900914
+        "x": 0.8393012850426425,
+        "y": 3.216164428751041
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 8.284942222841352,
-        "y": 0.7930268454475147
+        "x": 1.9543013733852697,
+        "y": 5.434322981320791
       },
       "prevControl": {
-        "x": 5.524033946100094,
-        "y": 7.768725948900914
+        "x": 2.633591746050522,
+        "y": 4.393707942344235
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "start of right"
     }
   ],
   "rotationTargets": [],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
+    "maxVelocity": 1.0,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 110.0,
+    "rotation": 180.0,
     "rotateFast": true
   },
   "reversed": false,
-  "folder": "GH three note ",
-  "previewStartingState": null,
+  "folder": "H two note",
+  "previewStartingState": {
+    "rotation": 180.0,
+    "velocity": 0
+  },
   "useDefaultConstraints": false
 }

@@ -14,7 +14,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "start of C auto"
+            "pathName": "start of H auto"
           }
         },
         {
@@ -26,7 +26,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "get C note"
+            "pathName": "get h note"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Shoot H note"
           }
         },
         {
