@@ -15,8 +15,8 @@ import com.revrobotics.SparkPIDController;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
-import frc.robot.TunableDouble;
-import frc.robot.Utilities;
+import frc.robot.utilities.TunableDouble;
+import frc.robot.utilities.Utilities;
 
 public class Shooter extends SubsystemBase {
   private final CANSparkMax m_leftMotor;

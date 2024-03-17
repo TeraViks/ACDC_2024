@@ -12,8 +12,8 @@ import com.revrobotics.SparkPIDController;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
-import frc.robot.TunableDouble;
-import frc.robot.Utilities;
+import frc.robot.utilities.TunableDouble;
+import frc.robot.utilities.Utilities;
 
 public class Intake extends SubsystemBase {
   private final CANSparkMax m_topMotor;

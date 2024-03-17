@@ -1,10 +1,12 @@
-package frc.robot;
+package frc.robot.utilities;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.REVLibError;
+
+import frc.robot.Constants;
 
 public class Utilities {
   public static void burnMotor(CANSparkMax motor) {
