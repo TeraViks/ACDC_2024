@@ -14,8 +14,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ChamberConstants;
 import frc.robot.Constants.ShooterConstants;
-import frc.robot.TunableDouble;
-import frc.robot.Utilities;
+import frc.robot.utilities.TunableDouble;
+import frc.robot.utilities.Utilities;
 
 public class Chamber extends SubsystemBase {
   private final CANSparkMax m_leftMotor;

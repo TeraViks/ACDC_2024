@@ -15,7 +15,7 @@ import com.revrobotics.SparkPIDController;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ClimberConstants;
-import frc.robot.Utilities;
+import frc.robot.utilities.Utilities;
 
 public class Climber extends SubsystemBase {
   private final CANSparkMax m_leftMotor;

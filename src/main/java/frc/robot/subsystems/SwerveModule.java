@@ -21,9 +21,9 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import frc.robot.Constants.SwerveModuleConstants;
-import frc.robot.TunablePIDF;
-import frc.robot.Utilities;
-import frc.robot.ValueCache;
+import frc.robot.utilities.TunablePIDF;
+import frc.robot.utilities.Utilities;
+import frc.robot.utilities.ValueCache;
 
 public class SwerveModule {
   public static final TunablePIDF tunableTeleopTurningPIDF =

@@ -12,13 +12,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.SpeakerConstants;
-import frc.robot.PIDF;
-import frc.robot.ShooterInterp;
-import frc.robot.TunablePIDF;
 import frc.robot.subsystems.Chamber;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Shooter;
+import frc.robot.utilities.PIDF;
+import frc.robot.utilities.ShooterInterp;
 import frc.robot.utilities.TargetSpeaker;
+import frc.robot.utilities.TunablePIDF;
 
 public class JoystickTargetSpeaker extends Command {
   private static final TunablePIDF targetTurningPIDF =

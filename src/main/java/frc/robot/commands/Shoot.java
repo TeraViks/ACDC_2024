@@ -8,10 +8,10 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.ShooterInterp;
 import frc.robot.subsystems.Chamber;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Shooter;
+import frc.robot.utilities.ShooterInterp;
 import frc.robot.utilities.TargetSpeaker;
 
 public class Shoot extends SequentialCommandGroup {
