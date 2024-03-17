@@ -100,7 +100,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   // Odometry class for tracking robot pose
-  SwerveDrivePoseEstimator m_odometry =
+  private SwerveDrivePoseEstimator m_odometry =
       new SwerveDrivePoseEstimator(
         DriveConstants.kDriveKinematics,
         getUncorrectedRotation2d(),
