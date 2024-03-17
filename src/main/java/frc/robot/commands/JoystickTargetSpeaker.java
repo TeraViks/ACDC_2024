@@ -21,7 +21,7 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.utilities.TargetSpeaker;
 
 public class JoystickTargetSpeaker extends Command {
-  public static TunablePIDF targetTurningPIDF =
+  public static final TunablePIDF targetTurningPIDF =
     new TunablePIDF("Speaker.turningPIDF", SpeakerConstants.kTurningPIDF);
   private final DriveSubsystem m_drive;
   private final Chamber m_chamber;
