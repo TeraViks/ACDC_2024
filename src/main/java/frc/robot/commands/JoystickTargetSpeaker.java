@@ -1,21 +1,16 @@
 package frc.robot.commands;
 
-import java.util.Optional;
 import java.util.function.Supplier;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.NoteConstants;
 import frc.robot.Constants.SpeakerConstants;
 import frc.robot.PIDF;
@@ -24,6 +19,7 @@ import frc.robot.TunablePIDF;
 import frc.robot.subsystems.Chamber;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Shooter;
+import frc.robot.utilities.TargetSpeaker;
 
 public class JoystickTargetSpeaker extends Command {
   public static TunablePIDF targetTurningPIDF =
@@ -34,7 +30,7 @@ public class JoystickTargetSpeaker extends Command {
   private final GenericHID m_driverController;
   private final Supplier<Double> m_xVelocitySupplier;
   private final Supplier<Double> m_yVelocitySupplier;
-  private final Translation2d m_speaker;
+  private final TargetSpeaker m_targetSpeaker;
 
   private ProfiledPIDController m_thetaController = new ProfiledPIDController(
     JoystickTargetSpeaker.targetTurningPIDF.get().p(),
@@ -55,19 +51,7 @@ public class JoystickTargetSpeaker extends Command {
     m_xVelocitySupplier = xVelocitySupplier;
     m_yVelocitySupplier = yVelocitySupplier;
 
-    Optional<Alliance> allianceOpt = DriverStation.getAlliance();
-    Alliance alliance = allianceOpt.isPresent() ? allianceOpt.get() : Alliance.Blue;
-    switch (alliance) {
-      default: assert false;
-      case Blue: {
-        m_speaker = FieldConstants.kBlueSpeaker;
-        break;
-      }
-      case Red: {
-        m_speaker = FieldConstants.kRedSpeaker;
-        break;
-      }
-    }
+    m_targetSpeaker = new TargetSpeaker();
 
     m_thetaController.setTolerance(SpeakerConstants.kAngularTolerance);
     m_thetaController.enableContinuousInput(-Math.PI, Math.PI);
@@ -75,37 +59,18 @@ public class JoystickTargetSpeaker extends Command {
     addRequirements(drive, chamber, shooter);
   }
 
-  private Translation2d getRobotToSpeaker(Pose2d robotPose) {
-    Translation2d robotToSpeaker = m_speaker.minus(robotPose.getTranslation());
-    return robotToSpeaker;
-  }
-
-  private Rotation2d getRotationDeviation(Pose2d robotPose, Translation2d robotToSpeaker) {
-    Rotation2d currentRotation = robotPose.getRotation();
-    Rotation2d desiredRotation = robotToSpeaker.getAngle();
-    Rotation2d rotationDeviation = currentRotation.minus(desiredRotation);
-    return rotationDeviation;
-  }
-
-  private double getSpeakerDistance(Translation2d robotToSpeaker) {
-    double speakerDistance = robotToSpeaker.getNorm();
-    return speakerDistance;
-  }
-
   @Override
   public void initialize() {
     Pose2d robotPose = m_drive.getPose();
-    Translation2d robotToSpeaker = getRobotToSpeaker(robotPose);
     m_thetaController.reset(
-      getRotationDeviation(robotPose, robotToSpeaker).getRadians(),
+      m_targetSpeaker.getRotationDeviation(robotPose).getRadians(),
       m_drive.getAngularVelocity());
   }
 
   @Override
   public void execute() {
     Pose2d robotPose = m_drive.getPose();
-    Translation2d robotToSpeaker = getRobotToSpeaker(robotPose);
-    Rotation2d rotationDeviation = getRotationDeviation(robotPose, robotToSpeaker);
+    Rotation2d rotationDeviation = m_targetSpeaker.getRotationDeviation(robotPose);
 
     // Turn toward speaker.
     updateConstants();
@@ -117,7 +82,7 @@ public class JoystickTargetSpeaker extends Command {
       true
     );
 
-    double speakerDistance = getSpeakerDistance(robotToSpeaker);
+    double speakerDistance = m_targetSpeaker.getSpeakerDistance(robotPose);
     revShooter(speakerDistance);
     rumbleDriverController(speakerDistance);
   }
@@ -166,8 +131,7 @@ public class JoystickTargetSpeaker extends Command {
 
   public boolean isFacingSpeaker() {
     Pose2d robotPose = m_drive.getPose();
-    Translation2d robotToSpeaker = getRobotToSpeaker(robotPose);
-    Rotation2d rotationDeviation = getRotationDeviation(robotPose, robotToSpeaker);
+    Rotation2d rotationDeviation = m_targetSpeaker.getRotationDeviation(robotPose);
     return (Math.abs(rotationDeviation.getDegrees()) <= NoteConstants.kAngularTolerance);
   }
 
