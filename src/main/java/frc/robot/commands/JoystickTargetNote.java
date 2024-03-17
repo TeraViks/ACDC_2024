@@ -15,7 +15,7 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Limelight;
 
 public class JoystickTargetNote extends Command {
-  public static final TunablePIDF targetTurningPIDF =
+  private static final TunablePIDF targetTurningPIDF =
     new TunablePIDF("Note.turningPIDF", NoteConstants.kTurningPIDF);
 
   private final DriveSubsystem m_drive;

@@ -13,20 +13,18 @@ import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.estimation.TargetModel;
 import org.photonvision.targeting.PhotonPipelineResult;
-import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.PhotonVisionConstants;
 
 public class CameraSubsystem extends SubsystemBase {
-  PhotonCamera m_camera1;
-  PhotonCamera m_camera2;
-  PhotonPoseEstimator m_photonPoseEstimatorCam1;
-  PhotonPoseEstimator m_photonPoseEstimatorCam2;
-  PhotonPipelineResult m_resultCam1;
-  PhotonPipelineResult m_resultCam2;
-  Optional<PhotonTrackedTarget> m_lowestAmbiguityTarget;
+  private PhotonCamera m_camera1;
+  private PhotonCamera m_camera2;
+  private PhotonPoseEstimator m_photonPoseEstimatorCam1;
+  private PhotonPoseEstimator m_photonPoseEstimatorCam2;
+  private PhotonPipelineResult m_resultCam1;
+  private PhotonPipelineResult m_resultCam2;
 
   public CameraSubsystem() {
     m_camera1 = new PhotonCamera(PhotonVisionConstants.kCameraName1);

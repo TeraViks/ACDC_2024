@@ -45,7 +45,7 @@ import frc.robot.utilities.TargetSpeaker;
  * (including subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  public final Limelight m_limelight = LimelightConstants.kEnable ? new Limelight() : null;
+  private final Limelight m_limelight = LimelightConstants.kEnable ? new Limelight() : null;
   private final SendableChooser<Command> m_chooser = new SendableChooser<>();
   private final CameraSubsystem m_cameraSystem = PhotonVisionConstants.kEnable ? new CameraSubsystem() : null;
   public final DriveSubsystem m_robotDrive = new DriveSubsystem(m_cameraSystem);
