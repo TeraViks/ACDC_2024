@@ -167,7 +167,7 @@ public final class Constants {
     public static final double kTurningMotorRampRate = 0.25;
 
     public static final long kValueCacheTtlMicroseconds = 15;
-    }
+  }
 
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
