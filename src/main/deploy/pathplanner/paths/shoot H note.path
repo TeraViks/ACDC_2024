@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 3.3273351053744364,
-        "y": 2.933956290447793
+        "x": 1.9543013733852697,
+        "y": 5.434322981320791
       },
       "prevControl": {
-        "x": 2.9481445825750376,
-        "y": 1.525345975935723
+        "x": 1.5751108505858709,
+        "y": 4.025712666808721
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Initial Shoot"
+      "linkedName": "start of right"
     }
   ],
   "rotationTargets": [],
@@ -39,7 +39,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 140.0,
+    "rotation": 180.0,
     "rotateFast": true
   },
   "reversed": false,
