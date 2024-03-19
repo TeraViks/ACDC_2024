@@ -179,6 +179,7 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Y", pose.getY());
     SmartDashboard.putData("Field", m_field);
     SmartDashboard.putNumber("Speaker Distance", m_targetSpeaker.getSpeakerDistance(pose));
+    SmartDashboard.putNumber("Speaker Deviation", m_targetSpeaker.getRotationDeviation(pose).getDegrees());
   }
 
   public Pose2d getPose() {
