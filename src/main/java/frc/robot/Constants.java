@@ -253,7 +253,7 @@ public final class Constants {
     public static final double kMaxGoodShootingDistance = 3.56;
     public static final double kMaxPossibleShootingDistance = 4.01;
 
-    public static final double kAngularTolerance = Units.degreesToRadians(1.0);
+    public static final double kAngularTolerance = Units.degreesToRadians(2.5);
     // Use JoystickTargetSpeaker.targetTurningPIDF rather than directly using this field.
     public static final PIDF kTurningPIDF = NoteConstants.kTurningPIDF;
   }
@@ -376,7 +376,7 @@ public final class Constants {
     public static final PIDF kRightPIDF = new PIDF(0.025, 0.0, 0.0, 0.036);
     public static final double kIdleSpeed = 15.0;
 
-    public static final boolean kEnableManualSpeed = true; // Bypasses interpolation.
+    public static final boolean kEnableManualSpeed = false; // Bypasses interpolation.
     public static final double kDefaultManualSpeed = 18.0;
 
     public static final double kSpinSpeed = 0.0;
