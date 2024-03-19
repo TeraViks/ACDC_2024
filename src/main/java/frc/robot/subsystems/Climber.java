@@ -13,6 +13,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkLimitSwitch;
 import com.revrobotics.SparkPIDController;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ClimberConstants;
 import frc.robot.utilities.Utilities;
@@ -30,8 +31,8 @@ public class Climber extends SubsystemBase {
   private double m_idealRightSpeed;
 
   private enum State {
-    UNINITIALIZED,
-    INITIALIZED,
+    RECALIBRATING,
+    OPERATING
   }
 
   private State m_state;
@@ -57,11 +58,13 @@ public class Climber extends SubsystemBase {
 
     m_rightMotor = new CANSparkMax(ClimberConstants.kRightMotorID, MotorType.kBrushless);
     m_rightMotor.restoreFactoryDefaults();
-    m_rightMotor.setSmartCurrentLimit(ClimberConstants.kCurrentLimit);
     m_rightMotor.setInverted(ClimberConstants.kRightMotorReversed);
+    m_rightMotor.setSmartCurrentLimit(ClimberConstants.kCurrentLimit);
     m_rightMotor.setIdleMode(IdleMode.kBrake);
 
     m_rightEncoder = m_rightMotor.getEncoder();
+    m_rightEncoder.setVelocityConversionFactor(ClimberConstants.kVelocityConversionFactor);
+    m_rightEncoder.setPositionConversionFactor(ClimberConstants.kPositionConversionFactor);
 
     m_rightPIDController = m_rightMotor.getPIDController();
     m_rightPIDController.setFeedbackDevice(m_rightEncoder);
@@ -70,13 +73,24 @@ public class Climber extends SubsystemBase {
     m_rightLimitSwith = m_rightMotor.getForwardLimitSwitch(SparkLimitSwitch.Type.kNormallyOpen);
 
     Utilities.burnMotor(m_rightMotor);
-    m_state = State.UNINITIALIZED;
+
     initialize();
   }
 
+  private void zero() {
+    m_leftEncoder.setPosition(0.0);
+    m_rightEncoder.setPosition(0.0);
+  }
+
   private void initialize() {
-    m_leftPIDController.setReference(ClimberConstants.kInitializingSpeed, ControlType.kVelocity);
-    m_rightPIDController.setReference(ClimberConstants.kInitializingSpeed, ControlType.kVelocity);
+    zero();
+    m_state = State.OPERATING;
+  }
+
+  public void recalibrate() {
+    m_leftPIDController.setReference(ClimberConstants.kRecalibratingSpeed, ControlType.kVelocity);
+    m_rightPIDController.setReference(ClimberConstants.kRecalibratingSpeed, ControlType.kVelocity);
+    m_state = State.RECALIBRATING;
   }
 
   private double transformSpeed(double position, double speed) {
@@ -106,14 +120,17 @@ public class Climber extends SubsystemBase {
 
   @Override
   public void periodic() {
+    SmartDashboard.putString("Climber state", m_state.name());
+    SmartDashboard.putNumber("Left climber speed", m_idealLeftSpeed);
+    SmartDashboard.putNumber("Right climber speed", m_idealRightSpeed);
     switch (m_state) {
-      case UNINITIALIZED: {
+      case RECALIBRATING: {
         if (m_leftLimitSwitch.isPressed() && m_rightLimitSwith.isPressed()) {
-          m_state = State.INITIALIZED;
-          break;
+          initialize();
         }
+        break;
       }
-      case INITIALIZED: {
+      case OPERATING: {
         double leftPosition = m_leftEncoder.getPosition();
         double rightPosition = m_rightEncoder.getPosition();
         double leftSpeed = (m_leftMotor.getLastError() == REVLibError.kOk) ? m_idealLeftSpeed : 0.0;

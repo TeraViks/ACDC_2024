@@ -192,6 +192,15 @@ public class RobotContainer {
         )
       );
 
+    if (ClimberConstants.kEnable) {
+      new JoystickButton(m_operatorController, OIConstants.kClimberRecalibrate)
+        .debounce(OIConstants.kDebounceSeconds)
+        .onTrue(Commands.runOnce(() -> {
+          m_climber.recalibrate();
+        }, m_climber
+      ));
+    }
+
     new JoystickButton(m_operatorController, OIConstants.kIntakeOff)
       .debounce(OIConstants.kDebounceSeconds)
       .onTrue(Commands.runOnce(
