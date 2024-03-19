@@ -344,8 +344,8 @@ public final class Constants {
     public static final double kChamberVelocityConversionFactor =
       (kWheelDiameterMeters * Math.PI)
       / kGearRatio / 60.0;
-    public static final PIDF kLeftPIDF = new PIDF(0.1, 0.0, 0.0, 0.1525);
-    public static final PIDF kRightPIDF = new PIDF(0.1, 0.0, 0.0, 0.15);
+    public static final PIDF kLeftPIDF = new PIDF(0.1, 0.0001, 0.0, 0.1525);
+    public static final PIDF kRightPIDF = new PIDF(0.1, 0.0001, 0.0, 0.15);
     public static final double kIntakingSpeed = IntakeConstants.kSpeed;
     public static final double kShootingSpeed = 6.5;
     public static final double kClearingTimeSeconds = 1.0;
@@ -376,7 +376,7 @@ public final class Constants {
     public static final PIDF kRightPIDF = new PIDF(0.025, 0.0, 0.0, 0.036);
     public static final double kIdleSpeed = 15.0;
 
-    public static final boolean kEnableManualSpeed = false; // Bypasses interpolation.
+    public static final boolean kEnableManualSpeed = true; // Bypasses interpolation.
     public static final double kDefaultManualSpeed = 18.0;
 
     public static final double kSpinSpeed = 0.0;
