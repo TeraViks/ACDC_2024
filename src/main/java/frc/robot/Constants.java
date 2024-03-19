@@ -200,7 +200,7 @@ public final class Constants {
     public static final int kShootButton = kRightBumper;
     public static final int kPickupButton = kLeftBumper;
 
-
+    public static final int kClimberRecalibrate = kStart;
     public static final int kIntakeOn = kX;
     public static final int kIntakeOff = kB;
     public static final int kIntakeReverse = kA;
@@ -392,21 +392,21 @@ public final class Constants {
   }
 
   public static final class ClimberConstants {
-    public static final boolean kEnable = false;
+    public static final boolean kEnable = true;
     public static final int kLeftMotorID = 19;
     public static final int kRightMotorID = 20;
     public static final int kCurrentLimit = 40;
     public static final boolean kLeftMotorReversed = false;
     public static final boolean kRightMotorReversed = false;
-    public static final PIDF kPIDF = new PIDF(0.5, 0.0, 0.0);
+    public static final PIDF kPIDF = new PIDF(1.0, 0.0, 0.0, 0.1);
     public static final double kGearRatio = 3.0;
     // With no gear reduction each motor rotation moves the climber 0.012 meters
     public static final double kPositionConversionFactor = 0.012 / kGearRatio;
     public static final double kVelocityConversionFactor = kPositionConversionFactor / 60.0;
     public static final double kMinRetractedLength = 0.0;
-    public static final double kMaxExtendedLength = 0.304;
+    public static final double kMaxExtendedLength = 0.28; // Theoretical max is 0.3048
     public static final double kMaxSpeed = 0.330;
-    public static final double kInitializingSpeed = -0.03;
+    public static final double kRecalibratingSpeed = -0.06;
     public static final double kConstrainedRange = 0.0762;
   }
 }
