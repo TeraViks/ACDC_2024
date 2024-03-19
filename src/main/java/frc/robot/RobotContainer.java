@@ -146,9 +146,10 @@ public class RobotContainer {
   private void configureButtonBindings() {
     new JoystickButton(m_driverController, OIConstants.kZeroGyro)
       .debounce(OIConstants.kDebounceSeconds)
-      .onTrue(Commands.runOnce(
-        () -> m_robotDrive.zeroGyro()
-      ));
+      .onTrue(Commands.runOnce(() -> {
+        m_robotDrive.zeroGyro();
+      }, m_robotDrive
+    ));
 
     if (LimelightConstants.kEnable) {
       new JoystickButton(m_driverController, OIConstants.kJoystickTargetNoteButton)
@@ -175,9 +176,10 @@ public class RobotContainer {
 
     new JoystickButton(m_operatorController, OIConstants.kIntakeOn)
       .debounce(OIConstants.kDebounceSeconds)
-      .onTrue(Commands.runOnce(
-        () -> m_chamber.chamberNote()
-      ));
+      .onTrue(Commands.runOnce(() -> {
+        m_chamber.chamberNote();
+      }, m_chamber
+    ));
 
     new Trigger(() -> m_chamber.isNoteChambered()) 
       .onTrue(
@@ -196,7 +198,7 @@ public class RobotContainer {
         () -> {
           m_chamber.cancelChambering();
           m_intake.stopIntake();
-        }
+        }, m_intake, m_chamber
       ));
 
     new JoystickButton(m_operatorController, OIConstants.kIntakeReverse)
@@ -205,14 +207,15 @@ public class RobotContainer {
         () -> {
           m_chamber.cancelChambering();
           m_intake.reverseIntake();
-        }
+        }, m_intake, m_chamber
       ));
 
     new JoystickButton(m_operatorController, OIConstants.kEjectButton)
       .debounce(OIConstants.kDebounceSeconds)
-      .onTrue(Commands.runOnce(
-        () -> m_chamber.ejectNote(),
-        m_chamber, m_shooter));
+      .onTrue(Commands.runOnce(() -> {
+        m_chamber.ejectNote();
+      }, m_chamber, m_shooter
+    ));
 
     new JoystickButton(m_driverController, OIConstants.kShootButton)
       .debounce(OIConstants.kDebounceSeconds)
