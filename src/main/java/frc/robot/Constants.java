@@ -377,8 +377,8 @@ public final class Constants {
       kPositionConversionFactor
       / 60.0 /* s */;
 
-    public static final PIDF kLeftPIDF = new PIDF(0.025, 0.0, 0.0, 0.0378);
-    public static final PIDF kRightPIDF = new PIDF(0.025, 0.0, 0.0, 0.0382);
+    public static final PIDF kLeftPIDF = new PIDF(0.025, 0.0, 0.0, 0.0368);
+    public static final PIDF kRightPIDF = new PIDF(0.025, 0.0, 0.0, 0.0372);
     public static final double kIdleSpeed = 15.0;
 
     public static final boolean kEnableManualSpeed = false; // Bypasses interpolation.
