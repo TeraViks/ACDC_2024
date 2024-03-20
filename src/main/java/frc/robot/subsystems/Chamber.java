@@ -41,6 +41,7 @@ public class Chamber extends SubsystemBase {
     ALIGNING,   // stopped  aligning stopped
     CHAMBERED,  // stopped  stopped  idling
     SHOOTING,   // stopped  stopped  revving
+    EJECTING,   // stopped  stopped  revving
     CLEARING    // stopped  shooting revving
   }
   private State m_state;
@@ -150,7 +151,15 @@ public class Chamber extends SubsystemBase {
   }
 
   public boolean ejectNote() {
-    return (shootNote(ShooterConstants.kIdleSpeed));
+    switch (m_state) {
+      case CHAMBERED:
+      case SHOOTING: {
+        m_shooter.revShooter(ShooterConstants.kIdleSpeed);
+        m_state = State.EJECTING;
+        return false;
+      }
+      default: return true;
+    }
   }
 
   @Override
@@ -184,6 +193,12 @@ public class Chamber extends SubsystemBase {
           setSpeed(ChamberConstants.kShootingSpeed);
           m_state = State.CLEARING;
         }
+        break;
+      }
+      case EJECTING: {
+        m_shootTimeSeconds = RobotController.getFPGATime() / 1000000.0;
+        setSpeed(ChamberConstants.kShootingSpeed);
+        m_state = State.CLEARING;
         break;
       }
       case CLEARING: {
