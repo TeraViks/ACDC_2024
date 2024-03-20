@@ -253,10 +253,10 @@ public final class Constants {
   }
 
   public static final class SpeakerConstants {
-    public static final double kMinPossibleShootingDistance = 2.39;
-    public static final double kMinGoodShootingDistance = 2.54;
-    public static final double kMaxGoodShootingDistance = 3.56;
-    public static final double kMaxPossibleShootingDistance = 4.01;
+    public static final double kMinPossibleShootingDistance = 2.9;
+    public static final double kMinGoodShootingDistance = 2.9;
+    public static final double kMaxGoodShootingDistance = 3.12;
+    public static final double kMaxPossibleShootingDistance = 3.12;
 
     public static final double kAngularTolerance = Units.degreesToRadians(2.5);
     // Use JoystickTargetSpeaker.targetTurningPIDF rather than directly using this field.
