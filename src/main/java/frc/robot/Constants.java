@@ -386,7 +386,7 @@ public final class Constants {
 
     public static final double kSpinSpeed = 0.0;
 
-    public static final double kShootingTolerance = 0.02;
+    public static final double kShootingTolerance = 0.05;
 
     public static final double kstabilizingTimeSeconds = 0.1;
   }
