@@ -8,10 +8,12 @@ import frc.robot.subsystems.Shooter;
 public final class ShooterInterp {
   static class PosEntry{double distance; double speed; public PosEntry(double dist, double pow) {distance = dist; speed = pow;}}
   static final PosEntry[] posTable = {
-    new PosEntry(2.9, 20.7),
-    new PosEntry(3.15, 21),
-    new PosEntry(3.45, 20.5),
-    new PosEntry(3.52, 21.3)
+    new PosEntry(2.5, 22.0),
+    new PosEntry(2.7, 22.0),
+    new PosEntry(2.9, 23.5),
+    new PosEntry(3.05, 22.7),
+    new PosEntry(3.12, 21.2),
+    new PosEntry(3.22, 20.8)
   };
 
   public static double getMaxDistance() {
