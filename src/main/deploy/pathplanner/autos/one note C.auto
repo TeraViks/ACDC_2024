@@ -22,6 +22,12 @@
           "data": {
             "name": "ShooterCommand"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "back-up"
+          }
         }
       ]
     }
