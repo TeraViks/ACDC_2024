@@ -30,6 +30,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "PickupCommand"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "shoot H note"

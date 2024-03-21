@@ -30,6 +30,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "PickupCommand"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "rotate around the B note"
