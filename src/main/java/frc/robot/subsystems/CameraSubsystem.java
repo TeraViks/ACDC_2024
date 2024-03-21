@@ -19,24 +19,24 @@ import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.PhotonVisionConstants;
 
 public class CameraSubsystem extends SubsystemBase {
-  private PhotonCamera m_camera1;
+  // private PhotonCamera m_camera1;
   private PhotonCamera m_camera2;
-  private PhotonPoseEstimator m_photonPoseEstimatorCam1;
+  // private PhotonPoseEstimator m_photonPoseEstimatorCam1;
   private PhotonPoseEstimator m_photonPoseEstimatorCam2;
-  private PhotonPipelineResult m_resultCam1;
+  // private PhotonPipelineResult m_resultCam1;
   private PhotonPipelineResult m_resultCam2;
 
   public CameraSubsystem() {
-    m_camera1 = new PhotonCamera(PhotonVisionConstants.kCameraName1);
+    // m_camera1 = new PhotonCamera(PhotonVisionConstants.kCameraName1);
     m_camera2 = new PhotonCamera(PhotonVisionConstants.kCameraName2);
 
-    m_photonPoseEstimatorCam1 = 
-      new PhotonPoseEstimator(
-        FieldConstants.kAprilTagFieldLayout,
-        PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
-        m_camera1,
-        PhotonVisionConstants.kRobotToCamera1Transform
-      );
+    // m_photonPoseEstimatorCam1 =
+    //   new PhotonPoseEstimator(
+    //     FieldConstants.kAprilTagFieldLayout,
+    //     PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
+    //     m_camera1,
+    //     PhotonVisionConstants.kRobotToCamera1Transform
+    //   );
 
     m_photonPoseEstimatorCam2 =
       new PhotonPoseEstimator(
@@ -46,15 +46,15 @@ public class CameraSubsystem extends SubsystemBase {
         PhotonVisionConstants.kRobotToCamera2Transform
       );
 
-    m_photonPoseEstimatorCam1.setTagModel(TargetModel.kAprilTag36h11);
+    // m_photonPoseEstimatorCam1.setTagModel(TargetModel.kAprilTag36h11);
     m_photonPoseEstimatorCam2.setTagModel(TargetModel.kAprilTag36h11);
   }
 
   public ArrayList<Optional<EstimatedRobotPose>> getFieldRelativePoseEstimators() {
     ArrayList<Optional<EstimatedRobotPose>> estimatorList = new ArrayList<Optional<EstimatedRobotPose>>();
-    if (m_resultCam1 != null) {
-      estimatorList.add(m_photonPoseEstimatorCam1.update(m_resultCam1));
-    }
+    // if (m_resultCam1 != null) {
+    //   estimatorList.add(m_photonPoseEstimatorCam1.update(m_resultCam1));
+    // }
     if (m_resultCam2 != null) {
       estimatorList.add(m_photonPoseEstimatorCam2.update(m_resultCam2));
     }
@@ -63,9 +63,9 @@ public class CameraSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if (m_camera1.isConnected()) {
-      m_resultCam1 = m_camera1.getLatestResult();
-    }
+    // if (m_camera1.isConnected()) {
+    //   m_resultCam1 = m_camera1.getLatestResult();
+    // }
     if (m_camera2.isConnected()) {
       m_resultCam2 = m_camera2.getLatestResult();
     }
