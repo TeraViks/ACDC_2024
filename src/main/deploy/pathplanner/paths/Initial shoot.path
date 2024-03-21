@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.995074825897593,
-        "y": 2.8881669534862673
+        "x": 1.7130564425982375,
+        "y": 3.032615393712785
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.226164198807271,
-        "y": 2.84723837053308
+        "x": 2.652329749103943,
+        "y": 3.384133434933537
       },
       "prevControl": {
-        "x": 2.778121612581254,
-        "y": 2.283571891087445
+        "x": 2.184144723845004,
+        "y": 2.858636581717609
       },
       "nextControl": null,
       "isLocked": false,
@@ -39,11 +39,14 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 140.0,
+    "rotation": 149.23728046576113,
     "rotateFast": false
   },
   "reversed": false,
   "folder": "GH three note ",
-  "previewStartingState": null,
+  "previewStartingState": {
+    "rotation": 180.0,
+    "velocity": 0
+  },
   "useDefaultConstraints": false
 }
