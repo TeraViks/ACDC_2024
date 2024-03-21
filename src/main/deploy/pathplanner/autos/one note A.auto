@@ -22,6 +22,12 @@
           "data": {
             "pathName": "rotate to -151"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShooterCommand"
+          }
         }
       ]
     }
