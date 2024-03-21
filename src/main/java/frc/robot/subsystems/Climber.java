@@ -52,7 +52,7 @@ public class Climber extends SubsystemBase {
     m_leftPIDController.setFeedbackDevice(m_leftEncoder);
     ClimberConstants.kPIDF.controllerSet(m_leftPIDController);
 
-    m_leftLimitSwitch = m_leftMotor.getForwardLimitSwitch(SparkLimitSwitch.Type.kNormallyOpen);
+    m_leftLimitSwitch = m_leftMotor.getReverseLimitSwitch(SparkLimitSwitch.Type.kNormallyOpen);
 
     Utilities.burnMotor(m_leftMotor);
 
@@ -70,7 +70,7 @@ public class Climber extends SubsystemBase {
     m_rightPIDController.setFeedbackDevice(m_rightEncoder);
     ClimberConstants.kPIDF.controllerSet(m_rightPIDController);
 
-    m_rightLimitSwith = m_rightMotor.getForwardLimitSwitch(SparkLimitSwitch.Type.kNormallyOpen);
+    m_rightLimitSwith = m_rightMotor.getReverseLimitSwitch(SparkLimitSwitch.Type.kNormallyOpen);
 
     Utilities.burnMotor(m_rightMotor);
 
