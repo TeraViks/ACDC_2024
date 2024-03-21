@@ -2,7 +2,7 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.5351647604703664,
+      "x": 1.4120428956421427,
       "y": 5.651117781108802
     },
     "rotation": 180.0
@@ -15,6 +15,12 @@
           "type": "path",
           "data": {
             "pathName": "B Shooting position"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "rotate to speaker"
           }
         },
         {
