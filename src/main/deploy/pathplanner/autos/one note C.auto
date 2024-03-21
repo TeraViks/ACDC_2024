@@ -16,6 +16,12 @@
           "data": {
             "pathName": "Initial shoot"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShooterCommand"
+          }
         }
       ]
     }

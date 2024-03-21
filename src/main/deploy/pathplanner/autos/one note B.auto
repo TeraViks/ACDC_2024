@@ -16,6 +16,12 @@
           "data": {
             "pathName": "B Shooting position"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShooterCommand"
+          }
         }
       ]
     }
