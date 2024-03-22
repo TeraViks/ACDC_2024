@@ -135,6 +135,9 @@ public class RobotContainer {
       m_chooser.addOption("One Note A", new PathPlannerAuto("one note A"));
       m_chooser.addOption("One Note B", new PathPlannerAuto("one note B"));
       m_chooser.addOption("One Note C", new PathPlannerAuto("one note C"));
+      m_chooser.addOption("A Forward and Back", new PathPlannerAuto("A zero"));
+      m_chooser.addOption("B Forward and Back", new PathPlannerAuto("B zero"));
+      m_chooser.addOption("C Forward and Back", new PathPlannerAuto("C zero"));
       m_chooser.addOption("Delayed One Note C", new PathPlannerAuto("delayed one note C"));
       SmartDashboard.putData(m_chooser);
   }
