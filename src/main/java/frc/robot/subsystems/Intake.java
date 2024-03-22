@@ -24,6 +24,8 @@ public class Intake extends SubsystemBase {
   private final SparkPIDController m_topPIDController;
   private final SparkPIDController m_bottomPIDController;
 
+  private double m_idealSpeed = 0.0;
+
   private final TunableDouble m_speed =
     new TunableDouble("Intake.speed", IntakeConstants.kSpeed);
 
@@ -51,26 +53,28 @@ public class Intake extends SubsystemBase {
     Utilities.burnMotor(m_bottomMotor);
   }
 
+  private void setSpeed(double speed) {
+    m_idealSpeed = speed;
+    m_topPIDController.setReference(m_idealSpeed, ControlType.kVelocity);
+    m_bottomPIDController.setReference(m_idealSpeed, ControlType.kVelocity);
+  }
+
   public void startIntake() {
-    double speed = m_speed.get();
-    m_topPIDController.setReference(speed, ControlType.kVelocity);
-    m_bottomPIDController.setReference(speed, ControlType.kVelocity);
+    setSpeed(m_speed.get());
   }
   
   public void stopIntake() {
+    m_idealSpeed = 0.0;
     m_topMotor.stopMotor();
     m_bottomMotor.stopMotor();
   }
 
   public void reverseIntake() {
-    double speed = -m_speed.get();
-    m_topPIDController.setReference(speed, ControlType.kVelocity);
-    m_bottomPIDController.setReference(speed, ControlType.kVelocity);
+    setSpeed(-m_speed.get());
   }
 
   @Override
   public void periodic() {
-    boolean isIntakeRunning = m_topMotor.get() != 0.0 && m_bottomMotor.get() != 0.0;
-    SmartDashboard.putBoolean("Intake", isIntakeRunning);
+    SmartDashboard.putBoolean("Intake Running", (m_idealSpeed != 0.0));
   }
 }
