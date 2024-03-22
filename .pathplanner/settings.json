@@ -8,14 +8,16 @@
     "ABC four note",
     "B two note",
     "BF three note",
+    "GH three note ",
     "H two note",
-    "GH three note "
+    "forward and back"
   ],
   "autoFolders": [
-    "two note auto folder",
-    "three note auto folder",
+    "forward and back",
     "Zero note",
-    "one note folder"
+    "one note folder",
+    "three note auto folder",
+    "two note auto folder"
   ],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,
