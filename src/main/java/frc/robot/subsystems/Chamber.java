@@ -164,6 +164,7 @@ public class Chamber extends SubsystemBase {
 
   @Override
   public void periodic() {
+    SmartDashboard.putString("Chamber State", m_state.name()); 
     switch (m_state) {
       case EMPTY: {
         break;
