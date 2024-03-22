@@ -10,6 +10,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.utilities.TunableDouble;
@@ -68,5 +69,8 @@ public class Intake extends SubsystemBase {
   }
 
   @Override
-  public void periodic() {}
+  public void periodic() {
+    boolean isIntakeRunning = m_topMotor.get() != 0.0 && m_bottomMotor.get() != 0.0;
+    SmartDashboard.putBoolean("Intake", isIntakeRunning);
+  }
 }
