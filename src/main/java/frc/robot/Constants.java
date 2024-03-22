@@ -351,7 +351,7 @@ public final class Constants {
       / kGearRatio / 60.0;
     public static final PIDF kLeftPIDF = new PIDF(0.1, 0.0001, 0.0, 0.1525);
     public static final PIDF kRightPIDF = new PIDF(0.1, 0.0001, 0.0, 0.15);
-    public static final double kIntakingSpeed = IntakeConstants.kSpeed;
+    public static final double kIntakingSpeed = 1.75;
     public static final double kShootingSpeed = 6.5;
     public static final double kClearingTimeSeconds = 1.0;
     public static final double kAligningSpeed = -0.05;
