@@ -405,7 +405,7 @@ public final class Constants {
     public static final double kVelocityConversionFactor = kPositionConversionFactor / 60.0;
     public static final double kMinRetractedLength = 0.0;
     public static final double kMaxExtendedLength = 0.29; // Theoretical max is 0.3048
-    public static final double kMaxSpeed = 0.28;
+    public static final double kMaxSpeed = 0.5;
     public static final double kRecalibratingSpeed = -0.1;
     public static final double kConstrainedRange = 0.02;
   }
