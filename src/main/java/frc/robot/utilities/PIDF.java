@@ -1,6 +1,7 @@
 package frc.robot.utilities;
 
-import com.revrobotics.SparkPIDController;
+import com.revrobotics.spark.config.ClosedLoopConfig;
+import com.revrobotics.spark.ClosedLoopSlot;
 
 public record PIDF(double p, double i, double d, double ff) {
   public PIDF {
@@ -14,14 +15,11 @@ public record PIDF(double p, double i, double d, double ff) {
     this(p, i, d, 0.0);
   }
 
-  public void controllerSet(SparkPIDController pidController, int slotID) {
-    pidController.setP(p, slotID);
-    pidController.setI(i, slotID);
-    pidController.setD(d, slotID);
-    pidController.setFF(ff, slotID);
+  public void controllerSet(ClosedLoopConfig pidConfig, ClosedLoopSlot slot) {
+    pidConfig.pidf(p, i, d, ff, slot);
   }
 
-  public void controllerSet(SparkPIDController pidController) {
-    controllerSet(pidController, 0);
+  public void controllerSet(ClosedLoopConfig pidConfig) {
+    controllerSet(pidConfig, ClosedLoopSlot.kSlot0);
   }
 }

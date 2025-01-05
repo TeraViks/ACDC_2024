@@ -7,7 +7,8 @@ package frc.robot;
 import java.util.List;
 import java.util.Map;
 
-import com.pathplanner.lib.util.PIDConstants;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.ClosedLoopSlot;
 
 import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
@@ -26,7 +27,7 @@ import frc.robot.utilities.TrapezoidalConstraint;
 
 public final class Constants {
   public static final double kDt = 0.02;
-  public static final boolean kBurnMotors = false;
+  public static final PersistMode kPersistMode = PersistMode.kNoPersistParameters;
 
   // Tunable constants are disabled unless this is set to true.
   // Intended to remain false in committed code.
@@ -115,9 +116,12 @@ public final class Constants {
   }
 
   public static final class SwerveModuleConstants {
-    public static final int kAutoPIDFSlotID = 0;
-    public static final int kTeleopPIDFSlotID = 1;
-    public static final int kDefaultPIDFSlotID = kAutoPIDFSlotID;
+    public static final ClosedLoopSlot kAutoPIDFSlotID = ClosedLoopSlot.kSlot0;
+    public static final ClosedLoopSlot kTeleopPIDFSlotID = ClosedLoopSlot.kSlot1;
+    public static final ClosedLoopSlot kDefaultPIDFSlotID = kAutoPIDFSlotID;
+
+    private static final double kUnsigned_0To1 = 1.0;
+    public static final double kAbsoluteSensorDiscontinuityPoint = kUnsigned_0To1;
 
     public static final double kMaxSpeedMetersPerSecond = DriveConstants.kMaxSpeedMetersPerSecond * 2.0;
 
