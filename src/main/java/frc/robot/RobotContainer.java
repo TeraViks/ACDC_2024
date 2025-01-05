@@ -6,6 +6,7 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.revrobotics.spark.ClosedLoopSlot;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -143,7 +144,7 @@ public class RobotContainer {
       SmartDashboard.putData(m_chooser);
   }
 
-  public void setPIDSlotID(int slotID) {
+  public void setPIDSlotID(ClosedLoopSlot slotID) {
     m_robotDrive.setPIDSlotID(slotID);
   }
 

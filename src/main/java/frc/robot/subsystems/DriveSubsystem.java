@@ -14,6 +14,7 @@ import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.ReplanningConfig;
+import com.revrobotics.spark.ClosedLoopSlot;
 
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -138,7 +139,7 @@ public class DriveSubsystem extends SubsystemBase {
     );
   }
 
-  public void setPIDSlotID(int slotID) {
+  public void setPIDSlotID(ClosedLoopSlot slotID) {
     for (SwerveModule module : m_modules) {
       module.setPIDSlotID(slotID);
     }

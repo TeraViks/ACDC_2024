@@ -4,38 +4,44 @@
 
 package frc.robot.subsystems;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
+
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
-import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
-import com.revrobotics.CANSparkBase.ControlType;
-import com.revrobotics.CANSparkBase.IdleMode;
-import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.CANSparkMax;
+import com.revrobotics.spark.ClosedLoopSlot;
+import com.revrobotics.spark.SparkBase.ControlType;
+import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
 import com.revrobotics.REVLibError;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkPIDController;
+import com.revrobotics.spark.SparkClosedLoopController;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.measure.Angle;
+import frc.robot.Constants;
 import frc.robot.Constants.SwerveModuleConstants;
 import frc.robot.utilities.TunablePIDF;
-import frc.robot.utilities.Utilities;
 import frc.robot.utilities.ValueCache;
 
 public class SwerveModule {
   public static final TunablePIDF tunableTeleopTurningPIDF =
     new TunablePIDF("TeleopTurning", SwerveModuleConstants.kTeleopTurningPIDF);
 
-  private final CANSparkMax m_driveMotor;
-  private final CANSparkMax m_turningMotor;
+  private final SparkMax m_driveMotor;
+  private final SparkMax m_turningMotor;
 
-  private int m_PIDFSlotID = SwerveModuleConstants.kDefaultPIDFSlotID;
+  private ClosedLoopSlot m_PIDFSlotID = SwerveModuleConstants.kDefaultPIDFSlotID;
 
-  private final SparkPIDController m_drivePIDController;
-  private final SparkPIDController m_turningPIDController;
+  private final SparkClosedLoopController m_drivePIDController;
+  private final SparkClosedLoopController m_turningPIDController;
 
   private final RelativeEncoder m_driveEncoder;
   private final CANcoder m_absoluteRotationEncoder;
@@ -46,7 +52,7 @@ public class SwerveModule {
 
   private final ValueCache<Double> m_drivePositionCache;
   private final ValueCache<Double> m_driveVelocityCache;
-  private final ValueCache<Double> m_absoluteRotationCache;
+  private final ValueCache<Angle> m_absoluteRotationCache;
   private final ValueCache<Double> m_turningCache;
   private Rotation2d m_prevAngle;
   private double m_lastViableDrivePosition = 0.0;
@@ -61,26 +67,33 @@ public class SwerveModule {
       boolean turningMotorReversed,
       boolean turningEncoderReversed,
       Rotation2d encoderOffset) {
-    m_driveMotor = new CANSparkMax(driveMotorChannel, MotorType.kBrushless);
-    m_driveMotor.restoreFactoryDefaults();
-    m_driveMotor.setClosedLoopRampRate(SwerveModuleConstants.kDriveMotorRampRate);
-    m_driveMotor.setInverted(driveMotorReversed);
-    m_driveMotor.setSmartCurrentLimit(SwerveModuleConstants.kDriveMotorCurrentLimit);
-    m_driveMotor.setIdleMode(IdleMode.kBrake);
+    m_driveMotor = new SparkMax(driveMotorChannel, MotorType.kBrushless);
+    
+    SparkMaxConfig config = new SparkMaxConfig();
+    config.closedLoopRampRate(SwerveModuleConstants.kDriveMotorRampRate)
+      .inverted(driveMotorReversed)
+      .smartCurrentLimit(SwerveModuleConstants.kDriveMotorCurrentLimit)
+      .idleMode(IdleMode.kBrake);
+    config.encoder
+      .positionConversionFactor(SwerveModuleConstants.kDrivePositionConversionFactor)
+      .velocityConversionFactor(SwerveModuleConstants.kDriveVelocityConversionFactor);
+    config.closedLoop
+        .feedbackSensor(FeedbackSensor.kPrimaryEncoder);
+
+    SwerveModuleConstants.kAutoDrivePIDF.controllerSet(config.closedLoop, SwerveModuleConstants.kAutoPIDFSlotID);
+    SwerveModuleConstants.kTeleopDrivePIDF.controllerSet(config.closedLoop, SwerveModuleConstants.kTeleopPIDFSlotID);
+
+    REVLibError configureError = m_driveMotor.configure(config, ResetMode.kResetSafeParameters, Constants.kPersistMode);
+    if (configureError != REVLibError.kOk) {
+      throw new UncheckedIOException("Failed to configure drive motor", new IOException());
+    }
 
     m_driveEncoder = m_driveMotor.getEncoder();
-    m_driveEncoder.setPositionConversionFactor(SwerveModuleConstants.kDrivePositionConversionFactor);
-    m_driveEncoder.setVelocityConversionFactor(SwerveModuleConstants.kDriveVelocityConversionFactor);
+    m_drivePIDController = m_driveMotor.getClosedLoopController();
+
     m_drivePositionCache = new ValueCache<Double>(this::getPlausibleDrivePosition, SwerveModuleConstants.kValueCacheTtlMicroseconds);
     m_driveVelocityCache = new ValueCache<Double>(this::getPlausibleDriveVelocity, SwerveModuleConstants.kValueCacheTtlMicroseconds);
-
-    m_drivePIDController = m_driveMotor.getPIDController();
-    m_drivePIDController.setFeedbackDevice(m_driveEncoder);
-    SwerveModuleConstants.kAutoDrivePIDF.controllerSet(
-      m_drivePIDController, SwerveModuleConstants.kAutoPIDFSlotID);
-    SwerveModuleConstants.kTeleopDrivePIDF.controllerSet(
-      m_drivePIDController, SwerveModuleConstants.kTeleopPIDFSlotID);
-
+ 
     m_absoluteRotationEncoderOffset = encoderOffset;
 
     m_absoluteRotationEncoder = new CANcoder(turningEncoderChannel);
@@ -89,24 +102,40 @@ public class SwerveModule {
     encoderConfig.MagnetSensor.SensorDirection = turningEncoderReversed
       ? SensorDirectionValue.Clockwise_Positive
       : SensorDirectionValue.CounterClockwise_Positive;
-    encoderConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Unsigned_0To1;
+    encoderConfig.MagnetSensor.AbsoluteSensorDiscontinuityPoint = SwerveModuleConstants.kAbsoluteSensorDiscontinuityPoint;
     turningEncoderConfigurator.apply(encoderConfig);
+
+    m_absoluteRotationEncoder.getAbsolutePosition().getValue();
+
     m_absoluteRotationCache =
-      new ValueCache<Double>(() -> {
+      new ValueCache<Angle>(() -> {
         return m_absoluteRotationEncoder.getAbsolutePosition().getValue();
       }, SwerveModuleConstants.kValueCacheTtlMicroseconds);
-    Utilities.burnMotor(m_driveMotor);
 
-    m_turningMotor = new CANSparkMax(turningMotorChannel, MotorType.kBrushless);
-    m_turningMotor.restoreFactoryDefaults();
-    m_turningMotor.setClosedLoopRampRate(SwerveModuleConstants.kTurningMotorRampRate);
-    m_turningMotor.setInverted(turningMotorReversed);
-    m_turningMotor.setSmartCurrentLimit(SwerveModuleConstants.kTurningMotorCurrentLimit);
-    m_turningMotor.setIdleMode(IdleMode.kBrake);
+    m_turningMotor = new SparkMax(turningMotorChannel, MotorType.kBrushless);
+
+    SparkMaxConfig turningConfig = new SparkMaxConfig();
+    turningConfig.closedLoopRampRate(SwerveModuleConstants.kTurningMotorRampRate)
+      .inverted(turningMotorReversed)
+      .smartCurrentLimit(SwerveModuleConstants.kTurningMotorCurrentLimit)
+      .idleMode(IdleMode.kBrake);
+    turningConfig.encoder
+      .positionConversionFactor(SwerveModuleConstants.kTurningPositionConversionFactor)
+      .velocityConversionFactor(SwerveModuleConstants.kTurningVelocityConversionFactor);
+    turningConfig.closedLoop
+        .feedbackSensor(FeedbackSensor.kPrimaryEncoder);
+
+    m_turningPIDController = m_turningMotor.getClosedLoopController();
+    SwerveModuleConstants.kAutoTurningPIDF.controllerSet(turningConfig.closedLoop, SwerveModuleConstants.kAutoPIDFSlotID);
+    SwerveModuleConstants.kTeleopTurningPIDF.controllerSet(turningConfig.closedLoop, SwerveModuleConstants.kTeleopPIDFSlotID);
+    
+    REVLibError configureTurningMotorError = m_turningMotor.configure(turningConfig, ResetMode.kResetSafeParameters, Constants.kPersistMode);
+    if (configureTurningMotorError != REVLibError.kOk) {
+      throw new UncheckedIOException("Failed to configure turning motor", new IOException());
+    }
 
     m_turningEncoder = m_turningMotor.getEncoder();
-    m_turningEncoder.setPositionConversionFactor(SwerveModuleConstants.kTurningPositionConversionFactor);
-    m_turningEncoder.setVelocityConversionFactor(SwerveModuleConstants.kTurningVelocityConversionFactor);
+
     // Stabilize encoder readings before initializing the cache.
     m_turningEncoder.setPosition(0.0);
     while (
@@ -117,14 +146,6 @@ public class SwerveModule {
       SwerveModuleConstants.kValueCacheTtlMicroseconds);
     updateTurningEncoderOffset();
     m_prevAngle = getUnconstrainedRotation2d();
-
-    m_turningPIDController = m_turningMotor.getPIDController();
-    m_turningPIDController.setFeedbackDevice(m_turningEncoder);
-    SwerveModuleConstants.kAutoTurningPIDF.controllerSet(
-      m_turningPIDController, SwerveModuleConstants.kAutoPIDFSlotID);
-    SwerveModuleConstants.kTeleopTurningPIDF.controllerSet(
-      m_turningPIDController, SwerveModuleConstants.kTeleopPIDFSlotID);
-    Utilities.burnMotor(m_turningMotor);
   }
 
   private double getPlausibleDrivePosition() {
@@ -151,7 +172,7 @@ public class SwerveModule {
     return m_lastViableTurningPosition;
   }
 
-  public void setPIDSlotID(int slotID) {
+  public void setPIDSlotID(ClosedLoopSlot slotID) {
     m_PIDFSlotID = slotID;
   }
 
@@ -180,14 +201,14 @@ public class SwerveModule {
     // module may not have yet reached the angle it was most recently commanded to. However, there
     // is inherent instability in the algorithm if we tell the truth using getRotation2d(), because
     // commanding a position and reading current position are both asynchronous.
-    SwerveModuleState state = SwerveModuleState.optimize(desiredState, m_prevAngle);
+    desiredState.optimize(m_prevAngle);
 
-    m_drivePIDController.setReference(state.speedMetersPerSecond, ControlType.kVelocity, m_PIDFSlotID);
-
-    if (!state.angle.equals(m_prevAngle)) {
+    m_drivePIDController.setReference(desiredState.speedMetersPerSecond, ControlType.kVelocity, m_PIDFSlotID);
+    
+    if (!desiredState.angle.equals(m_prevAngle)) {
       // deltaAngle is in [-pi..pi], which is added (intentionally unconstrained) to m_prevAngle.
       // This causes the module to turn e.g. 4 degrees rather than -356 degrees.
-      Rotation2d deltaAngle = state.angle.minus(m_prevAngle);
+      Rotation2d deltaAngle = desiredState.angle.minus(m_prevAngle);
       // Avoid Rotation2d.plus() here, since it constrains the result to [-pi..pi].
       Rotation2d angle = Rotation2d.fromRadians(m_prevAngle.getRadians() + deltaAngle.getRadians());
       // Take care to cancel out the encoder offset when setting the position.
@@ -198,9 +219,7 @@ public class SwerveModule {
   }
 
   private Rotation2d getAbsoluteRotation2d() {
-    double absolutePositionRotations = m_absoluteRotationCache.get();
-    double absolutePositionRadians = Units.rotationsToRadians(absolutePositionRotations);
-    return new Rotation2d(absolutePositionRadians).minus(m_absoluteRotationEncoderOffset);
+    return new Rotation2d(m_absoluteRotationCache.get()).minus(m_absoluteRotationEncoderOffset);
   }
 
   /**
