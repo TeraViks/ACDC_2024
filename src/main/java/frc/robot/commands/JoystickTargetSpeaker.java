@@ -12,11 +12,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.SpeakerConstants;
-import frc.robot.subsystems.Chamber;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.Shooter;
 import frc.robot.utilities.PIDF;
-import frc.robot.utilities.ShooterInterp;
 import frc.robot.utilities.TargetSpeaker;
 import frc.robot.utilities.TunablePIDF;
 
@@ -24,8 +21,6 @@ public class JoystickTargetSpeaker extends Command {
   private static final TunablePIDF targetTurningPIDF =
     new TunablePIDF("Speaker.turningPIDF", SpeakerConstants.kTurningPIDF);
   private final DriveSubsystem m_drive;
-  private final Chamber m_chamber;
-  private final Shooter m_shooter;
   private final GenericHID m_driverController;
   private final Supplier<Double> m_xVelocitySupplier;
   private final Supplier<Double> m_yVelocitySupplier;
@@ -40,13 +35,11 @@ public class JoystickTargetSpeaker extends Command {
       DriveConstants.kMaxAngularAccelerationRadiansPerSecondSquared),
     Constants.kDt);
 
-  public JoystickTargetSpeaker(DriveSubsystem drive, Chamber chamber, Shooter shooter,
+  public JoystickTargetSpeaker(DriveSubsystem drive,
       GenericHID driverController,
       Supplier<Double> xVelocitySupplier, Supplier<Double> yVelocitySupplier,
       TargetSpeaker targetSpeaker) {
     m_drive = drive;
-    m_chamber = chamber;
-    m_shooter = shooter;
     m_driverController = driverController;
     m_xVelocitySupplier = xVelocitySupplier;
     m_yVelocitySupplier = yVelocitySupplier;
@@ -56,7 +49,7 @@ public class JoystickTargetSpeaker extends Command {
     m_thetaController.setTolerance(SpeakerConstants.kAngularTolerance);
     m_thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
-    addRequirements(drive, chamber, shooter);
+    addRequirements(drive);
   }
 
   @Override
@@ -83,15 +76,7 @@ public class JoystickTargetSpeaker extends Command {
     );
 
     double speakerDistance = m_targetSpeaker.getSpeakerDistance(robotPose);
-    revShooter(speakerDistance);
     rumbleDriverController(speakerDistance);
-  }
-
-  private void revShooter(double speakerDistance) {
-    if (m_chamber.isNoteChambered()) {
-      double shooterSpeed = ShooterInterp.distanceToSpeed(speakerDistance);
-      m_shooter.revShooter(shooterSpeed);
-    }
   }
 
   private void rumbleDriverController(double speakerDistance) {
