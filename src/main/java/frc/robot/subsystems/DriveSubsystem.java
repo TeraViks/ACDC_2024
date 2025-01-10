@@ -4,18 +4,18 @@
 
 package frc.robot.subsystems;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import org.photonvision.EstimatedRobotPose;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.revrobotics.spark.ClosedLoopSlot;
 import com.studica.frc.AHRS;
 import com.studica.frc.AHRS.NavXComType;
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.controllers.PPHolonomicDriveController;
-import com.pathplanner.lib.config.RobotConfig;
-import com.revrobotics.spark.ClosedLoopSlot;
 
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -32,8 +32,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.AutoConstants;
+import frc.robot.Constants.CameraConstants;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.Constants.PhotonVisionConstants;
 
 public class DriveSubsystem extends SubsystemBase {
   private final SwerveModule m_frontLeft = //Q1
@@ -168,8 +168,8 @@ public class DriveSubsystem extends SubsystemBase {
     m_odometry.update(getUncorrectedRotation2d(), getPositions());
 
     // Integrate PhotonVision pose estimates into odometry.
-    if (PhotonVisionConstants.kEnable) {
-      ArrayList<Optional<EstimatedRobotPose>> photonRobotPoseList =
+    if (CameraConstants.kEnable) {
+      List<Optional<EstimatedRobotPose>> photonRobotPoseList =
         m_cameraSystem.getFieldRelativePoseEstimators();
       for (Optional<EstimatedRobotPose> estimateOpt : photonRobotPoseList) {
         if (estimateOpt.isPresent()) {
