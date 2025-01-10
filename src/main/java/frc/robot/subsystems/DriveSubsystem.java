@@ -34,7 +34,6 @@ import frc.robot.Constants;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.PhotonVisionConstants;
-import frc.robot.utilities.TargetSpeaker;
 
 public class DriveSubsystem extends SubsystemBase {
   private final SwerveModule m_frontLeft = //Q1
@@ -110,7 +109,6 @@ public class DriveSubsystem extends SubsystemBase {
         DriveConstants.visionStdDeviations);
 
   private final Field2d m_field = new Field2d();
-  private final TargetSpeaker m_targetSpeaker = new TargetSpeaker();
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem(CameraSubsystem cameraSystem) {
@@ -187,8 +185,6 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("X", pose.getX());
     SmartDashboard.putNumber("Y", pose.getY());
     SmartDashboard.putData("Field", m_field);
-    SmartDashboard.putNumber("Speaker Distance", m_targetSpeaker.getSpeakerDistance(pose));
-    SmartDashboard.putNumber("Speaker Deviation", m_targetSpeaker.getRotationDeviation(pose).getDegrees());
   }
 
   public Pose2d getPose() {
