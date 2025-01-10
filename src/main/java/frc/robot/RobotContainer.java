@@ -93,17 +93,7 @@ public class RobotContainer {
       );
 
       m_chooser.setDefaultOption("Empty Auto", new PathPlannerAuto("Empty Auto"));
-      m_chooser.addOption("Zero Note A", new PathPlannerAuto("zero note A"));
-      m_chooser.addOption("Zero Note B", new PathPlannerAuto("Zero note B"));
-      m_chooser.addOption("Zero Note C", new PathPlannerAuto("zero note C"));
-      m_chooser.addOption("One Note A", new PathPlannerAuto("one note A"));
-      m_chooser.addOption("One Note B", new PathPlannerAuto("one note B"));
-      m_chooser.addOption("One Note C", new PathPlannerAuto("one note C"));
-      m_chooser.addOption("A Forward and Back", new PathPlannerAuto("A zero"));
-      m_chooser.addOption("B Forward and Back", new PathPlannerAuto("B zero"));
-      m_chooser.addOption("C Forward and Back", new PathPlannerAuto("C zero"));
-      m_chooser.addOption("Delayed One Note C", new PathPlannerAuto("delayed one note C"));
-      m_chooser.addOption("Under Stage C", new PathPlannerAuto("under stage C"));
+      m_chooser.addOption("Some Auto", new PathPlannerAuto("Some Auto"));
       SmartDashboard.putData(m_chooser);
   }
 
