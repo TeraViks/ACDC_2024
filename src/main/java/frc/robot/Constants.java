@@ -23,6 +23,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
+import frc.robot.subsystems.CameraSubsystem.CameraConfig;
 import frc.robot.utilities.PIDF;
 import frc.robot.utilities.TrapezoidalConstraint;
 
@@ -217,16 +218,24 @@ public final class Constants {
     public static final double kDriveBaseRadius = 0.4;
   }
 
-  public static final class PhotonVisionConstants {
+  public static final class CameraConstants {
     public static final boolean kEnable = true;
-    public static final String kCameraName1 = "camera1";
-    public static final String kCameraName2 = "camera2";
-    public static final Transform3d kRobotToCamera1Transform = new Transform3d(
-      0.196, -0.238, 0.26,
-      new Rotation3d(0.0, Units.degreesToRadians(-21.0), 0.0));
-    public static final Transform3d kRobotToCamera2Transform = new Transform3d(
-      0.196, 0.238, 0.26,
-      new Rotation3d(0.0, Units.degreesToRadians(-20.5), 0.0));
+    public static final List<CameraConfig> kCameraConfigs = List.of(
+      new CameraConfig(
+        "camera1",
+        new Transform3d(
+          0.196, -0.238, 0.26,
+          new Rotation3d(0.0, Units.degreesToRadians(-21.0), 0.0)),
+        false
+      ),
+      new CameraConfig(
+        "camera2",
+        new Transform3d(
+          0.196, 0.238, 0.26,
+          new Rotation3d(0.0, Units.degreesToRadians(-20.5), 0.0)),
+        true
+      )
+    );
   }
 
   public static final class FieldConstants {

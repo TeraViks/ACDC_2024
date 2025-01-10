@@ -17,9 +17,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Constants.CameraConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
-import frc.robot.Constants.PhotonVisionConstants;
 import frc.robot.subsystems.CameraSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 
@@ -31,7 +31,8 @@ import frc.robot.subsystems.DriveSubsystem;
  */
 public class RobotContainer {
   private final SendableChooser<Command> m_chooser = new SendableChooser<>();
-  private final CameraSubsystem m_cameraSystem = PhotonVisionConstants.kEnable ? new CameraSubsystem() : null;
+  private final CameraSubsystem m_cameraSystem =
+    CameraConstants.kEnable ? new CameraSubsystem(CameraConstants.kCameraConfigs) : null;
   public final DriveSubsystem m_robotDrive = new DriveSubsystem(m_cameraSystem);
   GenericHID m_driverController = new GenericHID(OIConstants.kDriverControllerPort);
   GenericHID m_operatorController = new GenericHID(OIConstants.kOperatorControllerPort);
