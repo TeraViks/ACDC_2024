@@ -42,7 +42,6 @@ public class CameraSubsystem extends SubsystemBase {
       new PhotonPoseEstimator(
         FieldConstants.kAprilTagFieldLayout,
         PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
-        m_camera2,
         PhotonVisionConstants.kRobotToCamera2Transform
       );
 
