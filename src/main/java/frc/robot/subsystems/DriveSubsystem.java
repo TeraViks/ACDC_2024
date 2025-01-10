@@ -10,10 +10,11 @@ import java.util.Optional;
 
 import org.photonvision.EstimatedRobotPose;
 
-import com.kauailabs.navx.frc.AHRS;
+import com.studica.frc.AHRS;
+import com.studica.frc.AHRS.NavXComType;
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
-import com.pathplanner.lib.util.ReplanningConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.config.RobotConfig;
 import com.revrobotics.spark.ClosedLoopSlot;
 
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -26,7 +27,6 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -88,7 +88,7 @@ public class DriveSubsystem extends SubsystemBase {
   private double m_idealAngularVelocity = 0.0;
 
   // The gyro sensor uses NavX
-  private final AHRS m_gyro = new AHRS(SPI.Port.kMXP);
+  private final AHRS m_gyro = new AHRS(NavXComType.kMXP_SPI);
   private Pose2d m_initialPose = new Pose2d();
   private CameraSubsystem m_cameraSystem;
 
@@ -120,18 +120,26 @@ public class DriveSubsystem extends SubsystemBase {
     while (m_gyro.isCalibrating()) {Thread.yield();}
     zeroGyro();
 
-    AutoBuilder.configureHolonomic(
+    // Load the RobotConfig from the GUI settings. You should probably
+    // store this in your Constants file
+    RobotConfig config = null;
+    try {
+      config = RobotConfig.fromGUISettings();
+    } catch (Exception e) {
+      // Handle exception as needed
+      e.printStackTrace();
+    }
+
+    AutoBuilder.configure(
         this::getPose, // Robot pose supplier
         this::initOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
         this::getSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-        this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
-        new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
+        (speeds, feedforwards) -> driveRobotRelative(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
+        new PPHolonomicDriveController( // HolonomicPathFollowerConfig, this should likely live in your Constants class
             AutoConstants.kTranslationHolonomicPID, // Translation PID constants
-            AutoConstants.kRotationHolonomicPID, // Rotation PID constants
-            AutoConstants.kMaxSpeedMetersPerSecond, // Max module speed, in m/s
-            AutoConstants.kDriveBaseRadius, // Drive base radius in meters. Distance from robot center to furthest module.
-            new ReplanningConfig() // Default path replanning config. See the API for the options here
-        ),
+            AutoConstants.kRotationHolonomicPID // Rotation PID constants
+        ), // Drive base radius in meters. Distance from robot center to furthest module.
+        config, // Default path replanning config. See the API for the options here
         () -> {
           return DriverStation.getAlliance().get() == Alliance.Red;
         },
