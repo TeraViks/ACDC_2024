@@ -18,15 +18,10 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.Constants.LimelightConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.PhotonVisionConstants;
-import frc.robot.commands.JoystickTargetNote;
-import frc.robot.commands.JoystickTargetSpeaker;
 import frc.robot.subsystems.CameraSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.Limelight;
-import frc.robot.utilities.TargetSpeaker;
 
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -35,7 +30,6 @@ import frc.robot.utilities.TargetSpeaker;
  * (including subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  private final Limelight m_limelight = LimelightConstants.kEnable ? new Limelight() : null;
   private final SendableChooser<Command> m_chooser = new SendableChooser<>();
   private final CameraSubsystem m_cameraSystem = PhotonVisionConstants.kEnable ? new CameraSubsystem() : null;
   public final DriveSubsystem m_robotDrive = new DriveSubsystem(m_cameraSystem);
@@ -108,27 +102,6 @@ public class RobotContainer {
         m_robotDrive.zeroGyro();
       }, m_robotDrive
     ));
-
-    if (LimelightConstants.kEnable) {
-      new JoystickButton(m_driverController, OIConstants.kJoystickTargetNoteButton)
-        .debounce(OIConstants.kDebounceSeconds)
-        .whileTrue(new JoystickTargetNote(
-          m_robotDrive,
-          m_limelight,
-          () -> getXSpeedInput(),
-          () -> getYSpeedInput()
-        ));
-    }
-
-    new JoystickButton(m_driverController, OIConstants.kJoystickTargetSpeakerButton)
-      .debounce(OIConstants.kDebounceSeconds)
-      .whileTrue(new JoystickTargetSpeaker(
-        m_robotDrive,
-        m_driverController,
-        () -> getXSpeedInput(),
-        () -> getYSpeedInput(),
-        new TargetSpeaker()
-      ));
   }
 
   public Command getAutonomousCommand() {

@@ -7,10 +7,9 @@ package frc.robot;
 import java.util.List;
 import java.util.Map;
 
-import com.revrobotics.spark.SparkBase.PersistMode;
-import com.revrobotics.spark.ClosedLoopSlot;
-
 import com.pathplanner.lib.config.PIDConstants;
+import com.revrobotics.spark.ClosedLoopSlot;
+import com.revrobotics.spark.SparkBase.PersistMode;
 
 import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
@@ -200,16 +199,6 @@ public final class Constants {
     public static final int kRightJoyYAxis = 5;
 
     public static final int kZeroGyro = kStart;
-    public static final int kJoystickTargetNoteButton = kA;
-    public static final int kJoystickTargetSpeakerButton = kY;
-    public static final int kEjectButton = kRightBumper;
-    public static final int kShootButton = kRightBumper;
-    public static final int kPickupButton = kLeftBumper;
-
-    public static final int kClimberRecalibrate = kStart;
-    public static final int kIntakeOn = kX;
-    public static final int kIntakeOff = kB;
-    public static final int kIntakeReverse = kA;
     
     public static final double kDebounceSeconds = 0.01;
 
@@ -227,24 +216,6 @@ public final class Constants {
 
     public static final double kDriveBaseRadius = 0.4;
   }
-  
-  public static final class LimelightConstants {
-    public static final boolean kEnable = true;
-    public static final double kLimelightMountDegrees = -20.0;
-    public static final double kLimelightLensHeightInches = 16.25;
-    public static final double kNoteHeightInches = 2.0;
-    public static final int kRelayPort = 3;
-    public static final int kFilterSize = 7;
-  }
-  
-  public static final class NoteConstants {
-    public static final double kAngularTolerance = Units.degreesToRadians(5.0);
-    // Use JoystickTargetNote.targetTurningPIDF rather than directly using this field.
-    public static final PIDF kTurningPIDF = new PIDF(3.0, 0.0, 0.0, 0.2);
-
-    public static final double kPickupSpeed = -1.5;
-    public static final double kTimeout = 1.5;
-  }
 
   public static final class PhotonVisionConstants {
     public static final boolean kEnable = true;
@@ -256,17 +227,6 @@ public final class Constants {
     public static final Transform3d kRobotToCamera2Transform = new Transform3d(
       0.196, 0.238, 0.26,
       new Rotation3d(0.0, Units.degreesToRadians(-20.5), 0.0));
-  }
-
-  public static final class SpeakerConstants {
-    public static final double kMinPossibleShootingDistance = 2.9;
-    public static final double kMinGoodShootingDistance = 2.9;
-    public static final double kMaxGoodShootingDistance = 3.12;
-    public static final double kMaxPossibleShootingDistance = 3.12;
-
-    public static final double kAngularTolerance = Units.degreesToRadians(2.5);
-    // Use JoystickTargetSpeaker.targetTurningPIDF rather than directly using this field.
-    public static final PIDF kTurningPIDF = NoteConstants.kTurningPIDF;
   }
 
   public static final class FieldConstants {
@@ -303,116 +263,5 @@ public final class Constants {
       loadTransformedAprilTagFieldLayout();
 
     public static final double kMaxX = kAprilTagFieldLayout.getFieldLength();
-
-    private static Translation2d getAprilTagTranslation(AprilTagFieldLayout fieldLayout, int aprilTagID) {
-      for (AprilTag aprilTag : fieldLayout.getTags()) {
-        if (aprilTag.ID == aprilTagID) {
-          return new Translation2d(aprilTag.pose.getX(), aprilTag.pose.getY());
-        }
-      }
-      assert(false);
-      return new Translation2d();
-    }
-    public static final Translation2d kBlueSpeaker = getAprilTagTranslation(kAprilTagFieldLayout, 7);
-    public static final Translation2d kRedSpeaker = getAprilTagTranslation(kAprilTagFieldLayout, 4);
-  }
-
-  public static final class IntakeConstants {
-    public static final int kTopMotorID = 13;
-    public static final int kBottomMotorID = 14;
-    public static final int kCurrentLimit = 20;
-    public static final boolean kTopMotorReversed = false;
-    public static final boolean kBottomMotorReversed = false;
-    public static final double kTopWheelDiameterMeters = Units.inchesToMeters(2.0);
-    public static final double kBottomWheelDiameterMeters = Units.inchesToMeters(1.0);
-    public static final double kTopGearRatio = 3.0;
-    public static final double kBottomGearRatio = 3.0;
-    // VelocityCoversionFactors convert between revolutions per minute and m/s
-    public static final double kTopVelocityConversionFactor =
-      (kTopWheelDiameterMeters * Math.PI)
-      / (kTopGearRatio * 60.0);
-    public static final double kBottomVelocityConversionFactor =
-      (kBottomWheelDiameterMeters * Math.PI)
-      / (kBottomGearRatio * 60.0);
-    public static final PIDF kTopPIDF = new PIDF(0.1, 0.0, 0.0, 0.2075);
-    public static final PIDF kBottomPIDF = new PIDF(0.2, 0.0, 0.0, 0.405);
-    public static final double kSpeed = 2.5;
-  }
-
-  public static final class ChamberConstants {
-    public static final int kLeftMotorID = 15;
-    public static final int kRightMotorID = 16;
-    public static final int kSensorID = 5;
-    public static final int kCurrentLimit = 20;
-    public static final boolean kLeftMotorReversed = false;
-    public static final boolean kRightMotorReversed = true;
-    // Sensor sense may be reversed (false when note is detected), in which case this should be set
-    // to false.
-    public static final boolean kSensorNoteDetectedValue = true;
-    public static final double kWheelDiameterMeters = Units.inchesToMeters(3.0);
-    public static final double kGearRatio = 3.0 / 1.0;
-    // VelocityCoversionFactors convert between revolutions per minute and m/s
-    public static final double kChamberVelocityConversionFactor =
-      (kWheelDiameterMeters * Math.PI)
-      / kGearRatio / 60.0;
-    public static final PIDF kLeftPIDF = new PIDF(0.1, 0.0001, 0.0, 0.1525);
-    public static final PIDF kRightPIDF = new PIDF(0.1, 0.0001, 0.0, 0.15);
-    public static final double kIntakingSpeed = 1.75;
-    public static final double kShootingSpeed = 6.5;
-    public static final double kClearingTimeSeconds = 1.0;
-    public static final double kAligningSpeed = -0.05;
-  }
-
-  public static final class ShooterConstants {
-    public static final int kLeftMotorID = 17;
-    public static final int kRightMotorID = 18;
-    public static final int kCurrentLimit = 40;
-    public static final boolean kLeftMotorReversed = false;
-    public static final boolean kRightMotorReversed = true;
-
-    public static final double kWheelDiameterMeters = Units.inchesToMeters(4.0);
-    public static final double kGearRatio = 1.0;
-
-    // The native position units are motor rotations, but we want meters.
-    public static final double kPositionConversionFactor =
-      (ShooterConstants.kWheelDiameterMeters * Math.PI)
-      / ShooterConstants.kGearRatio;
-    // The native velocity units are motor rotations [aka revolutions] per minute (RPM),
-    // but we want meters per second.
-    public static final double kVelocityConversionFactor =
-      kPositionConversionFactor
-      / 60.0 /* s */;
-
-    public static final PIDF kLeftPIDF = new PIDF(0.025, 0.0, 0.0, 0.0368);
-    public static final PIDF kRightPIDF = new PIDF(0.025, 0.0, 0.0, 0.0372);
-    public static final double kIdleSpeed = 15.0;
-
-    public static final boolean kEnableManualSpeed = false; // Bypasses interpolation.
-    public static final double kDefaultManualSpeed = 18.0;
-
-    public static final double kSpinSpeed = 0.0;
-
-    public static final double kShootingTolerance = 0.05;
-
-    public static final double kstabilizingTimeSeconds = 0.1;
-  }
-
-  public static final class ClimberConstants {
-    public static final boolean kEnable = true;
-    public static final int kLeftMotorID = 19;
-    public static final int kRightMotorID = 20;
-    public static final int kCurrentLimit = 40;
-    public static final boolean kLeftMotorReversed = false;
-    public static final boolean kRightMotorReversed = false;
-    public static final PIDF kPIDF = new PIDF(1.0, 0.0, 0.0, 0.1);
-    public static final double kGearRatio = 4.0;
-    // With no gear reduction each motor rotation moves the climber 0.012 meters
-    public static final double kPositionConversionFactor = 0.012 / kGearRatio;
-    public static final double kVelocityConversionFactor = kPositionConversionFactor / 60.0;
-    public static final double kMinRetractedLength = 0.0;
-    public static final double kMaxExtendedLength = 0.29; // Theoretical max is 0.3048
-    public static final double kMaxSpeed = 0.5;
-    public static final double kRecalibratingSpeed = -0.1;
-    public static final double kConstrainedRange = 0.02;
   }
 }
