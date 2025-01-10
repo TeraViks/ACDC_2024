@@ -1,29 +1,33 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkBase.ControlType;
-import com.revrobotics.CANSparkBase.IdleMode;
-import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkPIDController;
+import com.revrobotics.spark.SparkBase.ControlType;
+import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.REVLibError;
+import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
+import com.revrobotics.spark.SparkClosedLoopController; 
+
+import java.io.IOException;
+import java.io.UncheckedIOException;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Constants.ChamberConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.utilities.TunableDouble;
-import frc.robot.utilities.Utilities;
 
 public class Chamber extends SubsystemBase {
-  private final CANSparkMax m_leftMotor;
-  private final CANSparkMax m_rightMotor;
-  private final RelativeEncoder m_leftEncoder;
-  private final RelativeEncoder m_rightEncoder;
-  private final SparkPIDController m_leftPIDController;
-  private final SparkPIDController m_rightPIDController;
+  private final SparkMax m_leftMotor;
+  private final SparkMax m_rightMotor;
+  private final SparkClosedLoopController m_leftPIDController;
+  private final SparkClosedLoopController m_rightPIDController;
   private final Intake m_intake;
   private final Shooter m_shooter;
   private final DigitalInput m_noteDetectedSensor;
@@ -52,34 +56,46 @@ public class Chamber extends SubsystemBase {
     m_chooser.addOption("Preloaded", State.CHAMBERED);
     SmartDashboard.putData(m_chooser);
     m_state = State.EMPTY;
+    
+    m_leftMotor = new SparkMax(ChamberConstants.kLeftMotorID, MotorType.kBrushless);
 
-    m_leftMotor = new CANSparkMax(ChamberConstants.kLeftMotorID, MotorType.kBrushless);
-    m_leftMotor.restoreFactoryDefaults();
-    m_leftMotor.setInverted(ChamberConstants.kLeftMotorReversed);
-    m_leftMotor.setSmartCurrentLimit(ChamberConstants.kCurrentLimit);
-    m_leftMotor.setIdleMode(IdleMode.kBrake);
+    SparkMaxConfig leftMotorConfig = new SparkMaxConfig();
+    leftMotorConfig.inverted(ChamberConstants.kLeftMotorReversed)
+      .smartCurrentLimit(ChamberConstants.kCurrentLimit)
+      .idleMode(IdleMode.kBrake);
+    leftMotorConfig.encoder
+      .velocityConversionFactor(ChamberConstants.kChamberVelocityConversionFactor);
+    leftMotorConfig.closedLoop
+      .feedbackSensor(FeedbackSensor.kPrimaryEncoder);
 
-    m_leftEncoder = m_leftMotor.getEncoder();
-    m_leftEncoder.setVelocityConversionFactor(ChamberConstants.kChamberVelocityConversionFactor);
+    ChamberConstants.kLeftPIDF.controllerSet(leftMotorConfig.closedLoop);
 
-    m_leftPIDController = m_leftMotor.getPIDController();
-    m_leftPIDController.setFeedbackDevice(m_leftEncoder);
-    ChamberConstants.kLeftPIDF.controllerSet(m_leftPIDController);
-    Utilities.burnMotor(m_leftMotor);
+    REVLibError configureError = m_leftMotor.configure(leftMotorConfig, ResetMode.kResetSafeParameters, Constants.kPersistMode);
+    if (configureError != REVLibError.kOk) {
+      throw new UncheckedIOException("Failed to configure drive motor", new IOException());
+    }
 
-    m_rightMotor = new CANSparkMax(ChamberConstants.kRightMotorID, MotorType.kBrushless);
-    m_rightMotor.restoreFactoryDefaults();
-    m_rightMotor.setInverted(ChamberConstants.kRightMotorReversed);
-    m_rightMotor.setSmartCurrentLimit(ChamberConstants.kCurrentLimit);
-    m_rightMotor.setIdleMode(IdleMode.kBrake);
+    m_leftPIDController = m_leftMotor.getClosedLoopController();
 
-    m_rightEncoder = m_rightMotor.getEncoder();
-    m_rightEncoder.setVelocityConversionFactor(ChamberConstants.kChamberVelocityConversionFactor);
+    m_rightMotor = new SparkMax(ChamberConstants.kRightMotorID, MotorType.kBrushless);
+    
+    SparkMaxConfig rightMotorConfig = new SparkMaxConfig();
+    rightMotorConfig.inverted(ChamberConstants.kRightMotorReversed)
+    .smartCurrentLimit(ChamberConstants.kCurrentLimit)
+    .idleMode(IdleMode.kBrake);
+    rightMotorConfig.encoder
+    .velocityConversionFactor(ChamberConstants.kChamberVelocityConversionFactor);
+    rightMotorConfig.closedLoop
+    .feedbackSensor(FeedbackSensor.kPrimaryEncoder);
 
-    m_rightPIDController = m_rightMotor.getPIDController();
-    m_rightPIDController.setFeedbackDevice(m_rightEncoder);
-    ChamberConstants.kRightPIDF.controllerSet(m_rightPIDController);
-    Utilities.burnMotor(m_rightMotor);
+    ChamberConstants.kRightPIDF.controllerSet(rightMotorConfig.closedLoop);
+
+    REVLibError rightConfigureError = m_rightMotor.configure(rightMotorConfig, ResetMode.kResetSafeParameters, Constants.kPersistMode);
+    if (rightConfigureError != REVLibError.kOk) {
+      throw new UncheckedIOException("Failed to configure drive motor", new IOException());
+    }
+    
+    m_rightPIDController = m_rightMotor.getClosedLoopController();
 
     m_noteDetectedSensor = new DigitalInput(ChamberConstants.kSensorID);
 
