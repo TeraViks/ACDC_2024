@@ -16,7 +16,6 @@ import frc.robot.Constants.SwerveModuleConstants;
  * project.
  */
 public class Robot extends TimedRobot {
-  private boolean m_didAutonomousInit = false;
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
@@ -67,7 +66,6 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
-    m_didAutonomousInit = true;
   }
 
   /** This function is called periodically during autonomous. */
