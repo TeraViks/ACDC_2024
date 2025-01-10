@@ -52,7 +52,7 @@ public class SwerveModule {
 
   private final ValueCache<Double> m_drivePositionCache;
   private final ValueCache<Double> m_driveVelocityCache;
-  private final ValueCache<Angle> m_absoluteRotationCache;
+  private final ValueCache<Angle> m_absoluteAngleCache;
   private final ValueCache<Double> m_turningCache;
   private Rotation2d m_prevAngle;
   private double m_lastViableDrivePosition = 0.0;
@@ -107,7 +107,7 @@ public class SwerveModule {
 
     m_absoluteRotationEncoder.getAbsolutePosition().getValue();
 
-    m_absoluteRotationCache =
+    m_absoluteAngleCache =
       new ValueCache<Angle>(() -> {
         return m_absoluteRotationEncoder.getAbsolutePosition().getValue();
       }, SwerveModuleConstants.kValueCacheTtlMicroseconds);
@@ -219,7 +219,7 @@ public class SwerveModule {
   }
 
   private Rotation2d getAbsoluteRotation2d() {
-    return new Rotation2d(m_absoluteRotationCache.get()).minus(m_absoluteRotationEncoderOffset);
+    return new Rotation2d(m_absoluteAngleCache.get()).minus(m_absoluteRotationEncoderOffset);
   }
 
   /**
