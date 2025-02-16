@@ -22,6 +22,7 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.CameraSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.Lights;
 
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -36,6 +37,7 @@ public class RobotContainer {
   public final DriveSubsystem m_robotDrive = new DriveSubsystem(m_cameraSystem);
   GenericHID m_driverController = new GenericHID(OIConstants.kDriverControllerPort);
   GenericHID m_operatorController = new GenericHID(OIConstants.kOperatorControllerPort);
+  private final Lights m_lights = new Lights();
 
   double m_reverseFactor = DriverStation.getAlliance().get() == Alliance.Blue ? 1 : -1;
 
@@ -71,6 +73,7 @@ public class RobotContainer {
   }
 
   public RobotContainer() {
+    
     configureButtonBindings();
 
     m_robotDrive.setDefaultCommand(
